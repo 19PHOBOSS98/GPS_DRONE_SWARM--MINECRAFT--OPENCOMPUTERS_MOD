@@ -13,6 +13,7 @@ m= component.proxy(component.list('modem')())
 Channel = 2412
 ResponseChannel = 2402
 m.open(Channel)
+m.setStrength(math.huge)
 drone_inv = "inv_q"
 isDroneQueen = true
 isFree = true
