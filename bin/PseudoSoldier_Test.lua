@@ -9,6 +9,7 @@ SoldierChannel = 2412
 modem.open(gpsChannel)
 modem.open(trgChannel)
 modem.open(SoldierChannel)
+modem.setStrength(math.huge)
 gpsSats={}
 cmdTRGPos={}
 
