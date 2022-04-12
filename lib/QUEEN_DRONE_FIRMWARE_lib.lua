@@ -19,6 +19,8 @@ isDroneQueen = true
 isFree = true
 broadcastGPS = false
 gpsChannel = 2
+gpsRequestChannel = 20
+m.open(gpsRequestChannel)
 ]]
 ,
 [[
@@ -87,6 +89,14 @@ end
 ]]
 ,
 [[
+function gpsReply(addr)
+	if gpsSatPos[1] then
+		m.send(addr,gpsChannel,"gps",gpsSatPos[1],gpsSatPos[2],gpsSatPos[3])
+	end
+end
+]]
+,
+[[
 acts = {
 	["go"] = function(_,tag) d.setLightColor(0x00FF00) d.setStatusText(navMoveToPlayer(tag)) end,
     ["bzz"] = function(_,tag) d.setLightColor(0x0000FF) d.setStatusText(navSwarmPlayer(tag)) end,
@@ -97,6 +107,7 @@ acts = {
 	["formup"] = function(_,tag,x,y,z) d.setStatusText(navMoveToPlayerWOffset(tag,x,y,z)) end,
 	["startgps"] = function() broadcastGPS = true end,
 	["stopgps"] = function() broadcastGPS = false end,
+	["reqgps"] = function(r_add) gpsReply(r_add) end,
 	["HUSH"] = function() computer.shutdown() end
 }
 ]]
