@@ -126,7 +126,7 @@ local function locate()
 
   --for k,fix in ipairs(fixes) do print(k,":: {",fix.x,fix.y,fix.z,fix.d,"}")end
 
-  if #fixes >= 4 then
+  if #fixes >= 3 then
     if not pos1 then
       pos1, pos2 = trilaterate(fixes[1], fixes[2], fixes[3])
     end
