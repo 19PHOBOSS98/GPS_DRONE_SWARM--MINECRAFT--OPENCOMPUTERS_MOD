@@ -4,8 +4,10 @@ local term = require("term")
 local computer = require("computer")
 local modem = component.modem
 gpsChannel = 2
+gpsRequestChannel = 20
 trgChannel = 3
 SoldierChannel = 2412
+
 modem.open(gpsChannel)
 modem.open(trgChannel)
 modem.open(SoldierChannel)
