@@ -191,6 +191,7 @@ function gpsMoveToTarget(offset)
 		else print("No GPS") end
 	
 		_,_,r_add,_,dist,msg,x,y,z = select(6,computer.pullSignal(0.5))
+		print("msg: ",msg)
 		if actsWhileMoving[msg] then
 			actsWhileMoving[msg](r_add,x,y,z,dist)
 		end
@@ -226,18 +227,16 @@ function gpsMoveToTarget(offset)
 end
 
 
---gpsMoveToTarget({x=10,y=23,z=35})
+gpsMoveToTarget({x=10,y=23,z=35})
 
 
-
+--[[
 while true do
 	_,_,r_addr,_,dist,msg,x,y,z = computer.pullSignal(0.5)
 
 	if acts[msg] then
 		acts[msg](r_addr,x,y,z,dist)
 	end
-	
-	
 	
 	--printGPSTRG()
 	local current_pos
@@ -254,4 +253,4 @@ while true do
 	
 	refreshGPSTable()
 end
-
+]]
