@@ -93,7 +93,7 @@ function bcGPSTRGPos(tpBook)
 	while true do 
 		local gpsPos = getGPSPos(gpsTable)
 		if gpsPos then
-			for tport,tname in pairs(tpBook)
+			for tport,tname in pairs(tpBook) do
 				local radPos = getPlayerCoord(tname)
 				local trgPos = add(radPos.c,gpsPos)
 				modem.broadcast(tport,"trg",trgPos.x,trgPos.y,trgPos.z)
