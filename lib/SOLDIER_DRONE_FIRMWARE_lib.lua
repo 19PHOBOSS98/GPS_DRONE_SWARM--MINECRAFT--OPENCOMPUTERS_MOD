@@ -37,18 +37,15 @@ end
 ]]
 ,
 [[
-function sub_vec(A,B) return {A[1]-B[1],A[2]-B[2],A[3]-B[3]} end
-function math.trunc(v)
-    local t = math.modf(v)
-	return t
-end
-function add_vec(A,B) return {A[1]+B[1],A[2]+B[2],A[3]+B[3]} end
+function trunc(v) local t = math.modf(v) return t end
 function vec_trunc(A)
 	if A then
-		return {math.trunc(A[1]),math.trunc(A[2]),math.trunc(A[3])}
+		return {x=trunc(A.x),y=trunc(A.y),z=trunc(A.z)}
 	end
 	return nil
 end
+local function add(v, b) return {x=v.x+b.x, y=v.y+b.y, z=v.z+b.z} end
+local function sub(v, b) return {x=v.x-b.x, y=v.y-b.y, z=v.z-b.z} end
 ]]
 ,
 
@@ -57,22 +54,10 @@ function getPlayerCoord(e_name)
 	checkArg(1,e_name,'string','nil') 
 	for k,v in ipairs(r.getPlayers()) do 
 		if v.name == e_name then
-			return {v.x,v.y,v.z},v.distance
+			return {c={v.x,v.y,v.z},d=v.distance}
 		end 
 	end
-	return {0,0,0},0
-end
-]]
-,
-[[
-function move(x,y,z) 
-	checkArg(1,x,'number','nil')
-	checkArg(1,y,'number','nil')
-	checkArg(1,z,'number','nil')
-	if x and y and z then
-			d.setLightColor(0x00FFAF)
-			d.move(x,y,z)
-	end
+	return nil
 end
 ]]
 ,
@@ -90,8 +75,8 @@ function length(a)
 end
  
 function add2GPSTable(r_addr,x,y,z,dist)
-	if r_addr == master then gpsSats[r_addr] = {x,y,z,dist} end 
-	if length(gpsSats) < 7 then gpsSats[r_addr]={x,y,z,dist} end 
+	if r_addr == master then gpsSats[r_addr] = {c={x=x,y=y,z=z},d=dist} end 
+	if length(gpsSats) < 7 then gpsSats[r_addr]= {c={x=x,y=y,z=z},d=dist} end 
 end
 ]]
 ,
@@ -106,7 +91,7 @@ acts = {
 
 	["formup"] = function() d.setStatusText(gpsMoveToTarget()) end,
 	["gps"] = function(r_addr,x,y,z,dist) add2GPSTable(r_addr,x,y,z,dist) end,
-	["trg"] = function(_,x,y,z,dist) cmdTRGPos={vec={x,y,z},d=dist} end,
+	["trg"] = function(_,x,y,z,dist) cmdTRGPos={c={x=x,y=y,z=z},d=dist} end,
 
 	["HUSH"] = function() computer.shutdown() end
 }
@@ -119,7 +104,7 @@ actsWhileMoving = {
 	["uncommit"] = function() isFree = true end,
 
 	["gps"] = function(r_addr,x,y,z,dist) add2GPSTable(r_addr,x,y,z,dist) end,
-	["trg"] = function(_,x,y,z,dist) cmdTRGPos={vec={x,y,z},d=dist} end,
+	["trg"] = function(_,x,y,z,dist) cmdTRGPos={c={x=x,y=y,z=z},d=dist} end,
 
 	["HUSH"] = function() d.setLightColor(0xFF0000) sleep(1) computer.shutdown() end
 }
@@ -134,7 +119,7 @@ end
 
 function getGPSlocation()
 	local gpsPos = locate()
-	if gpsPos then return vec_trunc(gpsPos) end
+	if gpsPos then return gpsPos end
 	return nil
 end
 
@@ -144,25 +129,25 @@ end
 ]]
 ,
 [[
-function gpsMoveToTarget()
+function gpsMoveToTarget(offset)
 	checkArg(1,e_name,"string","nil")
 	local ctrlTRGPos = getGPSlocation()
-	if not ctrlTRGPos[1] then d.setLightColor(0xFF0000) return "Out Of\nRange" end
-	ctrlTRGPos = vec_trunc(ctrlTRGPos)
+	if not ctrlTRGPos.d then d.setLightColor(0xFF0000) return "Out Of\nRange" end
+	ctrlTRGPos = vec_trunc(ctrlTRGPos.c)
 	local mv = {0,0,0},msg,r_add,dist,x,y,z
 	repeat
 		local trgPos = getTRGPos()
 		if trgPos.d and trgPos.d < 50 then
-			trgPos.vec = vec_trunc(trgPos.vec)
-			mv = sub_vec(trgPos.vec,ctrlTRGPos)
+			trgPos.c = vec_trunc(trgPos.c)
+			mv = sub_vec(trgPos.c,ctrlTRGPos.c)
 
-			d.move(mv[1],mv[2],mv[3])
-			ctrlTRGPos = trgPos.vec
+			d.move(mv.x,mv.y,mv.z)
+			ctrlTRGPos = trgPos.c
 
 		else
 			d.setLightColor(0xFF0000)
 			d.setStatusText("Out Of\nRange")
-			d.move(-mv[1],-mv[2],-mv[3])
+			d.move(-mv.x,-mv.y,-mv.z)
 		end
 		_,_,r_add,_,dist,msg,x,y,z = select(6,computer.pullSignal(0.5))
 		if actsWhileMoving[msg] then
