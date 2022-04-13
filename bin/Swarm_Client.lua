@@ -102,7 +102,8 @@ function bcGPSTRGPos(tpBook)
 	print("bcGPSTRGPos")
 	local gpsTable = {}
 	event.listen("modem_message",function(evt,_,r_addr,_,dist,mgs,xg,yg,zg,...)
-		if msg == "gps" then gpsTable[r_addr] = {c={x=xg,y=yg,z=zg},d=dist} print(r_addr) end
+		print("msg: ",msg)
+		if msg == "gps" then gpsTable[r_addr] = {c={x=xg,y=yg,z=zg},d=dist} end
 	end)
 	while true do 
 		local gpsPos = getGPSPos(gpsTable)
