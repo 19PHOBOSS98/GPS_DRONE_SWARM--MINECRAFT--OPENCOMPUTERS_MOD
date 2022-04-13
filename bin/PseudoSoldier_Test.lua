@@ -26,7 +26,7 @@ function add2GPSTable(r_addr,x,y,z,dist)
   if length(gpsSats) < 7 then gpsSats[r_addr] = {x=x,y=y,z=z,d=dist} end 
 end
 
-tasks = {
+acts = {
 ["gps"] = function(r_addr,x,y,z,dist) add2GPSTable(r_addr,x,y,z,dist) end,
 ["trg"] = function(_,x,y,z) cmdTRGPos={c={x,y,z},d=dist} end
 }
@@ -172,8 +172,8 @@ local last_cmd=""
 while true do
 	_,_,r_addr,_,dist,msg,x,y,z = computer.pullSignal(0.5)
 
-	if tasks[msg] then
-		tasks[msg](r_addr,x,y,z,dist)
+	if acts[msg] then
+		acts[msg](r_addr,x,y,z,dist)
 	elseif msg then
 		last_cmd = msg
 	end
