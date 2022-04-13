@@ -191,7 +191,7 @@ function gpsMoveToTarget(offset)
 		--[[else d.setLightColor(0xFF0000) d.setStatusText("No GPS") end]]
 		else print("No GPS") end
 	
-		_,_,r_add,_,dist,msg,x,y,z = select(6,computer.pullSignal(0.5))
+		_,_,r_add,_,dist,msg,x,y,z = computer.pullSignal(0.5)
 		print("msg: ",msg)
 		if actsWhileMoving[msg] then
 			actsWhileMoving[msg](r_add,x,y,z,dist)
@@ -218,7 +218,7 @@ function gpsMoveToTarget(offset)
 			print("Out Of Range")
 		end
 	
-		_,_,r_add,_,dist,msg,x,y,z = select(6,computer.pullSignal(0.5))
+		_,_,r_add,_,dist,msg,x,y,z = computer.pullSignal(0.5)
 		if actsWhileMoving[msg] then
 			actsWhileMoving[msg](r_add,x,y,z,dist)
 		end
