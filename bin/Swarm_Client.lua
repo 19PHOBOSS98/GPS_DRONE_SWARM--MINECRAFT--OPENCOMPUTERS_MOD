@@ -219,12 +219,18 @@ function pawnsFormUP(ff,cmdport,trgPort,trgName)
 	trgPortBook[trgPort] = trgName
 end
 
+function msgThreadHandler(e)
+
+end
+
 function bcGPSTRGPos(tpBook,gpsC)
 	modem.open(gpsC)
 	print(gpsC)
 	print("bcGPSTRGPos")
 	local gpsTable = {}
-	event.listen("modem_message",function(evt,_,r_addr,_,dist,mgs,xg,yg,zg,...)
+	event.listen("modem_message",function(e)
+		local _,_,r_addr,_,dist,msg,xg,yg,zg = e
+		print(msg)
 		if msg == "gps" then gpsTable[r_addr] = {x=xg,y=yg,z=zg,d=dist} end
 	end)
 	while true do
