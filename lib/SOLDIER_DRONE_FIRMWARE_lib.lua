@@ -134,9 +134,13 @@ function gpsMoveToTarget(offset)
 	local ctrlTRGPos = nil
 	
 	repeat
-		ctrlTRGPos = getGPSlocation()
+		if length(gpsSats)>=3 then
+			ctrlTRGPos = getGPSlocation()
+		end
+	
 		if ctrlTRGPos.d then ctrlTRGPos = vec_trunc(ctrlTRGPos.c) 
-		else d.setLightColor(0xFF0000) d.setStatusText("No GPS") end		
+		else d.setLightColor(0xFF0000) d.setStatusText("No GPS") end	
+	
 		_,_,r_add,_,dist,msg,x,y,z = select(6,computer.pullSignal(0.5))
 		if actsWhileMoving[msg] then
 			actsWhileMoving[msg](r_add,x,y,z,dist)
