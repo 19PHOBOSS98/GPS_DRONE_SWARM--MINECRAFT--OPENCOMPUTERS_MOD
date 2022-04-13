@@ -226,10 +226,10 @@ function gpsMoveToTarget(offset)
 end
 
 
-gpsMoveToTarget({x=10,y=23,z=35})
+--gpsMoveToTarget({x=10,y=23,z=35})
 
 
---[[
+
 while true do
 	_,_,r_addr,_,dist,msg,x,y,z = computer.pullSignal(0.5)
 
@@ -254,4 +254,4 @@ while true do
 	
 	refreshGPSTable()
 end
-]]
+
