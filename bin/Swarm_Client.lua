@@ -46,96 +46,70 @@ dynamic_fbook = fbook
 
 
 print("Bingus28")
-
+function printSwarmStats()
+	term.clear()
+	flightform.printDronePool(drone_is_queen)
+	flightform.printFFAssignment(ffbook)
+end
 
 local gpsChannel = 2
 local trgChannel = 3
 
 
-function gpsBroadcast(gps_port)
-	while true do
-		modem.broadcast(gps_port,"gps",0,0,0)
-		--print("broadcasting..")
-		os.sleep(3)
-	end
-end
-
-local gpsThread
-local sat_mode = false
-function toggleGPSBroadCast(channel) --**********************--
-	sat_mode = not sat_mode
-	print("sat_mode: "..tostring(sat_mode))
-	if sat_mode then
-		print("creating GPS Thread..")
-		gpsThread = thread.create(function(port) gpsBroadcast(port) end,channel)
-	else
-		gpsThread:kill()
-	end
-end
-
 function getPlayerCoord(e_name) 
 	checkArg(1,e_name,'string','nil') 
 	for k,v in ipairs(Tr.getPlayers()) do 
 		if v.name == e_name then
-			return {v.x,v.y,v.z},v.distance
+			return {c={x=v.x,y=v.y,z=v.z},d=v.distance}
 		end 
 	end
-	return {0,0,0},0
+	return nil
 end
 
-function trgBroadcast(e_name)
-	while true do
-		local player_co = getPlayerCoord(e_name)
-		player_co = s_utils.vec_trunc(player_co)
-		modem.broadcast(trgChannel,"trg",player_co[1],player_co[2],player_co[3])
-		--print("broadcasting target..")
-		os.sleep(3)
-	end
+function getGPSPos(gpsT)
+	local gpsPos = locate(gpsT)--{x,y,z}
+	--if gpsPos then return vec_trunc(gpsPos) end
+	if gpsPos.x then return gpsPos end
+	return nil
 end
 
-local trgThread
-local send_trg = false
-function toggleTargetBroadCast(target) --**********************--
-	send_trg = not send_trg
-	print("send_trg: "..tostring(send_trg))
-	if send_trg then
-		print("creating TRG Thread..")
-		flightform.formFF(S_ffbook[1],S_dynamic_fbook[1],SoldiersChannel,false)
-		flightform.formUP("ph0",S_ffbook[1],S_dynamic_fbook[1],SoldiersChannel,false)
-		trgThread = thread.create(function(t) trgBroadcast(t) end,target)
-	else
-		trgThread:kill()
+
+function add(v, b) return {x=v.x+b.x, y=v.y+b.y, z=v.z+b.z} end
+
+trgPortBook = {}--{[trgport]="target"} multiple to fixed single relationship
+
+function pawnsFormUP(ff,cmdport,trgPort,trgName)
+	for addr,pos in pairs(ff) do
+		modem.send(addr,cmdport,"formup")
 	end
+	trgPortBook[trgPort] = trgName
 end
 
-function trgWOffset(e_name)
-	while true do
-		local player_co = getPlayerCoord(e_name)
-		player_co = s_utils.vec_trunc(player_co)
-		flightform.updateOffset(S_ffbook[1],S_dynamic_fbook[1],player_co,trgChannel)
-		--print("target with offset..")
-		os.sleep(3)
+function bcGPSTRGPos(tpBook)
+	local gpsTable = {}
+	event.listen("modem_message",function(...)
+		if ...[6] == "gps" then gpsTable[...[3]] = {v={x=...[7],y=...[8],z=...[9]},d=...[5]} end
+	end)
+	while true do 
+		local gpsPos = getGPSPos(gpsTable)
+		if gpsPos then
+			for tport,tname in pairs(tpBook)
+				local radPos = getPlayerCoord(tname)
+				local trgPos = add(radPos.c,gpsPos)
+				modem.broadcast(tport,"trg",trgPos.x,trgPos.y,trgPos.z)
+			end
+		end
 	end
-end
-local trgWoThread
-local send_trgWo = false
-function toggleTargetWithOffset(target) --**********************--
-	send_trgWo = not send_trgWo
-	print("send_trgWo: "..tostring(send_trgWo))
-	if send_trgWo then
-		print("creating TRG Thread..")
-		flightform.formFF(S_ffbook[1],S_dynamic_fbook[1],SoldiersChannel,false)
-		flightform.formUP("ph0",S_ffbook[1],S_dynamic_fbook[1],SoldiersChannel,false)
-		trgWoThread = thread.create(function(t) trgWOffset(t) end,target)
-	else
-		trgWoThread:kill()
-	end
+	
 end
 
-function printSwarmStats()
-	term.clear()
-	flightform.printDronePool(drone_is_queen)
-	flightform.printFFAssignment(ffbook)
+local gpstrgThread = nil
+function updateGPSTRGs(tpBook)--only call this sparingly, don't want to stall other flight formations
+	if gpstrgThread then gpstrgThread:kill() end
+	gpstrgThread = thread.create(function(tpb) bcGPSTRGPos(tpb) end,tpBook)
+end
+function killGPSTRGThread()
+	if gpstrgThread then gpstrgThread:kill() end
 end
 
 while true do
