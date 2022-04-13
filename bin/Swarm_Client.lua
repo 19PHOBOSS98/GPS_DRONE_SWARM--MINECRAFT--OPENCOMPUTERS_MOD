@@ -221,12 +221,14 @@ end
 
 function bcGPSTRGPos(tpBook,gpsC)
 	modem.open(gpsC)
+	print(gpsC)
 	print("bcGPSTRGPos")
 	local gpsTable = {}
 	event.listen("modem_message",function(evt,_,r_addr,_,dist,mgs,xg,yg,zg,...)
 		if msg == "gps" then gpsTable[r_addr] = {x=xg,y=yg,z=zg,d=dist} end
 	end)
 	while true do
+		print("bcGPSTRGPos2")
 		for addr,c in pairs(gpsTable) do
 			print(addr,c.x,c.y,c.z,c.d)
 		end
