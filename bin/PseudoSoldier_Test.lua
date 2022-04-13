@@ -14,7 +14,7 @@ modem.setStrength(math.huge)
 gpsSats={}
 cmdTRGPos={}
 
-
+drone_inv = "inv_s"
 
 function length(a)
   local c = 0
@@ -166,17 +166,77 @@ function printGPSTRG()
 	printTRGPos()
 end
 
-local last_cmd=""
+actsWhileMoving = {
+	[drone_inv] = function(r_add) replyInv(r_add) end,
+	["commit"] = function() d.setLightColor(0x0077FF) isFree = false end,
+	["uncommit"] = function() isFree = true end,
+	["gps"] = function(r_addr,x,y,z,dist) add2GPSTable(r_addr,x,y,z,dist) end,
+	["trg"] = function(_,x,y,z,dist) cmdTRGPos={c={x=x,y=y,z=z},d=dist} end,
+	["HUSH"] = function() d.setLightColor(0xFF0000) sleep(1) computer.shutdown() end
+}
+
+function gpsMoveToTarget(offset)
+	checkArg(1,e_name,"string","nil")
+	local ctrlTRGPos = nil
+	
+	repeat
+		if length(gpsSats)>=3 then
+			ctrlTRGPos = getGPSlocation()
+		end
+	
+		if ctrlTRGPos.d then ctrlTRGPos = vec_trunc(ctrlTRGPos.c) 
+		--[[else d.setLightColor(0xFF0000) d.setStatusText("No GPS") end]]
+		else print("No GPS") end
+	
+		_,_,r_add,_,dist,msg,x,y,z = select(6,computer.pullSignal(0.5))
+		if actsWhileMoving[msg] then
+			actsWhileMoving[msg](r_add,x,y,z,dist)
+		end
+	until msg == "stop" or ctrlTRGPos.d
+	
+	local mv = {0,0,0},msg,r_add,dist,x,y,z
+	
+	repeat
+		term.clear()
+		local trgPos = getTRGPos()
+		if trgPos.d and trgPos.d < 50 then
+			trgPos.c = vec_trunc(trgPos.c)
+			
+			mv = sub(trgPos.c,ctrlTRGPos.c)
+			--d.move(mv.x,mv.y,mv.z)
+			print("mv: ",mv.x,mv.y,mv.z)
+			
+			ctrlTRGPos = trgPos.c
+		else
+			--[[d.setLightColor(0xFF0000)
+			d.setStatusText("Out Of\nRange")
+			d.move(-mv.x,-mv.y,-mv.z)]]
+			print("Out Of Range")
+		end
+	
+		_,_,r_add,_,dist,msg,x,y,z = select(6,computer.pullSignal(0.5))
+		if actsWhileMoving[msg] then
+			actsWhileMoving[msg](r_add,x,y,z,dist)
+		end
+		refreshGPSTable()
+	until msg == "stop"
+	return "S1"
+end
 
 
+gpsMoveToTarget({x=10,y=23,z=35})
+
+
+--[[
 while true do
 	_,_,r_addr,_,dist,msg,x,y,z = computer.pullSignal(0.5)
 
 	if acts[msg] then
 		acts[msg](r_addr,x,y,z,dist)
-	elseif msg then
-		last_cmd = msg
 	end
+	
+	
+	
 	--printGPSTRG()
 	local current_pos
 	if length(gpsSats)>=3 then
@@ -192,3 +252,4 @@ while true do
 	
 	refreshGPSTable()
 end
+]]
