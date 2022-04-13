@@ -196,7 +196,7 @@ while true do
     elseif msg then
       last_cmd = msg
     end
-	printGPSTRG()
+--printGPSTRG()
 
 
     local current_pos
@@ -204,6 +204,7 @@ while true do
       --current_pos = locate()
 		current_pos = getGPSlocation()
     end
+	term.clear()
     if current_pos then print("current_pos: ",current_pos.x,current_pos.y,current_pos.z)
     else print("current_pos:") end
 
