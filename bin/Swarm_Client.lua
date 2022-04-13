@@ -66,6 +66,17 @@ function getPlayerCoord(e_name)
 	return nil
 end
 
+
+function getEntityCoord(e_name) 
+	checkArg(1,e_name,'string','nil') 
+	for k,v in ipairs(Tr.getEntities()) do 
+		if v.name == e_name then
+			return {c={x=v.x,y=v.y,z=v.z},d=v.distance}
+		end 
+	end
+	return nil
+end
+
 function getGPSPos(gpsT)
 	local gpsPos = locate(gpsT)--{x,y,z}
 	--if gpsPos then return vec_trunc(gpsPos) end
@@ -76,7 +87,9 @@ end
 
 function add(v, b) return {x=v.x+b.x, y=v.y+b.y, z=v.z+b.z} end
 
-trgPortBook = {}--{[trgport]="target"} multiple to fixed single relationship
+--trgPortBook = {}--{[trgport]="target"} multiple to fixed single relationship
+trgPortBook = {[3]="Bingus"}
+
 
 function pawnsFormUP(ff,cmdport,trgPort,trgName)
 	for addr,pos in pairs(ff) do
@@ -94,7 +107,8 @@ function bcGPSTRGPos(tpBook)
 		local gpsPos = getGPSPos(gpsTable)
 		if gpsPos then
 			for tport,tname in pairs(tpBook) do
-				local radPos = getPlayerCoord(tname)
+				--local radPos = getPlayerCoord(tname)
+				local radPos = getEntityCoord(e_name)
 				local trgPos = add(radPos.c,gpsPos)
 				modem.broadcast(tport,"trg",trgPos.x,trgPos.y,trgPos.z)
 			end
@@ -111,6 +125,8 @@ end
 function killGPSTRGThread()
 	if gpstrgThread then gpstrgThread:kill() end
 end
+
+
 
 while true do
 	local cmd=io.read()
@@ -170,9 +186,13 @@ while true do
 		toggleGPSBroadCast(gpsChannel)
     	os.sleep(0.5)
 	elseif(cmd == "TRG") then
-		toggleTargetBroadCast("ph0")
+		updateGPSTRGs(trgPortBook)
     	os.sleep(0.5)
-
+		
+	elseif(cmd == "K") then
+		killGPSTRGThread()
+    	os.sleep(0.5)
+		
 	elseif(cmd == "S") then
     	modem.broadcast(QueensChannel,"stop")
 		event.ignore("modem_message",msg_handler)
