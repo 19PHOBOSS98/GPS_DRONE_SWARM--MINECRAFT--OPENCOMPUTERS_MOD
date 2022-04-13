@@ -182,12 +182,13 @@ function gpsMoveToTarget(offset)
 	
 	repeat
 		term.clear()
+		print("phase1")
 		--printGPSTRG()
 		if length(gpsSats)>=3 then
 			ctrlTRGPos = getGPSlocation()
 		end
 	
-		if ctrlTRGPos then ctrlTRGPos = vec_trunc(ctrlTRGPos.c) 
+		if ctrlTRGPos then ctrlTRGPos = vec_trunc(ctrlTRGPos) 
 		--[[else d.setLightColor(0xFF0000) d.setStatusText("No GPS") end]]
 		else print("No GPS") end
 	
@@ -201,13 +202,13 @@ function gpsMoveToTarget(offset)
 	
 	repeat
 		term.clear()
-		print("trgMV: ")
+		print("phase2")
 		printGPSTRG()
 		local trgPos = getTRGPos()
 		if trgPos.d and trgPos.d < 50 then
 			trgPos.c = vec_trunc(trgPos.c)
 			
-			mv = sub(trgPos.c,ctrlTRGPos.c)
+			mv = sub(trgPos.c,ctrlTRGPos)
 			--d.move(mv.x,mv.y,mv.z)
 			print("mv: ",mv.x,mv.y,mv.z)
 			
