@@ -177,7 +177,7 @@ actsWhileMoving = {
 
 function gpsMoveToTarget(offset)
 	checkArg(1,e_name,"string","nil")
-	local ctrlTRGPos = nil
+	local ctrlTRGPos = {}
 	
 	repeat
 		if length(gpsSats)>=3 then
