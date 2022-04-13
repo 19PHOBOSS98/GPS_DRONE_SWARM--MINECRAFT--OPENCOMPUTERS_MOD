@@ -70,15 +70,15 @@ local function trilaterate(A, B, C)
 		local result2 = sub(result, mul(ez, z))
 		local rnd1, rnd2 = result1,result2
 		if rnd1.x ~= rnd2.x or rnd1.y ~= rnd2.y or rnd1.z ~= rnd2.z then
-			print("rnd1: ",rnd1.x,rnd1.y,rnd1.z)
-			print("rnd2: ",rnd2.x,rnd2.y,rnd2.z)
+			--print("rnd1: ",rnd1.x,rnd1.y,rnd1.z)
+			--print("rnd2: ",rnd2.x,rnd2.y,rnd2.z)
 			return rnd1, rnd2
 		else
-			print("rnd1: ",rnd1.x,rnd1.y,rnd1.z)
+			--print("rnd1: ",rnd1.x,rnd1.y,rnd1.z)
 			return rnd1
 		end
 	end
-	print("result: ",result.x,result.y,result.z)
+	--print("result: ",result.x,result.y,result.z)
 	return result
 end
 
@@ -182,7 +182,7 @@ function gpsMoveToTarget(offset)
 	
 	repeat
 		term.clear()
-		printGPSTRG()
+		--printGPSTRG()
 		if length(gpsSats)>=3 then
 			ctrlTRGPos = getGPSlocation()
 		end
@@ -192,7 +192,6 @@ function gpsMoveToTarget(offset)
 		else print("No GPS") end
 	
 		_,_,r_add,_,dist,msg,x,y,z = computer.pullSignal(0.5)
-		print("msg: ",msg)
 		if actsWhileMoving[msg] then
 			actsWhileMoving[msg](r_add,x,y,z,dist)
 		end
@@ -202,6 +201,8 @@ function gpsMoveToTarget(offset)
 	
 	repeat
 		term.clear()
+		print("trgMV: ")
+		printGPSTRG()
 		local trgPos = getTRGPos()
 		if trgPos.d and trgPos.d < 50 then
 			trgPos.c = vec_trunc(trgPos.c)
