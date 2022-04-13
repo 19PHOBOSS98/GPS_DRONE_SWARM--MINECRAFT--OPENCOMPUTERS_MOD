@@ -77,6 +77,7 @@ function getEntityCoord(e_name)
 	return nil
 end
 
+
 function getGPSPos(gpsT)
 	local gpsPos = locate(gpsT)--{x,y,z}
 	--if gpsPos then return vec_trunc(gpsPos) end
@@ -106,18 +107,19 @@ function bcGPSTRGPos(tpBook)
 		if msg == "gps" then gpsTable[r_addr] = {c={x=xg,y=yg,z=zg},d=dist} end
 	end)
 	while true do 
-		local gpsPos = getGPSPos(gpsTable)
-		if gpsPos then
+		--local gpsPos = getGPSPos(gpsTable)
+		--if gpsPos then
 			for tport,tname in pairs(tpBook) do
 				print("tport: ",tport,"tname: ",tname)
 				--local radPos = getPlayerCoord(tname)
 				local radPos = getEntityCoord(tname)
 				if radPos.d then
-					local trgPos = add(radPos.c,gpsPos)
+					--local trgPos = add(radPos.c,gpsPos)
+					local trgPos = radPos.c
 					modem.broadcast(tport,"trg",trgPos.x,trgPos.y,trgPos.z)
 				end
 			end
-		end
+		--end
 	end
 	
 end
