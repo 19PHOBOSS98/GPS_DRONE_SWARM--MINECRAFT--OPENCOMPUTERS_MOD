@@ -25,12 +25,12 @@ end
 
 function add2GPSTable(r_addr,x,y,z,dist)
   if r_addr == master then gpsSats[r_addr] = {x=x,y=y,z=z,d=dist} end 
-  if length(gpsSats) < 7 then gpsSats[r_addr]={x=x,y=y,z=z,d=dist} end 
+  if length(gpsSats) < 7 then gpsSats[r_addr] = {x=x,y=y,z=z,d=dist} end 
 end
 
 tasks = {
 ["gps"] = function(r_addr,x,y,z,dist) add2GPSTable(r_addr,x,y,z,dist) end,
-["trg"] = function(_,x,y,z) cmdTRGPos={vec={x,y,z},d=dist} end
+["trg"] = function(_,x,y,z) cmdTRGPos={c={x,y,z},d=dist} end
 }
 
 local floor, sqrt, abs = math.floor, math.sqrt, math.abs
@@ -164,34 +164,47 @@ function getTRGPos()
 end
 
 
+function printGPSSats()
+	print("gpsSats:")
+	for addr,c in pairs(gpsSats) do
+		print(addr,":: {",c.x,c.y,c.z,c.d,"}")
+	end
+end
+function printTRGPos()
+	if trgPos then
+		print("trgPos: {",trgPos[1],trgPos[2],trgPos[3],"}")
+	else
+		print("trgPos:")
+	end
+end
+
+function printGPSTRG()
+	term.clear()
+	printGPSSats()
+	printTRGPos()
+end
+
 local last_cmd=""
+
+
 while true do
 
     _,_,r_addr,_,dist,msg,x,y,z = computer.pullSignal(0.5)
-    term.clear()
+
     if tasks[msg] then
       tasks[msg](r_addr,x,y,z,dist)
     elseif msg then
       last_cmd = msg
     end
-    print("gpsSats:")
-    for addr,c in pairs(gpsSats) do
-      print(addr,":: {",c.x,c.y,c.z,c.d,"}")
-    end
+	printGPSTRG()
 
-    if trgPos then
-      print("trgPos: {",trgPos[1],trgPos[2],trgPos[3],"}")
-    else
-      print("trgPos:")
-    end
-    
-    print("cmd: ",last_cmd)
+
     local current_pos
     if length(gpsSats)>=3 then
       --current_pos = locate()
 		current_pos = getGPSlocation()
     end
-    if current_pos then print("current_pos: ",current_pos[1],current_pos[2],current_pos[3])
+    if current_pos then print("current_pos: ",current_pos.x,current_pos.y,current_pos.z)
     else print("current_pos:") end
 
 	refreshGPSTable()
