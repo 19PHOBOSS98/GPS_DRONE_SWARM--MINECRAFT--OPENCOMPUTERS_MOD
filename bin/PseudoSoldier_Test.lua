@@ -141,7 +141,7 @@ local function locate()
   --elseif pos1 then return {pos1.x, pos1.y, pos1.z}	
 	elseif pos1 then 
 		local c = round(pos1,1) 
-		return {x=c.x,y=c.y,=zc.z}
+		return {x=c.x,y=c.y,z=c.z}
   else return nil end
 end
 
