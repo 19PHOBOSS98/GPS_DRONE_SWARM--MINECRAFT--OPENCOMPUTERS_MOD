@@ -201,11 +201,15 @@ function gpsMoveToTarget(offset)
 	local mv = {0,0,0},msg,r_add,dist,x,y,z
 	
 	repeat
+		_,_,r_add,_,dist,msg,x,y,z = computer.pullSignal(0.5)
+		if actsWhileMoving[msg] then
+			actsWhileMoving[msg](r_add,x,y,z,dist)
+		end
+		
 		term.clear()
 		print("phase2")
 		printGPSTRG()
-		--[[local trgPos = getTRGPos()]]
-		local trgPos = {c={x=4.32,y=-23.44,z=77.11},d=23.12}
+		local trgPos = getTRGPos()
 		if trgPos.d and trgPos.d < 50 then
 			trgPos.c = vec_trunc(trgPos.c)
 			
@@ -219,11 +223,6 @@ function gpsMoveToTarget(offset)
 			d.setStatusText("Out Of\nRange")
 			d.move(-mv.x,-mv.y,-mv.z)]]
 			print("Out Of Range")
-		end
-	
-		_,_,r_add,_,dist,msg,x,y,z = computer.pullSignal(0.5)
-		if actsWhileMoving[msg] then
-			actsWhileMoving[msg](r_add,x,y,z,dist)
 		end
 		refreshGPSTable()
 	until msg == "stop"
