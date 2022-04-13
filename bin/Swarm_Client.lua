@@ -78,6 +78,13 @@ function getEntityCoord(e_name)
 end
 
 
+
+
+
+
+
+
+
 function getGPSPos(gpsT)
 	local gpsPos = locate(gpsT)--{x,y,z}
 	--if gpsPos then return vec_trunc(gpsPos) end
@@ -106,11 +113,11 @@ function bcGPSTRGPos(tpBook)
 		print("msg: ",msg)
 		if msg == "gps" then gpsTable[r_addr] = {c={x=xg,y=yg,z=zg},d=dist} end
 	end)
-	while true do 
+	while true do
 		--local gpsPos = getGPSPos(gpsTable)
 		--if gpsPos then
 			for tport,tname in pairs(tpBook) do
-				print("tport: ",tport,"tname: ",tname)
+				--print("tport: ",tport,"tname: ",tname)
 				--local radPos = getPlayerCoord(tname)
 				local radPos = getEntityCoord(tname)
 				if radPos.d then
@@ -120,6 +127,7 @@ function bcGPSTRGPos(tpBook)
 				end
 			end
 		--end
+		os.sleep(0.5)
 	end
 	
 end
