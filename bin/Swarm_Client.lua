@@ -88,7 +88,7 @@ end
 function bcGPSTRGPos(tpBook)
 	local gpsTable = {}
 	event.listen("modem_message",function(...)
-		if ...[6] == "gps" then gpsTable[...[3]] = {v={x=...[7],y=...[8],z=...[9]},d=...[5]} end
+		if ...[6] == "gps" then gpsTable[(...[3])] = {c={x=...[7],y=...[8],z=...[9]},d=...[5]} end
 	end)
 	while true do 
 		local gpsPos = getGPSPos(gpsTable)
