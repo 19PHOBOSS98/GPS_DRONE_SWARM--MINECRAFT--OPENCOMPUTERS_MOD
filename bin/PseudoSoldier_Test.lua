@@ -192,7 +192,7 @@ function gpsMoveToTarget(offset)
 		if actsWhileMoving[msg] then
 			actsWhileMoving[msg](r_add,x,y,z,dist)
 		end
-	until msg == "stop" or ctrlTRGPos.d
+	until msg == "stop" or ctrlTRGPos
 	
 	local mv = {0,0,0},msg,r_add,dist,x,y,z
 	
