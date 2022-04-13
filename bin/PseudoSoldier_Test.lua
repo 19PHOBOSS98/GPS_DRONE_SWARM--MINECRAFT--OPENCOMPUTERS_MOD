@@ -177,14 +177,14 @@ actsWhileMoving = {
 
 function gpsMoveToTarget(offset)
 	checkArg(1,e_name,"string","nil")
-	local ctrlTRGPos = {}
+	local ctrlTRGPos = nil
 	
 	repeat
 		if length(gpsSats)>=3 then
 			ctrlTRGPos = getGPSlocation()
 		end
 	
-		if ctrlTRGPos.d then ctrlTRGPos = vec_trunc(ctrlTRGPos.c) 
+		if ctrlTRGPos then ctrlTRGPos = vec_trunc(ctrlTRGPos.c) 
 		--[[else d.setLightColor(0xFF0000) d.setStatusText("No GPS") end]]
 		else print("No GPS") end
 	
