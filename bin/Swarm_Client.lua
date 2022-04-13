@@ -228,19 +228,18 @@ function bcGPSTRGPos(tpBook,gpsC)
 		if msg == "gps" then gpsTable[r_addr] = {c={x=xg,y=yg,z=zg},d=dist} end
 	end)
 	while true do
-		--local gpsPos = getGPSPos(gpsTable)
-		--if gpsPos then
+		local gpsPos = getGPSPos(gpsTable)
+		if gpsPos then
 			for tport,tname in pairs(tpBook) do
 				--print("tport: ",tport,"tname: ",tname)
 				--local radPos = getPlayerCoord(tname)
 				local radPos = getEntityCoord(tname)
 				if radPos.d then
-					--local trgPos = add(radPos.c,gpsPos)
-					local trgPos = radPos.c
+					local trgPos = add(radPos.c,gpsPos)
 					modem.broadcast(tport,"trg",trgPos.x,trgPos.y,trgPos.z)
 				end
 			end
-		--end
+		end
 		os.sleep(0.5)
 	end
 	
