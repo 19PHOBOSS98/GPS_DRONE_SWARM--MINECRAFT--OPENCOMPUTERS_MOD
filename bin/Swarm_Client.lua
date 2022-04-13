@@ -99,18 +99,22 @@ function pawnsFormUP(ff,cmdport,trgPort,trgName)
 end
 
 function bcGPSTRGPos(tpBook)
+	print("bcGPSTRGPos")
 	local gpsTable = {}
 	event.listen("modem_message",function(evt,_,r_addr,_,dist,mgs,xg,yg,zg,...)
-		if msg == "gps" then gpsTable[r_addr] = {c={x=xg,y=yg,z=zg},d=dist} end
+		if msg == "gps" then gpsTable[r_addr] = {c={x=xg,y=yg,z=zg},d=dist} print(r_addr) end
 	end)
 	while true do 
 		local gpsPos = getGPSPos(gpsTable)
 		if gpsPos then
 			for tport,tname in pairs(tpBook) do
+				print("tport: ",tport,"tname: ",tname)
 				--local radPos = getPlayerCoord(tname)
-				local radPos = getEntityCoord(e_name)
-				local trgPos = add(radPos.c,gpsPos)
-				modem.broadcast(tport,"trg",trgPos.x,trgPos.y,trgPos.z)
+				local radPos = getEntityCoord(tname)
+				if radPos.d then
+					local trgPos = add(radPos.c,gpsPos)
+					modem.broadcast(tport,"trg",trgPos.x,trgPos.y,trgPos.z)
+				end
 			end
 		end
 	end
@@ -120,7 +124,7 @@ end
 local gpstrgThread = nil
 function updateGPSTRGs(tpBook)--only call this sparingly, don't want to stall other flight formations
 	if gpstrgThread then gpstrgThread:kill() end
-	gpstrgThread = thread.create(function(tpb) bcGPSTRGPos(tpb) end,tpBook)
+	gpstrgThread = thread.create(function(tpb) print("threading") bcGPSTRGPos(tpb) end,tpBook)
 end
 function killGPSTRGThread()
 	if gpstrgThread then gpstrgThread:kill() end
