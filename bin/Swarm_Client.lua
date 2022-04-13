@@ -76,13 +76,126 @@ function getEntityCoord(e_name)
 	end
 	return nil
 end
+--**********************--
+gpsChannel = 2
+
+function length(a)
+  local c = 0
+  for k,_ in pairs(a) do c=c+1 end
+  return c
+end
+
+function add2GPSTable(r_addr,x,y,z,dist)
+  if length(gpsSats) < 7 then gpsSats[r_addr] = {x=x,y=y,z=z,d=dist} end 
+end
+
+acts = {
+["gps"] = function(r_addr,x,y,z,dist) add2GPSTable(r_addr,x,y,z,dist) end,
+["trg"] = function(_,x,y,z) cmdTRGPos={c={x,y,z},d=dist} end
+}
 
 
+local floor, sqrt, abs = math.floor, math.sqrt, math.abs
+
+local function round(v, m) return {x = floor((v.x+(m*0.5))/m)*m, y = floor((v.y+(m*0.5))/m)*m, z = floor((v.z+(m*0.5))/m)*m} end
+local function cross(v, b) return {x = v.y*b.z-v.z*b.y, y = v.z*b.x-v.x*b.z, z = v.x*b.y-v.y*b.x} end
+local function len(v) return sqrt(v.x^2+v.y^2+v.z^2) end
+local function dot(v, b) return v.x*b.x+v.y*b.y+v.z*b.z end
+local function add(v, b) return {x=v.x+b.x, y=v.y+b.y, z=v.z+b.z} end
+local function sub(v, b) return {x=v.x-b.x, y=v.y-b.y, z=v.z-b.z} end
+local function mul(v, m) return {x=v.x*m, y=v.y*m, z=v.z*m} end
+local function norm(v) return mul(v, 1/len(v)) end
+local function trunc(v) local t = math.modf(v) return t end
+local function vec_trunc(A)
+	if A then
+		return {x=trunc(A.x),y=trunc(A.y),z=trunc(A.z)}
+	end
+	return nil
+end
+
+local function trilaterate(A, B, C)
+	local a2b = {x=B.x-A.x, y=B.y-A.y, z=B.z-A.z}
+	local a2c = {x=C.x-A.x, y=C.y-A.y, z=C.z-A.z}
+	if abs(dot(norm(a2b), norm(a2c))) > 0.999 then return nil end
+	local d, ex = len(a2b), norm(a2b)
+	local i = dot(ex, a2c)
+	local exMi = mul(ex, i)
+	local ey = norm(sub(a2c, mul(ex, i)))
+	local j, ez = dot(ey, a2c), cross(ex, ey)
+	local r1, r2, r3 = A.d, B.d, C.d
+	local x = (r1^2 - r2^2 + d^2) / (2*d)
+	local y = (r1^2 - r3^2 - x^2 + (x-i)^2 + j^2) / (2*j)
+	local result = add(A, add(mul(ex, x), mul(ey, y)))
+	local zSquared = r1^2 - x^2 - y^2
+	if zSquared > 0 then
+		local z = sqrt( zSquared )
+		local result1 = add(result, mul(ez, z))
+		local result2 = sub(result, mul(ez, z))
+		local rnd1, rnd2 = result1,result2
+		if rnd1.x ~= rnd2.x or rnd1.y ~= rnd2.y or rnd1.z ~= rnd2.z then
+			--print("rnd1: ",rnd1.x,rnd1.y,rnd1.z)
+			--print("rnd2: ",rnd2.x,rnd2.y,rnd2.z)
+			return rnd1, rnd2
+		else
+			--print("rnd1: ",rnd1.x,rnd1.y,rnd1.z)
+			return rnd1
+		end
+	end
+	--print("result: ",result.x,result.y,result.z)
+	return result
+end
+
+local function narrow(p1, p2, fix)
+	local d1 = abs(len(sub(p1, fix))-fix.d)
+	local d2 = abs(len(sub(p2, fix))-fix.d)
+	if abs(d1-d2) < 0.01 then 
+		return p1, p2
+	elseif d1 < d2 then 
+		return p1,nil
+	else 
+		return p2,nil
+	end
+end
+
+local function locate(gpsT)
+	local fixes = {}
+	local pos1, pos2 = nil, nil
+	local deadline = computer.uptime()+2
+	for addr,fix in pairs(gpsT) do
+		if fix.d == 0 then 
+			pos1, pos2 = {x=fix.x, y=fix.y, z=fix.z}, nil
+		else 
+			table.insert(fixes, fix)
+		end
+	end
+	if #fixes >= 3 then
+		if not pos1 then
+			pos1, pos2 = trilaterate(fixes[1], fixes[2], fixes[3])
+		end
+		if pos1 and pos2 then
+			for f=4,#fixes do
+				pos1, pos2 = narrow(pos1, pos2, fixes[f])
+				if pos1 and not pos2 then break end
+			end
+		end
+	end        
+
+	if pos1 and pos2 then
+		return nil
+	elseif pos1 then
+		local c = round(pos1,1)
+		return {x=c.x,y=c.y,z=c.z}
+	else 
+		return nil
+	end
+end
 
 
-
-
-
+local refreshGPSInterval = 0
+function refreshGPSTable()
+	if refreshGPSInterval >= 60 then gpsSats={} refreshGPSInterval = 0 end
+	refreshGPSInterval = refreshGPSInterval + 1
+end
 
 
 function getGPSPos(gpsT)
@@ -91,9 +204,9 @@ function getGPSPos(gpsT)
 	if gpsPos.x then return gpsPos end
 	return nil
 end
+--**********************--
 
-
-function add(v, b) return {x=v.x+b.x, y=v.y+b.y, z=v.z+b.z} end
+--function add(v, b) return {x=v.x+b.x, y=v.y+b.y, z=v.z+b.z} end
 
 --trgPortBook = {}--{[trgport]="target"} multiple to fixed single relationship
 trgPortBook = {[3]="Bingus"}
@@ -106,7 +219,8 @@ function pawnsFormUP(ff,cmdport,trgPort,trgName)
 	trgPortBook[trgPort] = trgName
 end
 
-function bcGPSTRGPos(tpBook)
+function bcGPSTRGPos(tpBook,gpsC)
+	modem.open(gpsC)
 	print("bcGPSTRGPos")
 	local gpsTable = {}
 	event.listen("modem_message",function(evt,_,r_addr,_,dist,mgs,xg,yg,zg,...)
@@ -133,9 +247,10 @@ function bcGPSTRGPos(tpBook)
 end
 
 local gpstrgThread = nil
+local gpsChannel = 2 
 function updateGPSTRGs(tpBook)--only call this sparingly, don't want to stall other flight formations
 	if gpstrgThread then gpstrgThread:kill() end
-	gpstrgThread = thread.create(function(tpb) print("threading") bcGPSTRGPos(tpb) end,tpBook)
+	gpstrgThread = thread.create(function(tpb,gpsC) print("threading") bcGPSTRGPos(tpb,gpsC) end,tpBook,gpsChannel)
 end
 function killGPSTRGThread()
 	if gpstrgThread then gpstrgThread:kill() end
