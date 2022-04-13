@@ -48,13 +48,10 @@ local function sub(v, b) return {x=v.x-b.x, y=v.y-b.y, z=v.z-b.z} end
 local function mul(v, m) return {x=v.x*m, y=v.y*m, z=v.z*m} end
 local function norm(v) return mul(v, 1/len(v)) end
 
-function math.trunc(v)
-    local t = math.modf(v)
-	return t
-end
-local function vec_trunc(A)
+function trunc(v) local t = math.modf(v) return t end
+function vec_trunc(A)
 	if A then
-		return {math.trunc(A[1]),math.trunc(A[2]),math.trunc(A[3])}
+		return {x=trunc(A.x),y=trunc(A.y),z=trunc(A.z)}
 	end
 	return nil
 end
@@ -120,7 +117,7 @@ local function locate()
   for addr,fix in pairs(gpsSats) do
     --print(addr,":: {",fix.x,fix.y,fix.z,fix.d,"}")
         if fix.d == 0 then
-          pos1, pos2 = {fix.x, fix.y, fix.z}, nil
+          pos1, pos2 = {x=fix.x, y=fix.y, z=fix.z}, nil
         else
           table.insert(fixes, fix)
     end
@@ -144,7 +141,7 @@ local function locate()
   --elseif pos1 then return {pos1.x, pos1.y, pos1.z}	
 	elseif pos1 then 
 		local c = round(pos1,1) 
-		return {c.x,c.y,c.z}
+		return {x=c.x,y=c.y,=zc.z}
   else return nil end
 end
 
