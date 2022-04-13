@@ -212,7 +212,7 @@ function gpsMoveToTarget(offset)
 		local trgPos = getTRGPos()
 		if trgPos.d and trgPos.d < 50 then
 			trgPos.c = vec_trunc(trgPos.c)
-			
+			print("trgPos: ",trgPos.c.x,trgPos.c.y,trgPos.c.z)
 			mv = sub(trgPos.c,ctrlTRGPos)
 			--d.move(mv.x,mv.y,mv.z)
 			print("mv: ",mv.x,mv.y,mv.z)
