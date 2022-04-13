@@ -204,7 +204,8 @@ function gpsMoveToTarget(offset)
 		term.clear()
 		print("phase2")
 		printGPSTRG()
-		local trgPos = getTRGPos()
+		--[[local trgPos = getTRGPos()]]
+		local trgPos = {c={x=4.32,y=-23.44,z=77.11},d=23.12}
 		if trgPos.d and trgPos.d < 50 then
 			trgPos.c = vec_trunc(trgPos.c)
 			
