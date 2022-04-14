@@ -249,7 +249,7 @@ function bcGPSTRGPos(tpBook,gpsC)
 					modem.broadcast(tport,"trg",trgPos.x,trgPos.y,trgPos.z)
 				end
 			end
-		end]]
+		end
 		os.sleep(0.5)
 	end
 	
