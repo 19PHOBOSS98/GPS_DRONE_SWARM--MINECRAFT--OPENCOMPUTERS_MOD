@@ -214,7 +214,7 @@ end
 --function add(v, b) return {x=v.x+b.x, y=v.y+b.y, z=v.z+b.z} end
 
 --trgPortBook = {}--{[trgport]="target"} multiple to fixed single relationship
-trgPortBook = {[3]="Bingus"}
+trgPortBook = {[3]="Bingus",[4]="Floppa",[5]="FloppaMi",[7]="FloppaNi"}
 
 
 function pawnsFormUP(ff,cmdport,trgPort,trgName)
@@ -244,7 +244,7 @@ function bcGPSTRGPos(tpBook,gpsC)
 				--print("tport: ",tport,"tname: ",tname)
 				--local radPos = getPlayerCoord(tname)
 				local radPos = getEntityCoord(tname)
-				print("radPos: ",radPos.c.x,radPos.c.y,radPos.c.z)
+				print("tport: ",tport,"tname: ",tname,"radPos: ",radPos.c.x,radPos.c.y,radPos.c.z)
 				if radPos.d then
 					local trgPos = add(radPos.c,gpsPos)
 					modem.broadcast(tport,"trg",trgPos.x,trgPos.y,trgPos.z)
@@ -343,12 +343,7 @@ while true do
 
 	elseif(cmd == "EXIT") then
 		flightform.closeFlighFormComms()
-		if gpsThread then
-			gpsThread:kill()
-		end
-		if trgThread then
-			trgThread:kill()
-		end
+		killGPSTRGThread()
 		os.exit()
 	else
     	modem.broadcast(QueensChannel,cmd)
