@@ -332,10 +332,11 @@ while true do
 
 	elseif(cmd == "GPS") then
 		for addr,c in pairs(ffbook[1]) do
+			print(addr,c)
 			local c_actl = c
 			if c[1]>0 then c_actl[1]=c[1]-1 end
 			if c[3]<0 then c_actl[3]=c[3]+1 end
-			modem.send(addr,QueensChannel,"setgps",_,c_actl[1],c_actl[2],c_actl[3])
+			modem.send(addr,QueensChannel,"setgpspos",_,c_actl[1],c_actl[2],c_actl[3])
 		end
 		modem.broadcast(QueensChannel,"startgps")
     	os.sleep(0.5)
