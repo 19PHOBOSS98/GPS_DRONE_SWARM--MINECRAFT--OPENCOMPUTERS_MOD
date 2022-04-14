@@ -61,7 +61,7 @@ fbook={actualSatForm,form2,form3}
 dynamic_fbook = fbook
 
 
-print("Bingus28")
+print("Bingus30")
 function printSwarmStats()
 	term.clear()
 	flightform.printDronePool(drone_is_queen)
@@ -117,12 +117,6 @@ function length(a)
   return c
 end
 
---[[
-acts = {
-["gps"] = function(r_addr,x,y,z,dist) add2GPSTable(r_addr,x,y,z,dist) end,
-["trg"] = function(_,x,y,z) cmdTRGPos={c={x,y,z},d=dist} end
-}
-]]
 
 local function trilaterate(A, B, C)
 	local a2b = {x=B.x-A.x, y=B.y-A.y, z=B.z-A.z}
@@ -144,15 +138,15 @@ local function trilaterate(A, B, C)
 		local result2 = sub(result, mul(ez, z))
 		local rnd1, rnd2 = result1,result2
 		if rnd1.x ~= rnd2.x or rnd1.y ~= rnd2.y or rnd1.z ~= rnd2.z then
-			print("rnd1: ",rnd1.x,rnd1.y,rnd1.z)
-			print("rnd2: ",rnd2.x,rnd2.y,rnd2.z)
+			--print("rnd1: ",rnd1.x,rnd1.y,rnd1.z)
+			--print("rnd2: ",rnd2.x,rnd2.y,rnd2.z)
 			return rnd1, rnd2
 		else
-			print("rnd1: ",rnd1.x,rnd1.y,rnd1.z)
+			--print("rnd1: ",rnd1.x,rnd1.y,rnd1.z)
 			return rnd1
 		end
 	end
-	print("result: ",result.x,result.y,result.z)
+	--print("result: ",result.x,result.y,result.z)
 	return result
 end
 
@@ -162,10 +156,10 @@ local function narrow(p1, p2, fix)
 	if abs(d1-d2) < 0.01 then 
 		return p1, p2
 	elseif d1 < d2 then
-		print("p1: ",p1.x,p1.y,p1.z)
+		--print("p1: ",p1.x,p1.y,p1.z)
 		return p1,nil
 	else 
-		print("p2: ",p2.x,p2.y,p2.z)
+		--print("p2: ",p2.x,p2.y,p2.z)
 		return p2,nil
 	end
 end
@@ -197,7 +191,6 @@ local function getGPSPos(gpsT) --**********************--
 	if pos1 and pos2 then
 		return nil
 	elseif pos1 then
-		--local c = round(pos1,1)
 		local c = pos1
 		return {x=c.x,y=c.y,z=c.z}
 	else 
@@ -211,13 +204,12 @@ function refreshGPSTable() --**********************--
 	if refreshGPSInterval >= 60 then gpsSats={} refreshGPSInterval = 0 end
 	refreshGPSInterval = refreshGPSInterval + 1
 end
---**********************--
-
 
 
 function add2GPSTable(r_addr,x,y,z,dist,gpsT)
   if length(gpsT) < 7 then gpsT[r_addr] = {x=x,y=y,z=z,d=dist} end 
 end
+
 
 function bcGPSTRGPos(tpBook,gpsC)
 	modem.open(gpsC)
@@ -225,9 +217,6 @@ function bcGPSTRGPos(tpBook,gpsC)
 	local gpsTable = {}
 	event.listen("modem_message",function(_,_,r_addr,_,dist,msg,xg,yg,zg,...)
 		if msg == "gps" then
-			--if length(gpsSats) < 7 then
-			--	gpsTable[r_addr] = {x=xg,y=yg,z=zg,d=dist} 
-			--end
 			add2GPSTable(r_addr,xg,yg,zg,dist,gpsTable)
 		end
 	end)
