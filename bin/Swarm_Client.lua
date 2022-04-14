@@ -230,9 +230,9 @@ function bcGPSTRGPos(tpBook,gpsC)
 		if msg == "gps" then gpsTable[r_addr] = {x=xg,y=yg,z=zg,d=dist} end
 	end)
 	while true do
-		trend.clear()
 		local gpsPos = getGPSPos(gpsTable)
 		if gpsPos then
+			term.clear()
 			print("gpsPos: ",gpsPos.x,gpsPos.y,gpsPos.z)
 			for tport,tname in pairs(tpBook) do
 				--print("tport: ",tport,"tname: ",tname)
