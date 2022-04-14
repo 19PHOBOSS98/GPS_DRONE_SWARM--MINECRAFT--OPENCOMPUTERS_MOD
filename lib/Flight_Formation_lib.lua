@@ -140,10 +140,10 @@ function flight_formation.formUP(e_name,ff,f,port,is_Queen) --******************
 		for addr,pos in pairs(ff) do
 			--modem.send(addr,port,"formup",e_name,pos[1],pos[2],pos[3])
 			local comp_pos = {}
-			comp_pos = pos
-			if pos[1]>0 then comp_pos[1]=pos[1]-1 end --compensate positive coordinate component position
-			if pos[2]>0 then comp_pos[2]=pos[2]-1 end
-			if pos[3]>0 then comp_pos[3]=pos[3]-1 end
+
+			if pos[1]>0 then comp_pos[1]=pos[1]-1 else comp_pos[1]=pos[1] end --compensate positive coordinate component position
+			if pos[2]>0 then comp_pos[2]=pos[2]-1 else comp_pos[2]=pos[2] end
+			if pos[3]>0 then comp_pos[3]=pos[3]-1 else comp_pos[3]=pos[3] end
 			modem.send(addr,port,"formup",e_name,comp_pos[1],comp_pos[2],comp_pos[3])
 		end
 	else
