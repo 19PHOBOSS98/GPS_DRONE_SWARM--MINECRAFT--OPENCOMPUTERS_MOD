@@ -168,7 +168,7 @@ local function locate(gpsT)
 			table.insert(fixes, fix)
 		end
 	end
-	if #fixes >= 3 then
+	if #fixes >= 7 then
 		if not pos1 then
 			pos1, pos2 = trilaterate(fixes[1], fixes[2], fixes[3])
 		end
