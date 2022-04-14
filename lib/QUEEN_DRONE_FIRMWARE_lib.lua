@@ -105,6 +105,7 @@ acts = {
 	["commit"] = function() d.setLightColor(0x0077FF) isFree = false end,
 	["uncommit"] = function() isFree = true end,
 	["formup"] = function(_,tag,x,y,z) d.setStatusText(navMoveToPlayerWOffset(tag,x,y,z)) end,
+	["setgpspos"] = function(_,_,x,y,z) gpsSatPos = {x,y,z} end,
 	["startgps"] = function() broadcastGPS = true end,
 	["stopgps"] = function() broadcastGPS = false end,
 	["reqgps"] = function(r_add) gpsReply(r_add) end,
@@ -117,6 +118,7 @@ actsWhileMoving = {
 	[drone_inv] = function(r_add) replyInv(r_add) end,
 	["commit"] = function() d.setLightColor(0x0077FF) isFree = false end,
 	["uncommit"] = function() isFree = true end,
+	["setgpspos"] = function(_,_,x,y,z) gpsSatPos = {x,y,z} end,
 	["startgps"] = function() broadcastGPS = true end,
 	["stopgps"] = function() broadcastGPS = false end,
 	["HUSH"] = function() d.setLightColor(0xFF0000) sleep(1) computer.shutdown() end
@@ -226,7 +228,7 @@ function navMoveToPlayerWOffset(e_name,xo,yo,zo)
 			--QgpsBroadcast(v)
 
 			--gpsSatPos = {-v[1],-(v[2]+1),-v[3]} --offset origin to tablet position (above player's head)
-			gpsSatPos = {-v[1],-v[2],-v[3]}
+			--gpsSatPos = {-v[1],-v[2],-v[3]}
 
 			local npos = {n.getPosition()}
 			if npos[1] then
