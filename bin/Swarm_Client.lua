@@ -305,7 +305,6 @@ while true do
 	elseif(cmd == "T") then
 		flightform.refreshFFT(ffbook,dynamic_fbook,QueensChannel,drone_is_queen)
 		flightform.formFF(ffbook[1],dynamic_fbook[1],QueensChannel,drone_is_queen)
-		satff
 		flightform.formUP("ph0",ffbook[1],dynamic_fbook[1],QueensChannel,drone_is_queen)
 		printSwarmStats()
 	    os.sleep(0.5)
