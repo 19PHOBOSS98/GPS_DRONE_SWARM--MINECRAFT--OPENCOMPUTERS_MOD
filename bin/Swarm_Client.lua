@@ -228,17 +228,16 @@ function bcGPSTRGPos(tpBook,gpsC)
 	print(gpsC)
 	print("bcGPSTRGPos")
 	local gpsTable = {}
-	event.listen("modem_message",function(e)
-		local _,_,r_addr,_,dist,msg,xg,yg,zg = e
-		print(msg)
+	event.listen("modem_message",function(_,_,r_addr,_,dist,msg,xg,yg,zg,...)
+		print("msg: ",msg)
 		if msg == "gps" then gpsTable[r_addr] = {x=xg,y=yg,z=zg,d=dist} end
 	end)
 	while true do
 		print("bcGPSTRGPos2")
-		--[[for addr,c in pairs(gpsTable) do
+		for addr,c in pairs(gpsTable) do
 			print(addr,c.x,c.y,c.z,c.d)
 		end
-		local gpsPos = getGPSPos(gpsTable)
+		--[[local gpsPos = getGPSPos(gpsTable)
 		if gpsPos then
 			for tport,tname in pairs(tpBook) do
 				print("tport: ",tport,"tname: ",tname)
