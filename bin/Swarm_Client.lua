@@ -37,7 +37,7 @@ ffbook[3]={}
 --form1 = {{10,8,-10},{-10,14,0},{5,20,10}}
 --form1 = {{0,0,0},{5,5,0},{0,10,10},{-15,15,0},{0,20,-20}}
 --form1 = {{0,0,0},{2,2,0},{0,4,4},{-8,8,0},{0,10,-10},{12,12,0},{0,14,14},{-16,16,0}}--golden ratio
-form1 = {{0,5,-3},{0,5,3},{3,2,0},{-3,2,0}}-- ComputerCraft Heresy
+form1 = {{0,25,-3},{0,25,3},{3,22,0},{-3,22,0}}-- ComputerCraft Heresy
 --form2 = {{-2,10,2},{2,15,2},{0,2,0}}
 --form3 = {{-2,20,-2},{2,25,-2}}
 form2 = {{-10,10,10},{10,12,10},{0,5,0}}
@@ -172,7 +172,7 @@ local function locate(gpsT)
 			print(addr,fix.x,fix.y,fix.z)
 		end
 	end
-	if #fixes >= 7 then
+	if #fixes >= 4 then
 		if not pos1 then
 			pos1, pos2 = trilaterate(fixes[1], fixes[2], fixes[3])
 		end
