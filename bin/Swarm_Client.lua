@@ -201,8 +201,9 @@ end
 
 function getGPSPos(gpsT)
 	local gpsPos = locate(gpsT)--{x,y,z}
-	if gpsPos then return vec_trunc(gpsPos) end
+	--if gpsPos then return vec_trunc(gpsPos) end
 	--if gpsPos then return gpsPos end
+	if gpsPos then return round(gpsPos,1) end
 	return nil
 end
 --**********************--
