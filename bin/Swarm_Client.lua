@@ -92,25 +92,8 @@ function getEntityCoord(e_name)
 	end
 	return nil
 end
+
 --**********************--
-gpsChannel = 2
-
-function length(a)
-  local c = 0
-  for k,_ in pairs(a) do c=c+1 end
-  return c
-end
-
-function add2GPSTable(r_addr,x,y,z,dist)
-  if length(gpsSats) < 7 then gpsSats[r_addr] = {x=x,y=y,z=z,d=dist} end 
-end
-
-acts = {
-["gps"] = function(r_addr,x,y,z,dist) add2GPSTable(r_addr,x,y,z,dist) end,
-["trg"] = function(_,x,y,z) cmdTRGPos={c={x,y,z},d=dist} end
-}
-
-
 local floor, sqrt, abs = math.floor, math.sqrt, math.abs
 
 local function round(v, m) return {x = floor((v.x+(m*0.5))/m)*m, y = floor((v.y+(m*0.5))/m)*m, z = floor((v.z+(m*0.5))/m)*m} end
@@ -128,6 +111,18 @@ local function vec_trunc(A)
 	end
 	return nil
 end
+function length(a)
+  local c = 0
+  for k,_ in pairs(a) do c=c+1 end
+  return c
+end
+
+--[[
+acts = {
+["gps"] = function(r_addr,x,y,z,dist) add2GPSTable(r_addr,x,y,z,dist) end,
+["trg"] = function(_,x,y,z) cmdTRGPos={c={x,y,z},d=dist} end
+}
+]]
 
 local function trilaterate(A, B, C)
 	local a2b = {x=B.x-A.x, y=B.y-A.y, z=B.z-A.z}
@@ -216,29 +211,25 @@ function refreshGPSTable() --**********************--
 	if refreshGPSInterval >= 60 then gpsSats={} refreshGPSInterval = 0 end
 	refreshGPSInterval = refreshGPSInterval + 1
 end
-
---[[
-function getGPSPos(gpsT) --**********************--
-	local gpsPos = locate(gpsT)--{x,y,z}
-	--if gpsPos then return vec_trunc(gpsPos) end
-	if gpsPos then return gpsPos end
-	--if gpsPos then return round(gpsPos,1) end
-	return nil
-end]]
 --**********************--
 
 
---trgPortBook = {}--{[trgport]="target"} multiple to fixed single relationship
-trgPortBook = {[3]="Bingus",[4]="Floppa",[5]="FloppaMi",[7]="FloppaNi"}
 
-
+function add2GPSTable(r_addr,x,y,z,dist,gpsT)
+  if length(gpsT) < 7 then gpsT[r_addr] = {x=x,y=y,z=z,d=dist} end 
+end
 
 function bcGPSTRGPos(tpBook,gpsC)
 	modem.open(gpsC)
 	modem.setStrength(math.huge)
 	local gpsTable = {}
 	event.listen("modem_message",function(_,_,r_addr,_,dist,msg,xg,yg,zg,...)
-		if msg == "gps" then gpsTable[r_addr] = {x=xg,y=yg,z=zg,d=dist} end
+		if msg == "gps" then
+			--if length(gpsSats) < 7 then
+			--	gpsTable[r_addr] = {x=xg,y=yg,z=zg,d=dist} 
+			--end
+			add2GPSTable(r_addr,xg,yg,zg,dist,gpsTable)
+		end
 	end)
 	while true do
 		term.clear()
@@ -264,8 +255,12 @@ function bcGPSTRGPos(tpBook,gpsC)
 	
 end
 
-local gpstrgThread = nil
+
+--trgPortBook = {}--{[trgport]="target"} multiple to fixed single relationship
+trgPortBook = {[3]="Bingus",[4]="Floppa",[5]="FloppaMi",[7]="FloppaNi"}
 gpsChannel = 2 
+
+local gpstrgThread = nil
 function updateGPSTRGs(tpBook,gpsC) --**********************-- --only call this sparingly, don't want to stall other flight formations
 	if gpstrgThread then gpstrgThread:kill() modem.open(gpsC) end
 	gpstrgThread = thread.create(function(tpb,gpsC) print("threading") bcGPSTRGPos(tpb,gpsC) end,tpBook,gpsC)
