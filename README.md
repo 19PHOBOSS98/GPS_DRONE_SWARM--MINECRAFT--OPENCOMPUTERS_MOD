@@ -4,6 +4,7 @@ survival friendly drone swarm using GPS location and Radar targeting (Computroni
 
 This actually started around 2018-2019:
 https://oc.cil.li/topic/1687-delux-drone-swarmarmyfor-free/
+
 https://oc.cil.li/topic/1856-budget-drone-army-for-free/?tab=comments#comment-8680
 
 ...yeah my code sucked back then so I wanted to "fix it".
@@ -24,9 +25,12 @@ I made it so that flight formations are regenerative. That is if a drone stops w
 
 Right, flight formations. give the swarm an array of coordinates and they'll do their best to position themselves as so, around a "target". For the GPS Satellite formation the target is myself so I could easily position them better.
 
-For the GPS system I would like to thank these two:
+For the GPS system I would like to thank these guys:
 https://github.com/DOOBW/OC-GPS
+
 https://github.com/OpenPrograms/ds84182-Programs/blob/master/gps/libgps.lua
+
+http://www.computercraft.info/forums2/index.php?/topic/3088-how-to-guide-gps-global-position-system/ (for the satelite formation)
 
 I needed to tweak their code a bit tho. See, their system is request based which means your gps location is only ever updated whenever you ask for it. That means I have to wait for at least 3 satellites to respond before I even have the chance to calculate my GPS position. This gets worse for a drone that needs its GPS location on the spot. In my experience I needed 7 QUEENS in a formation to get a more accurate GPS reading so I'd have to wait a bit longer. Moreover, there's also a chance of having to wait longer for a dead satellite to reply.
 
