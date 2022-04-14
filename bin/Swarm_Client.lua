@@ -251,10 +251,10 @@ function bcGPSTRGPos(tpBook,gpsC)
 				--local radPos = getPlayerCoord(tname)
 				local radPos = getEntityCoord(tname)
 				radPos.c = vec_trunc(radPos.c)
-				--print("tport: ",tport,"tname: ",tname,"radPos: ",radPos.c.x,radPos.c.y,radPos.c.z)
+				print("tport: ",tport,"tname: ",tname,"radPos: ",radPos.c.x,radPos.c.y,radPos.c.z)
 				if radPos.d then
 					local trgPos = add(radPos.c,gpsPos)
-					print("tport: ",tport,"tname: ",tname,"trgPos: ",trgPos.x,trgPos.y,trgPos.z)
+					--print("tport: ",tport,"tname: ",tname,"trgPos: ",trgPos.x,trgPos.y,trgPos.z)
 					modem.broadcast(tport,"trg",trgPos.x,trgPos.y,trgPos.z)
 				end
 			end
