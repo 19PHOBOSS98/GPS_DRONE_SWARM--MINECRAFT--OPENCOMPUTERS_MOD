@@ -133,15 +133,15 @@ local function trilaterate(A, B, C)
 		local result2 = sub(result, mul(ez, z))
 		local rnd1, rnd2 = result1,result2
 		if rnd1.x ~= rnd2.x or rnd1.y ~= rnd2.y or rnd1.z ~= rnd2.z then
-			--print("rnd1: ",rnd1.x,rnd1.y,rnd1.z)
-			--print("rnd2: ",rnd2.x,rnd2.y,rnd2.z)
+			print("rnd1: ",rnd1.x,rnd1.y,rnd1.z)
+			print("rnd2: ",rnd2.x,rnd2.y,rnd2.z)
 			return rnd1, rnd2
 		else
-			--print("rnd1: ",rnd1.x,rnd1.y,rnd1.z)
+			print("rnd1: ",rnd1.x,rnd1.y,rnd1.z)
 			return rnd1
 		end
 	end
-	--print("result: ",result.x,result.y,result.z)
+	print("result: ",result.x,result.y,result.z)
 	return result
 end
 
@@ -150,9 +150,11 @@ local function narrow(p1, p2, fix)
 	local d2 = abs(len(sub(p2, fix))-fix.d)
 	if abs(d1-d2) < 0.01 then 
 		return p1, p2
-	elseif d1 < d2 then 
+	elseif d1 < d2 then
+		print("p1: ",p1.x,p1.y,p1.z)
 		return p1,nil
 	else 
+		print("p2: ",p2.x,p2.y,p2.z)
 		return p2,nil
 	end
 end
@@ -166,6 +168,7 @@ local function locate(gpsT)
 			pos1, pos2 = {x=fix.x, y=fix.y, z=fix.z}, nil
 		else 
 			table.insert(fixes, fix)
+			print(addr,fix.x,fix.y,fix.z)
 		end
 	end
 	if #fixes >= 7 then
