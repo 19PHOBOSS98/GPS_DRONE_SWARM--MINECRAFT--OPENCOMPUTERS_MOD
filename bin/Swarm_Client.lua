@@ -175,7 +175,7 @@ local function narrow(p1, p2, fix)
 	end
 end
 
-local function locate(gpsT)
+local function locate(gpsT) --**********************--
 	local fixes = {}
 	local pos1, pos2 = nil, nil
 	local deadline = computer.uptime()+2
@@ -212,13 +212,13 @@ end
 
 
 local refreshGPSInterval = 0
-function refreshGPSTable()
+function refreshGPSTable() --**********************--
 	if refreshGPSInterval >= 60 then gpsSats={} refreshGPSInterval = 0 end
 	refreshGPSInterval = refreshGPSInterval + 1
 end
 
 
-function getGPSPos(gpsT)
+function getGPSPos(gpsT) --**********************--
 	local gpsPos = locate(gpsT)--{x,y,z}
 	--if gpsPos then return vec_trunc(gpsPos) end
 	if gpsPos then return gpsPos end
@@ -227,22 +227,11 @@ function getGPSPos(gpsT)
 end
 --**********************--
 
---function add(v, b) return {x=v.x+b.x, y=v.y+b.y, z=v.z+b.z} end
 
 --trgPortBook = {}--{[trgport]="target"} multiple to fixed single relationship
 trgPortBook = {[3]="Bingus",[4]="Floppa",[5]="FloppaMi",[7]="FloppaNi"}
 
 
-function pawnsFormUP(ff,cmdport,trgPort,trgName)
-	for addr,pos in pairs(ff) do
-		modem.send(addr,cmdport,"formup")
-	end
-	trgPortBook[trgPort] = trgName
-end
-
-function msgThreadHandler(e)
-
-end
 
 function bcGPSTRGPos(tpBook,gpsC)
 	modem.open(gpsC)
@@ -277,12 +266,12 @@ end
 
 local gpstrgThread = nil
 gpsChannel = 2 
-function updateGPSTRGs(tpBook)--only call this sparingly, don't want to stall other flight formations
-	if gpstrgThread then gpstrgThread:kill() end
-	gpstrgThread = thread.create(function(tpb,gpsC) print("threading") bcGPSTRGPos(tpb,gpsC) end,tpBook,gpsChannel)
+function updateGPSTRGs(tpBook,gpsC) --**********************-- --only call this sparingly, don't want to stall other flight formations
+	if gpstrgThread then gpstrgThread:kill() modem.open(gpsC) end
+	gpstrgThread = thread.create(function(tpb,gpsC) print("threading") bcGPSTRGPos(tpb,gpsC) end,tpBook,gpsC)
 end
-function killGPSTRGThread()
-	if gpstrgThread then gpstrgThread:kill() end
+function killGPSTRGThread(gpsC) --**********************--
+	if gpstrgThread then gpstrgThread:kill() modem.open(gpsC) end
 end
 
 
@@ -353,11 +342,11 @@ while true do
 		modem.broadcast(QueensChannel,"startgps")
     	os.sleep(0.5)
 	elseif(cmd == "TRG") then
-		updateGPSTRGs(trgPortBook)
+		updateGPSTRGs(trgPortBook,gpsChannel)
     	os.sleep(0.5)
 		
 	elseif(cmd == "K") then
-		killGPSTRGThread()
+		killGPSTRGThread(gpsChannel)
     	os.sleep(0.5)
 		
 	elseif(cmd == "S") then
