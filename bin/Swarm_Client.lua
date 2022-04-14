@@ -183,7 +183,8 @@ local function locate(gpsT)
 	if pos1 and pos2 then
 		return nil
 	elseif pos1 then
-		local c = round(pos1,1)
+		--local c = round(pos1,1)
+		local c = pos1
 		return {x=c.x,y=c.y,z=c.z}
 	else 
 		return nil
@@ -200,8 +201,8 @@ end
 
 function getGPSPos(gpsT)
 	local gpsPos = locate(gpsT)--{x,y,z}
-	--if gpsPos then return vec_trunc(gpsPos) end
-	if gpsPos then return gpsPos end
+	if gpsPos then return vec_trunc(gpsPos) end
+	--if gpsPos then return gpsPos end
 	return nil
 end
 --**********************--
