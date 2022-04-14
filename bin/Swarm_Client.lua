@@ -37,14 +37,16 @@ ffbook[3]={}
 --form1 = {{10,8,-10},{-10,14,0},{5,20,10}}
 --form1 = {{0,0,0},{5,5,0},{0,10,10},{-15,15,0},{0,20,-20}}
 --form1 = {{0,0,0},{2,2,0},{0,4,4},{-8,8,0},{0,10,-10},{12,12,0},{0,14,14},{-16,16,0}}--golden ratio Spiral
---form1 = {{0,25,-3},{0,25,3},{3,22,0},{-3,22,0}}-- ComputerCraft Heresy --(Tetrahedron) -- it's actually good for xz coordinates
+actualSatForm = {{0,25,-3},{0,25,3},{3,22,0},{-3,22,0}}-- ComputerCraft Heresy --(Tetrahedron) -- it's actually good for xz coordinates
+satff={}
+compensatedSatForm = {{0,25,-2},{0,25,3},{2,22,0},{-3,22,0}}
 --form1 = {{0,35,-3},{0,30,3},{3,20,0},{-3,25,0}}
-form1 = {{0,35,-5},{0,30,2},{5,20,0},{-2,25,0}}
+--form1 = {{0,35,-5},{0,30,2},{5,20,0},{-2,25,0}}
 --form2 = {{-2,10,2},{2,15,2},{0,2,0}}
 --form3 = {{-2,20,-2},{2,25,-2}}
 form2 = {{-10,10,10},{10,12,10},{0,5,0}}
 form3 = {{-10,14,-10},{10,16,-10}}
-fbook={form1,form2,form3}
+fbook={compensatedSatForm,form2,form3}
 dynamic_fbook = fbook
 
 
@@ -303,6 +305,7 @@ while true do
 	elseif(cmd == "T") then
 		flightform.refreshFFT(ffbook,dynamic_fbook,QueensChannel,drone_is_queen)
 		flightform.formFF(ffbook[1],dynamic_fbook[1],QueensChannel,drone_is_queen)
+		satff
 		flightform.formUP("ph0",ffbook[1],dynamic_fbook[1],QueensChannel,drone_is_queen)
 		printSwarmStats()
 	    os.sleep(0.5)
@@ -329,7 +332,13 @@ while true do
 	    os.sleep(0.5)
 
 	elseif(cmd == "GPS") then
-		toggleGPSBroadCast(gpsChannel)
+		for addr,c in pairs(ffbook[1]) do
+			local c_actl = c
+			if c[1]>0 then c_actl[1]-1 end
+			if c[3]<0 then c_actl[3]+1 end
+			modem.send(QueensChannel,addr,"setgps",_,c_actl[1],c_actl[2],c_actl[3])
+		end
+		modem.broadcast(QueensChannel,"startgps")
     	os.sleep(0.5)
 	elseif(cmd == "TRG") then
 		updateGPSTRGs(trgPortBook)
