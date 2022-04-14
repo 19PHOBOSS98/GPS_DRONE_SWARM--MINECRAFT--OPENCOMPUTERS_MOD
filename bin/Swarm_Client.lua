@@ -227,6 +227,7 @@ end
 
 function bcGPSTRGPos(tpBook,gpsC)
 	modem.open(gpsC)
+	modem.setStrength(math.huge)
 	local gpsTable = {}
 	event.listen("modem_message",function(_,_,r_addr,_,dist,msg,xg,yg,zg,...)
 		if msg == "gps" then gpsTable[r_addr] = {x=xg,y=yg,z=zg,d=dist} end
