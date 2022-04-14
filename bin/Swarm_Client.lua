@@ -38,8 +38,8 @@ ffbook[3]={}
 --form1 = {{0,0,0},{5,5,0},{0,10,10},{-15,15,0},{0,20,-20}}
 --form1 = {{0,0,0},{2,2,0},{0,4,4},{-8,8,0},{0,10,-10},{12,12,0},{0,14,14},{-16,16,0}}--golden ratio Spiral
 actualSatForm = {{0,25,-3},{0,25,3},{3,22,0},{-3,22,0}}-- ComputerCraft Heresy --(Tetrahedron) -- it's actually good for xz coordinates
-satff={}
-compensatedSatForm = {{0,25,-2},{0,25,3},{2,22,0},{-3,22,0}}
+--satff={}
+--compensatedSatForm = {{0,25,-2},{0,25,3},{2,22,0},{-3,22,0}}
 --form1 = {{0,35,-3},{0,30,3},{3,20,0},{-3,25,0}}
 --form1 = {{0,35,-5},{0,30,2},{5,20,0},{-2,25,0}}
 --form2 = {{-2,10,2},{2,15,2},{0,2,0}}
@@ -48,7 +48,16 @@ compensatedSatForm = {{0,25,-2},{0,25,3},{2,22,0},{-3,22,0}}
 --form3 = {{-10,14,-10},{10,16,-10}}
 form2 = {{3,0,0},{0,3,0},{0,0,3},{3,0,3},{-3,0,-3}}
 form3 = {{-3,0,0},{0,-3,0},{0,0,-3},{3,3,3},{-3,-3,-3}}
-fbook={compensatedSatForm,form2,form3}
+
+--*************--
+--[[
+The radar has an inaccuracy where it recognises two blocks as zeroes in each axis.
+Drones positioned in coordinates with positive components around a target player are actually a block extra away from the origin
+the given formation array is thus compensated in the formUP function from the flight_formation library
+]]
+--*************--
+
+fbook={actualSatForm,form2,form3}
 dynamic_fbook = fbook
 
 
@@ -335,10 +344,11 @@ while true do
 	elseif(cmd == "GPS") then
 		for addr,c in pairs(ffbook[1]) do
 			print(addr,c)
-			local c_actl = c
-			if c[1]>0 then c_actl[1]=c[1]+1 end
-			if c[3]<0 then c_actl[3]=c[3]-1 end
-			modem.send(addr,QueensChannel,"setgpspos",_,c_actl[1],c_actl[2],c_actl[3])
+			--local c_actl = c
+			--if c[1]>0 then c_actl[1]=c[1]+1 end
+			--if c[3]<0 then c_actl[3]=c[3]-1 end
+			--modem.send(addr,QueensChannel,"setgpspos",_,c_actl[1],c_actl[2],c_actl[3])
+			modem.send(addr,QueensChannel,"setgpspos",_,c[1],c[2],c[3])
 		end
 		modem.broadcast(QueensChannel,"startgps")
     	os.sleep(0.5)
