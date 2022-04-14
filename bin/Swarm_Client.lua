@@ -235,7 +235,7 @@ function bcGPSTRGPos(tpBook,gpsC)
 	end)
 	while true do
 		print("bcGPSTRGPos2")
-		for addr,c in pairs(gpsTable) do
+		--[[for addr,c in pairs(gpsTable) do
 			print(addr,c.x,c.y,c.z,c.d)
 		end
 		local gpsPos = getGPSPos(gpsTable)
@@ -249,7 +249,7 @@ function bcGPSTRGPos(tpBook,gpsC)
 					modem.broadcast(tport,"trg",trgPos.x,trgPos.y,trgPos.z)
 				end
 			end
-		end
+		end]]
 		os.sleep(0.5)
 	end
 	
