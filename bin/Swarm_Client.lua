@@ -240,11 +240,13 @@ function bcGPSTRGPos(tpBook,gpsC)
 		term.clear()
 		local gpsPos = getGPSPos(gpsTable)
 		if gpsPos then
+			gpsPos = vec_trunc(gpsPos)
 			print("gpsPos: ",gpsPos.x,gpsPos.y,gpsPos.z)
 			for tport,tname in pairs(tpBook) do
 				--print("tport: ",tport,"tname: ",tname)
 				--local radPos = getPlayerCoord(tname)
 				local radPos = getEntityCoord(tname)
+				radPos.c = vec_trunc(radPos.c)
 				--print("tport: ",tport,"tname: ",tname,"radPos: ",radPos.c.x,radPos.c.y,radPos.c.z)
 				if radPos.d then
 					local trgPos = add(radPos.c,gpsPos)
