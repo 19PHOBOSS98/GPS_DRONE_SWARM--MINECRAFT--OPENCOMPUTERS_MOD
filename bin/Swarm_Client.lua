@@ -201,7 +201,7 @@ end
 function getGPSPos(gpsT)
 	local gpsPos = locate(gpsT)--{x,y,z}
 	--if gpsPos then return vec_trunc(gpsPos) end
-	if gpsPos.x then return gpsPos end
+	if gpsPos then return gpsPos end
 	return nil
 end
 --**********************--
@@ -237,8 +237,9 @@ function bcGPSTRGPos(tpBook,gpsC)
 		for addr,c in pairs(gpsTable) do
 			print(addr,c.x,c.y,c.z,c.d)
 		end
-		--[[local gpsPos = getGPSPos(gpsTable)
+		local gpsPos = getGPSPos(gpsTable)
 		if gpsPos then
+			print("gpsPos: ",gpsPos.x,gpsPos.y,gpsPos.z)
 			for tport,tname in pairs(tpBook) do
 				print("tport: ",tport,"tname: ",tname)
 				--local radPos = getPlayerCoord(tname)
