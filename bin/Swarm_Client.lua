@@ -175,7 +175,7 @@ local function narrow(p1, p2, fix)
 	end
 end
 
-local function locate(gpsT) --**********************--
+local function getGPSPos(gpsT) --**********************--
 	local fixes = {}
 	local pos1, pos2 = nil, nil
 	local deadline = computer.uptime()+2
@@ -217,14 +217,14 @@ function refreshGPSTable() --**********************--
 	refreshGPSInterval = refreshGPSInterval + 1
 end
 
-
+--[[
 function getGPSPos(gpsT) --**********************--
 	local gpsPos = locate(gpsT)--{x,y,z}
 	--if gpsPos then return vec_trunc(gpsPos) end
 	if gpsPos then return gpsPos end
 	--if gpsPos then return round(gpsPos,1) end
 	return nil
-end
+end]]
 --**********************--
 
 
