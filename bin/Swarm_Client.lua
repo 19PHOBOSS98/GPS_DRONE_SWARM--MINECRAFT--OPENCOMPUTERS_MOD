@@ -7,6 +7,7 @@ local term= require("term")
 local modem = component.modem
 --local Tn = component.navigation
 local Tr = component.radar
+local radar_targeting = require("radar_targeting")
 local QueensChannel = 2412
 local QueensResponseChannel = 2402
 local SoldiersChannel = 2413
@@ -228,8 +229,8 @@ function bcGPSTRGPos(tpBook,gpsC)
 			print("gpsPos: ",gpsPos.x,gpsPos.y,gpsPos.z)
 			for tport,tname in pairs(tpBook) do
 				--print("tport: ",tport,"tname: ",tname)
-				--local radPos = getPlayerCoord(tname)
-				local radPos = getEntityCoord(tname)
+				--local radPos = radar_targeting.getPlayerCoord(tname)
+				local radPos = radar_targeting.getEntityCoord(tname)
 				--print("tport: ",tport,"tname: ",tname,"radPos: ",radPos.c.x,radPos.c.y,radPos.c.z)
 				radPos.c = vec_trunc(radPos.c)
 				if radPos.d then
