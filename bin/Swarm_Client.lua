@@ -277,7 +277,7 @@ function updateGPSTRGs(tpBook,gpsC) --**********************-- --only call this 
 	gpstrgThread = thread.create(function(tpb,gpsC) print("threading") bcGPSTRGPos(tpb,gpsC) end,tpBook,gpsC)
 end
 function killGPSTRGThread(gpsC) --**********************--
-	if gpstrgThread then gpstrgThread:kill() modem.open(gpsC) end
+	if gpstrgThread then gpstrgThread:kill() modem.close(gpsC) end
 end
 
 
