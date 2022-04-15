@@ -4,17 +4,22 @@ local computer = require("computer")
 local modem = component.modem
 gpsChannel = 2
 gpsRequestChannel = 20
-trgChannel = 3
-SoldierChannel = 2412
+--trgChannel = 1
+SoldierChannel = 2413
 
 modem.open(gpsChannel)
-modem.open(trgChannel)
+--modem.open(trgChannel)
 modem.open(SoldierChannel)
 modem.setStrength(math.huge)
 gpsSats={}
 cmdTRGPos={}
 
 drone_inv = "inv_s"
+ResponseChannel = 2403
+isFree = true
+function replyInv(add)
+	modem.send(add,ResponseChannel,"stats",isFree,false)--Queens send "true"
+end
 
 function length(a)
   local c = 0
@@ -27,9 +32,15 @@ function add2GPSTable(r_addr,x,y,z,dist)
 end
 
 acts = {
-["gps"] = function(r_addr,x,y,z,dist) add2GPSTable(r_addr,x,y,z,dist) end,
-["trg"] = function(_,x,y,z) cmdTRGPos={c={x,y,z},d=dist} end
-["formup"] = function(_,x,y,z) gpsMoveToTarget({x=x,y=y,z=z}) end
+	[drone_inv] = function(r_add) replyInv(r_add) end,
+	["commit"] = function() isFree = false end,
+	["uncommit"] = function() isFree = true end,
+	["gps"] = function(r_addr,x,y,z,dist) add2GPSTable(r_addr,x,y,z,dist) end,
+	["trg"] = function(_,x,y,z) cmdTRGPos={c={x,y,z},d=dist} end,
+	
+	["formup"] = function(_,x,y,z,_,trgC) print(gpsMoveToTarget({x=x,y=y,z=z},trgC)) end,
+	
+	["HUSH"] = function()  sleep(1) computer.shutdown() end
 }
 
 
@@ -95,7 +106,7 @@ local function narrow(p1, p2, fix)
 	end
 end
 
-local function locate()
+local function getGPSlocation()
 	modem.open(gpsChannel)
 	local fixes = {}
 	local pos1, pos2 = nil, nil
@@ -135,26 +146,18 @@ function refreshGPSTable()
 	if refreshGPSInterval >= 60 then gpsSats={} refreshGPSInterval = 0 end
 	refreshGPSInterval = refreshGPSInterval + 1
 end
-
-function getGPSlocation()
-	local gpsPos = locate()
-	--if gpsPos then return vec_trunc(gpsPos) end
-	if gpsPos then return gpsPos end
-	return nil
-end
  
 function getTRGPos()
 	return cmdTRGPos
 end
 
-
-function printGPSSats()
+function printGPSSats() -- temp
 	print("gpsSats:")
 	for addr,c in pairs(gpsSats) do
 		print(addr,":: {",c.x,c.y,c.z,c.d,"}")
 	end
 end
-function printTRGPos()
+function printTRGPos() -- temp
 	if trgPos then
 		print("trgPos: {",trgPos[1],trgPos[2],trgPos[3],"}")
 	else
@@ -162,7 +165,7 @@ function printTRGPos()
 	end
 end
 
-function printGPSTRG()
+function printGPSTRG() -- temp
 	term.clear()
 	printGPSSats()
 	printTRGPos()
@@ -177,10 +180,10 @@ actsWhileMoving = {
 	["HUSH"] = function() d.setLightColor(0xFF0000) sleep(1) computer.shutdown() end
 }
 
-function gpsMoveToTarget(offset)
+function gpsMoveToTarget(offset,trgChannel)
 	checkArg(1,e_name,"string","nil")
 	local ctrlTRGPos = nil
-	
+	modem.open(trgChannel)
 	repeat
 		term.clear()
 		print("phase1")
@@ -193,7 +196,7 @@ function gpsMoveToTarget(offset)
 		--[[else d.setLightColor(0xFF0000) d.setStatusText("No GPS") end]]
 		else print("No GPS") end
 	
-		_,_,r_add,_,dist,msg,x,y,z = computer.pullSignal(0.5)
+		_,_,r_add,_,dist,msg,_,x,y,z = computer.pullSignal(0.5)
 		if actsWhileMoving[msg] then
 			actsWhileMoving[msg](r_add,x,y,z,dist)
 		end
@@ -202,7 +205,7 @@ function gpsMoveToTarget(offset)
 	local mv = {0,0,0},msg,r_add,dist,x,y,z
 	
 	repeat
-		_,_,r_add,_,dist,msg,x,y,z = computer.pullSignal(0.5)
+		_,_,r_add,_,dist,msg,_,x,y,z = computer.pullSignal(0.5)
 		if actsWhileMoving[msg] then
 			actsWhileMoving[msg](r_add,x,y,z,dist)
 		end
@@ -214,7 +217,7 @@ function gpsMoveToTarget(offset)
 		if trgPos.d and trgPos.d < 50 then
 			trgPos.c = vec_trunc(trgPos.c)
 			print("trgPos: ",trgPos.c.x,trgPos.c.y,trgPos.c.z)
-			--trgPos.c = add(trgPos.c, offset)
+			trgPos.c = add(trgPos.c, offset)
 			print("trgPosWOffset: ",trgPos.c.x,trgPos.c.y,trgPos.c.z)
 			mv = sub(trgPos.c,ctrlTRGPos)
 			--d.move(mv.x,mv.y,mv.z)
@@ -229,19 +232,27 @@ function gpsMoveToTarget(offset)
 		end
 		refreshGPSTable()
 	until msg == "stop"
+	modem.close(trgChannel)
 	return "S1"
 end
 
 
-gpsMoveToTarget({x=10,y=23,z=35})
-
+--gpsMoveToTarget({x=10,y=23,z=35})
+while true do
+	_,_,r_addr,_,dist,msg,trgCh,x,y,z = computer.pullSignal(0.5)
+	term.clear()
+	print("msg: ",msg)
+	if acts[msg] then
+		acts[msg](r_addr,x,y,z,dist,trgCh)
+	end
+end
 
 --[[
 while true do
-	_,_,r_addr,_,dist,msg,x,y,z = computer.pullSignal(0.5)
+	_,_,r_addr,_,dist,msg,trgCh,x,y,z = computer.pullSignal(0.5)
 
 	if acts[msg] then
-		acts[msg](r_addr,x,y,z,dist)
+		acts[msg](r_addr,x,y,z,dist,trgCh)
 	end
 	
 	--printGPSTRG()
