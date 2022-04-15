@@ -62,7 +62,7 @@ function GPS.getGPSPos(gpsT) --**********************--
 			pos1, pos2 = {x=fix.x, y=fix.y, z=fix.z}, nil
 		else 
 			table.insert(fixes, fix)
-			print(addr,fix.x,fix.y,fix.z,fix.d)
+			--print(addr,fix.x,fix.y,fix.z,fix.d)
 		end
 	end
 	if #fixes >= 4 then
