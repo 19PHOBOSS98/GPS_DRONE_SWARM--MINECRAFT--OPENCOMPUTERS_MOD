@@ -214,8 +214,8 @@ function add2GPSTable(r_addr,x,y,z,dist,gpsT)
 end
 ]]
 
-local function add(v, b) return {x=v.x+b.x, y=v.y+b.y, z=v.z+b.z} end
-local function vec_trunc(A)
+function add(v, b) return {x=v.x+b.x, y=v.y+b.y, z=v.z+b.z} end
+function vec_trunc(A)
 	if A then
 		return {x=trunc(A.x),y=trunc(A.y),z=trunc(A.z)}
 	end
