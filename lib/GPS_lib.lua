@@ -71,7 +71,7 @@ local function narrow(p1, p2, fix)
 	end
 end
 
-local function GPS.getGPSPos(gpsT) --**********************--
+function GPS.getGPSPos(gpsT) --**********************--
 	local fixes = {}
 	local pos1, pos2 = nil, nil
 	for addr,fix in pairs(gpsT) do
