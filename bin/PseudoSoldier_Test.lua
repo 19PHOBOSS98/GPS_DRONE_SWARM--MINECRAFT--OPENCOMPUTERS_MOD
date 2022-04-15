@@ -36,7 +36,7 @@ acts = {
 	[drone_inv] = function(r_add) replyInv(r_add) end,
 	["commit"] = function() isFree = false end,
 	["uncommit"] = function() isFree = true end,
-	["gps"] = function(r_addr,x,y,z,dist) add2GPSTable(r_addr,x,y,z,dist) end,
+	["gps"] = function(r_addr,x,y,z,dist,_) add2GPSTable(r_addr,x,y,z,dist) end,
 	["trg"] = function(_,x,y,z) cmdTRGPos={c={x,y,z},d=dist} end,
 	
 	["formup"] = function(_,x,y,z,_,trgC) print(gpsMoveToTarget({x=x,y=y,z=z},trgC)) end,
@@ -178,7 +178,7 @@ actsWhileMoving = {
 	[drone_inv] = function(r_add) replyInv(r_add) end,
 	["commit"] = function() d.setLightColor(0x0077FF) isFree = false end,
 	["uncommit"] = function() isFree = true end,
-	["gps"] = function(r_addr,x,y,z,dist) add2GPSTable(r_addr,x,y,z,dist) end,
+	["gps"] = function(r_addr,x,y,z,dist,_) add2GPSTable(r_addr,x,y,z,dist) end,
 	["trg"] = function(_,x,y,z,dist) cmdTRGPos={c={x=x,y=y,z=z},d=dist} end,
 	["HUSH"] = function() d.setLightColor(0xFF0000) sleep(1) computer.shutdown() end
 }
@@ -199,7 +199,7 @@ function gpsMoveToTarget(offset,trgChannel)
 		--[[else d.setLightColor(0xFF0000) d.setStatusText("No GPS") end]]
 		else print("No GPS") end
 	
-		_,_,r_add,_,dist,msg,_,x,y,z = computer.pullSignal(0.5)
+		_,_,r_add,_,dist,msg,x,y,z,_ = computer.pullSignal(0.5)
 		if actsWhileMoving[msg] then
 			actsWhileMoving[msg](r_add,x,y,z,dist)
 		end
@@ -208,7 +208,7 @@ function gpsMoveToTarget(offset,trgChannel)
 	local mv = {0,0,0},msg,r_add,dist,x,y,z
 	
 	repeat
-		_,_,r_add,_,dist,msg,_,x,y,z = computer.pullSignal(0.5)
+		_,_,r_add,_,dist,msg,x,y,z,_ = computer.pullSignal(0.5)
 		if actsWhileMoving[msg] then
 			actsWhileMoving[msg](r_add,x,y,z,dist)
 		end
@@ -242,7 +242,7 @@ end
 
 --gpsMoveToTarget({x=10,y=23,z=35})
 while true do
-	_,_,r_addr,_,dist,msg,trgCh,x,y,z = computer.pullSignal(0.5)
+	_,_,r_addr,_,dist,msg,x,y,z,trgCh = computer.pullSignal(0.5)
 	--_,_,r_addr,_,dist,msg,trgCh,x,y,z = computer.pullSignal()
 	if acts[msg] then
 		acts[msg](r_addr,x,y,z,dist,trgCh)
