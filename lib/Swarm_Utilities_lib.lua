@@ -13,7 +13,7 @@ function utilities.norm(v) return utilities.mul(v, 1/len(v)) end
 function utilities.trunc(v) local t = math.modf(v) return t end
 function utilities.vec_trunc(A)
 	if A then
-		return {x=trunc(A.x),y=trunc(A.y),z=trunc(A.z)}
+		return {x=utilities.trunc(A.x),y=utilities.trunc(A.y),z=utilities.trunc(A.z)}
 	end
 	return nil
 end
