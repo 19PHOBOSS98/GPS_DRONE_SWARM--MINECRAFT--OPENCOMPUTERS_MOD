@@ -55,7 +55,7 @@ form3 = {{-3,0,0},{0,-3,0},{0,0,-3},{3,3,3},{-3,-3,-3}}
 --*************--
 --[[
 The radar has an inaccuracy where it recognises two blocks as zeroes in each axis.
-Drones positioned in coordinates with positive components around a target player are actually a block extra away from the origin
+Drones positioned in coordinates with positive axis components around a target player are actually a block extra away from the origin
 the given formation array is thus compensated in the formUP function from the flight_formation library
 ]]
 --*************--
@@ -137,10 +137,6 @@ while true do
 	elseif(cmd == "GPS") then
 		for addr,c in pairs(ffbook[1]) do
 			print(addr,c)
-			--local c_actl = c
-			--if c[1]>0 then c_actl[1]=c[1]+1 end
-			--if c[3]<0 then c_actl[3]=c[3]-1 end
-			--modem.send(addr,QueensChannel,"setgpspos",_,c_actl[1],c_actl[2],c_actl[3])
 			modem.send(addr,QueensChannel,"setgpspos",_,c[1],c[2],c[3])
 		end
 		modem.broadcast(QueensChannel,"startgps")
