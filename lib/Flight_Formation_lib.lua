@@ -147,7 +147,7 @@ end
 
 function flight_formation.PformUP(trgPort,ff,port) --**********************--
 	for addr,pos in pairs(ff) do
-		modem.send(addr,port,"formup",trgPort,pos[1],pos[2],pos[3])
+		modem.send(addr,port,"formup",pos[1],pos[2],pos[3],trgPort)
 	end
 end
  
