@@ -207,38 +207,40 @@ function gpsMoveToTarget(offset,trgChannel)
 	
 	local mv = {0,0,0},msg,r_add,dist,x,y,z
 	
-	repeat
-		_,_,r_add,_,dist,msg,x,y,z,_ = computer.pullSignal(0.5)
-		if actsWhileMoving[msg] then
-			actsWhileMoving[msg](r_add,x,y,z,dist)
-		end
-		
-		term.clear()
-		print("phase2")
-		printGPSTRG()
-		print("ctrlTRGPos: ",ctrlTRGPos.x,ctrlTRGPos.y,ctrlTRGPos.z)
-		local trgPos = getTRGPos()
-		if trgPos.d and trgPos.d < 50 then
-			trgPos.c = vec_trunc(trgPos.c)
-			print("trgPos: ",trgPos.c.x,trgPos.c.y,trgPos.c.z)
-			print("Offset: ",offset.x,offset.y,offset.z)
-			
-			local trgPosOffset = add(trgPos.c, offset)
-			print("trgPosOffset: ",trgPosOffset.x,trgPosOffset.y,trgPosOffset.z)
-			
-			mv = sub(trgPosOffset,ctrlTRGPos)
-			--d.move(mv.x,mv.y,mv.z)
-			print("mv: ",mv.x,mv.y,mv.z)
-			
-			ctrlTRGPos = trgPosOffset
-		else
-			--[[d.setLightColor(0xFF0000)
-			d.setStatusText("Out Of\nRange")
-			d.move(-mv.x,-mv.y,-mv.z)]]
-			print("Out Of Range")
-		end
-		refreshGPSTable()
-	until msg == "stop"
+	if ctrlTRGPos then
+		repeat
+			_,_,r_add,_,dist,msg,x,y,z,_ = computer.pullSignal(0.5)
+			if actsWhileMoving[msg] then
+				actsWhileMoving[msg](r_add,x,y,z,dist)
+			end
+
+			term.clear()
+			print("phase2")
+			printGPSTRG()
+			print("ctrlTRGPos: ",ctrlTRGPos.x,ctrlTRGPos.y,ctrlTRGPos.z)
+			local trgPos = getTRGPos()
+			if trgPos.d and trgPos.d < 50 then
+				trgPos.c = vec_trunc(trgPos.c)
+				print("trgPos: ",trgPos.c.x,trgPos.c.y,trgPos.c.z)
+				print("Offset: ",offset.x,offset.y,offset.z)
+
+				local trgPosOffset = add(trgPos.c, offset)
+				print("trgPosOffset: ",trgPosOffset.x,trgPosOffset.y,trgPosOffset.z)
+
+				mv = sub(trgPosOffset,ctrlTRGPos)
+				--d.move(mv.x,mv.y,mv.z)
+				print("mv: ",mv.x,mv.y,mv.z)
+
+				ctrlTRGPos = trgPosOffset
+			else
+				--[[d.setLightColor(0xFF0000)
+				d.setStatusText("Out Of\nRange")
+				d.move(-mv.x,-mv.y,-mv.z)]]
+				print("Out Of Range")
+			end
+			refreshGPSTable()
+		until msg == "stop"
+	end
 	modem.close(trgChannel)
 	return "S1"
 end
