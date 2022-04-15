@@ -17,8 +17,9 @@ function utilities.vec_trunc(A)
 	return nil
 end
 function utilities.arr_length(a)
-  local c = 0
-  for k,_ in pairs(a) do c=c+1 end
-  return c
-end
+	print("utilities arr length")
+	local c = 0
+	for k,_ in pairs(a) do c=c+1 end
+	return c
+	end
 return utilities
