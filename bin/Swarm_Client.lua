@@ -229,7 +229,7 @@ function bcGPSTRGPos(tpBook,gpsC)
 		local gpsPos = getGPSPos(gpsTable)
 		if gpsPos then
 			gpsPos = vec_trunc(gpsPos)
-			print("gpsPos: ",gpsPos.x,gpsPos.y,gpsPos.z)
+			print("gpsPos: ",gpsPos.x,gpsPos.y,gpsPos.z,gpsPos.d)
 			for tport,tname in pairs(tpBook) do
 				--print("tport: ",tport,"tname: ",tname)
 				--local radPos = radar_targeting.getPlayerCoord(tname)
