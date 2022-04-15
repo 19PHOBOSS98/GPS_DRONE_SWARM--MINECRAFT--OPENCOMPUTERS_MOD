@@ -218,7 +218,7 @@ function add(v, b) return {x=v.x+b.x, y=v.y+b.y, z=v.z+b.z} end
 local function trunc(v) local t = math.modf(v) return t end
 function vec_trunc(A)
 	if A then
-		print("A: ",A.x,A.y,A.z)
+		--print("A: ",A.x,A.y,A.z)
 		return {x=trunc(A.x),y=trunc(A.y),z=trunc(A.z)}
 	end
 	return nil
