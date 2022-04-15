@@ -368,7 +368,7 @@ while true do
 
 	elseif(cmd == "EXIT") then
 		flightform.closeFlighFormComms()
-		killGPSTRGThread(gpsChannel)
+		GPS_TRG.killGPSTRGThread(gpsChannel)
 		os.exit()
 	else
     	modem.broadcast(QueensChannel,cmd)
