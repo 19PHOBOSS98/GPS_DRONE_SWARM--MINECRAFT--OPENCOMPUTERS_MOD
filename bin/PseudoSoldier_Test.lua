@@ -223,14 +223,14 @@ function gpsMoveToTarget(offset,trgChannel)
 			print("trgPos: ",trgPos.c.x,trgPos.c.y,trgPos.c.z)
 			print("Offset: ",offset.x,offset.y,offset.z)
 			
-			trgPos.c = add(trgPos.c, offset)
-			print("trgPosWOffset: ",trgPos.c.x,trgPos.c.y,trgPos.c.z)
+			local trgPosOffset = add(trgPos.c, offset)
+			print("trgPosOffset: ",trgPosOffset.x,trgPosOffset.y,trgPosOffset.z)
 			
-			mv = sub(trgPos.c,ctrlTRGPos)
+			mv = sub(trgPosOffset,ctrlTRGPos)
 			--d.move(mv.x,mv.y,mv.z)
 			print("mv: ",mv.x,mv.y,mv.z)
 			
-			ctrlTRGPos = trgPos.c
+			ctrlTRGPos = trgPosOffset
 		else
 			--[[d.setLightColor(0xFF0000)
 			d.setStatusText("Out Of\nRange")
