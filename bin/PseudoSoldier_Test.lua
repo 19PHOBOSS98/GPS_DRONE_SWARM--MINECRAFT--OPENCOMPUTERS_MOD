@@ -190,7 +190,7 @@ function gpsMoveToTarget(offset,trgChannel)
 	repeat
 		term.clear()
 		print("phase1")
-		--printGPSTRG()
+		printGPSTRG()
 		if length(gpsSats)>=3 then
 			ctrlTRGPos = getGPSlocation()
 		end
