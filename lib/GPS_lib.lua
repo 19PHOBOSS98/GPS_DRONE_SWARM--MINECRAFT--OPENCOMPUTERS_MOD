@@ -3,7 +3,7 @@ local GPS ={}
 
 
 local floor, sqrt, abs = math.floor, math.sqrt, math.abs
-local round,cross,len,len,dot,add,sub,mul,norm,trunc,vec_trunc,arr_length = s_utils.round,s_utils.cross,s_utils.len,s_utils.len,s_utils.dot,s_utils.add,s_utils.sub,s_utils.mul,s_utils.norm,s_utils.trunc,s_utils.vec_trunc,s_utils.arr_length
+local round,cross,len,dot,add,sub,mul,norm,trunc,vec_trunc,arr_length = s_utils.round,s_utils.cross,s_utils.len,s_utils.dot,s_utils.add,s_utils.sub,s_utils.mul,s_utils.norm,s_utils.trunc,s_utils.vec_trunc,s_utils.arr_length
 --[[
 local function round(v, m) return {x = floor((v.x+(m*0.5))/m)*m, y = floor((v.y+(m*0.5))/m)*m, z = floor((v.z+(m*0.5))/m)*m} end
 local function cross(v, b) return {x = v.y*b.z-v.z*b.y, y = v.z*b.x-v.x*b.z, z = v.x*b.y-v.y*b.x} end
