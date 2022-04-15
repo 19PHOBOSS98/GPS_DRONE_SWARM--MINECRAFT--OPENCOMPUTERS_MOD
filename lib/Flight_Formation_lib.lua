@@ -146,7 +146,7 @@ function flight_formation.formUP(e_name,ff,f,port,is_Queen) --******************
 		end
 	else
 		for addr,pos in pairs(ff) do
-			modem.send(addr,port,"formup")
+			modem.send(addr,port,"formup",pos[1],pos[2],pos[3])
 		end
 	end
 end
