@@ -45,10 +45,17 @@ In summary, so far I:
 
 
 gpsChannel = 65535
+
 QUEEN_CommandChannel = 65534
+
 PAWN_CommandChannel = 65533
+
 QUEEN_ResponseChannel = 65532
+
 PAWN_ResponseChannel = 65531
+
 QUEEN_ErrorChannel = 65530
+
 PAWN_ErrorChannel = 65529
+
 trgChannel = [1-65528]
