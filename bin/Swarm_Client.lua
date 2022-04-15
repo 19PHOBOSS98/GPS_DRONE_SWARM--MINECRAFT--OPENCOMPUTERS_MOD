@@ -174,7 +174,7 @@ local function getGPSPos(gpsT) --**********************--
 			pos1, pos2 = {x=fix.x, y=fix.y, z=fix.z}, nil
 		else 
 			table.insert(fixes, fix)
-			print(addr,fix.x,fix.y,fix.z)
+			print(addr,fix.x,fix.y,fix.z,fix.d)
 		end
 	end
 	if #fixes >= 4 then
@@ -229,7 +229,7 @@ function bcGPSTRGPos(tpBook,gpsC)
 		local gpsPos = getGPSPos(gpsTable)
 		if gpsPos then
 			gpsPos = vec_trunc(gpsPos)
-			print("gpsPos: ",gpsPos.x,gpsPos.y,gpsPos.z,gpsPos.d)
+			print("gpsPos: ",gpsPos.x,gpsPos.y,gpsPos.z)
 			for tport,tname in pairs(tpBook) do
 				--print("tport: ",tport,"tname: ",tname)
 				--local radPos = radar_targeting.getPlayerCoord(tname)
