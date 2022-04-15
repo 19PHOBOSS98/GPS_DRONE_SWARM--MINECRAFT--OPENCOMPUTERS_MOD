@@ -148,7 +148,16 @@ while true do
 	elseif(cmd == "PRINTQ") then --printGroup
 		printSwarmStats()
 	    os.sleep(0.5)
-
+	elseif(cmd == "S") then
+    	modem.broadcast(QueensChannel,"stop")
+		event.ignore("modem_message",msg_handler)
+    	os.sleep(0.5)
+	elseif(cmd == "HUSH") then
+		modem.broadcast(QueensChannel,"HUSH")
+    	os.sleep(0.5)
+		
+		
+		
 	elseif(cmd == "GPS") then
 		for addr,c in pairs(ffbook[1]) do
 			print(addr,c)
@@ -163,8 +172,11 @@ while true do
 	elseif(cmd == "K") then
 		GPS_TRG.killGPSTRGThread(gpsChannel)
     	os.sleep(0.5)
-	
-		
+
+
+
+
+
 	elseif(cmd == "A") then -- form triangle on Floppa with PAWNS
 		flightform.refreshFFT(Pawnffbook,Pawndynamic_fbook,PawnsChannel,false)
 		flightform.formFF(Pawnffbook[1],Pawndynamic_fbook[1],PawnsChannel,false)
@@ -177,21 +189,24 @@ while true do
 		end
 		printSwarmStatsPawn()
 		os.sleep(0.5)
+	elseif(cmd == "RP") then	--refreshFormation
+		flightform.refreshFFT(Pawnffbook,Pawndynamic_fbook,PawnsChannel,false)
+		printSwarmStatsPawn()
+		os.sleep(0.5)	
 	elseif(cmd == "PRINTP") then
 		printSwarmStatsPawn()
 		os.sleep(0.5)
 	elseif(cmd == "SP") then
-    	modem.broadcast(PawnsChannel,"stop")
-    	os.sleep(0.5)
+    		modem.broadcast(PawnsChannel,"stop")
+	    	os.sleep(0.5)
+	elseif(cmd == "HUSHP") then
+		modem.broadcast(PawnsChannel,"HUSH")
+	    	os.sleep(0.5)		
 		
-	elseif(cmd == "S") then
-    	modem.broadcast(QueensChannel,"stop")
-		event.ignore("modem_message",msg_handler)
-    	os.sleep(0.5)
-	elseif(cmd == "HUSH") then
-		modem.broadcast(QueensChannel,"HUSH")
-    	os.sleep(0.5)
+		
 
+
+		
 	elseif(cmd == "EXIT") then
 		flightform.closeFlighFormComms()
 		GPS_TRG.killGPSTRGThread(gpsChannel)
