@@ -6,8 +6,9 @@ local floor, sqrt, abs = math.floor, math.sqrt, math.abs
 --local round,cross,len,dot,add,sub,mul,norm,trunc,vec_trunc,arr_length = s_utils.round,s_utils.cross,s_utils.len,s_utils.dot,s_utils.add,s_utils.sub,s_utils.mul,s_utils.norm,s_utils.trunc,s_utils.vec_trunc,s_utils.arr_length
 local arr_length = s_utils.arr_length
 local trunc,vec_trunc = s_utils.trunc,s_utils.vec_trunc
---local round,cross,len,dot,add,sub,mul,norm = s_utils.round,s_utils.cross,s_utils.len,s_utils.dot,s_utils.add,s_utils.sub,s_utils.mul,s_utils.norm
---local round = s_utils.round
+local cross,len,dot,add,sub,mul,norm = s_utils.cross,s_utils.len,s_utils.dot,s_utils.add,s_utils.sub,s_utils.mul,s_utils.norm
+--[[
+local round = s_utils.round
 local cross = s_utils.cross
 local len = s_utils.len
 local dot = s_utils.dot
@@ -23,7 +24,7 @@ local norm = s_utils.norm
 --local function sub(v, b) return {x=v.x-b.x, y=v.y-b.y, z=v.z-b.z} end
 --local function mul(v, m) return {x=v.x*m, y=v.y*m, z=v.z*m} end
 --local function norm(v) return mul(v, 1/len(v)) end
---[[
+
 local function trunc(v) local t = math.modf(v) return t end
 local function vec_trunc(A)
 	if A then
