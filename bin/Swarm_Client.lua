@@ -9,8 +9,8 @@ local modem = component.modem
 --local Tr = component.radar
 local QueensChannel = 2412
 local QueensResponseChannel = 2402
-local SoldiersChannel = 2413
-local SoldiersResponseChannel = 2403
+local PawnsChannel = 2413
+local PawnsResponseChannel = 2403
 
 local drone_is_queen = true
 
@@ -24,12 +24,13 @@ local GPS_TRG = require("GPS_TRG")
 
 modem.open(QueensResponseChannel)
 
-modem.open(SoldiersResponseChannel)
-modem.broadcast(SoldiersChannel,"Sr= component.proxy(component.list('radar')())")
-modem.broadcast(SoldiersChannel,"Sn= component.proxy(component.list('navigation')())")
-modem.broadcast(SoldiersChannel,"Sd= component.proxy(component.list('drone')())")
-modem.broadcast(SoldiersChannel,"function sleep(timeout) checkArg(1, timeout, 'number', 'nil') local deadline = computer.uptime() + (timeout or 0) repeat computer.pullSignal(deadline - computer.uptime()) until computer.uptime() >= deadline end")
-
+--[[
+modem.open(PawnsResponseChannel)
+modem.broadcast(PawnsChannel,"Sr= component.proxy(component.list('radar')())")
+modem.broadcast(PawnsChannel,"Sn= component.proxy(component.list('navigation')())")
+modem.broadcast(PawnsChannel,"Sd= component.proxy(component.list('drone')())")
+modem.broadcast(PawnsChannel,"function sleep(timeout) checkArg(1, timeout, 'number', 'nil') local deadline = computer.uptime() + (timeout or 0) repeat computer.pullSignal(deadline - computer.uptime()) until computer.uptime() >= deadline end")
+]]
 
 flightformation={}
 ffbook={flightformation}
@@ -67,18 +68,33 @@ dynamic_fbook = fbook
 print("Bingus30")
 function printSwarmStats()
 	term.clear()
+	print("QUEENS:")
 	flightform.printDronePool(drone_is_queen)
 	flightform.printFFAssignment(ffbook)
 end
 
+
 local gpsChannel = 2
-local trgChannel = 3
+--local trgChannel = 3
 
 
 --trgPortBook = {}--{[trgport]="target"} multiple to fixed single relationship
 trgPortBook = {[3]="Bingus",[4]="Floppa",[5]="FloppaMi",[7]="FloppaNi"}
-gpsChannel = 2 
 
+Pawnffbook = {}
+Pawnffbook[1] = {}
+--Pawnform1 = {{3,2,-2},{-3,2,-2},{0,2,3}}
+Pawnform1 = {{0,2,0}}
+Pawnfbook = {Pawnform1}
+Pawndynamic_fbook = Pawnfbook
+
+
+function printSwarmStatsPawn()
+	term.clear()
+	print("PAWNS:")
+	flightform.printDronePool(false)
+	flightform.printFFAssignment(Pawnffbook)
+end
 
 while true do
 	local cmd=io.read()
@@ -109,15 +125,15 @@ while true do
 	elseif(cmd == "T") then
 		flightform.refreshFFT(ffbook,dynamic_fbook,QueensChannel,drone_is_queen)
 		flightform.formFF(ffbook[1],dynamic_fbook[1],QueensChannel,drone_is_queen)
-		flightform.formUP("ph0",ffbook[1],dynamic_fbook[1],QueensChannel,drone_is_queen)
+		flightform.QformUP("ph0",ffbook[1],QueensChannel)
 		printSwarmStats()
 	    os.sleep(0.5)
 	elseif(cmd == "Q") then
 		flightform.refreshFFT(ffbook,dynamic_fbook,QueensChannel,drone_is_queen)
 		flightform.formFF(ffbook[2],dynamic_fbook[2],QueensChannel,drone_is_queen)
 		flightform.formFF(ffbook[3],dynamic_fbook[3],QueensChannel,drone_is_queen)
-		flightform.formUP("ph0",ffbook[2],dynamic_fbook[2],QueensChannel,drone_is_queen)
-		flightform.formUP("ph0",ffbook[3],dynamic_fbook[3],QueensChannel,drone_is_queen)
+		flightform.QformUP("ph0",ffbook[2],QueensChannel)
+		flightform.QformUP("ph0",ffbook[3],QueensChannel)
 		printSwarmStats()
 	    os.sleep(0.5)
 	elseif(cmd == "E") then
@@ -130,7 +146,7 @@ while true do
 		flightform.refreshFFT(ffbook,dynamic_fbook,QueensChannel,drone_is_queen)
 		printSwarmStats()
 	    os.sleep(0.5)		
-	elseif(cmd == "PRINT") then --printGroup
+	elseif(cmd == "PRINTQ") then --printGroup
 		printSwarmStats()
 	    os.sleep(0.5)
 
@@ -148,6 +164,24 @@ while true do
 	elseif(cmd == "K") then
 		GPS_TRG.killGPSTRGThread(gpsChannel)
     	os.sleep(0.5)
+	
+		
+	elseif(cmd == "A") then -- form triangle on Floppa with PAWNS
+		flightform.refreshFFT(Pawnffbook,Pawndynamic_fbook,PawnsChannel,false)
+		flightform.formFF(Pawnffbook[1],Pawndynamic_fbook[1],PawnsChannel,false)
+		flightform.PformUP(4,Pawnffbook[1],PawnsChannel)
+		printSwarmStatsPawn()
+		os.sleep(0.5)
+	elseif(cmd == "EP") then 
+		for i = 1,#Pawnffbook do
+			flightform.breakFormation(Pawnffbook[i],Pawndynamic_fbook[i],PawnsChannel,false)
+		end
+		printSwarmStatsPawn()
+		os.sleep(0.5)
+	elseif(cmd == "PRINTP") then
+		printSwarmStatsPawn()
+		os.sleep(0.5)
+	
 		
 	elseif(cmd == "S") then
     	modem.broadcast(QueensChannel,"stop")
