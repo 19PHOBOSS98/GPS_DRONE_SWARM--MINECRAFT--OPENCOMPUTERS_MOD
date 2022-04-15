@@ -41,3 +41,14 @@ In summary, so far I:
 + separated most of the code into libraries
 + made flight formations are easier to edit
 + made swarm flight formations regenerative
+
+
+
+gpsChannel = 65535
+QUEEN_CommandChannel = 65534
+PAWN_CommandChannel = 65533
+QUEEN_ResponseChannel = 65532
+PAWN_ResponseChannel = 65531
+QUEEN_ErrorChannel = 65530
+PAWN_ErrorChannel = 65529
+trgChannel = [1-65528]
