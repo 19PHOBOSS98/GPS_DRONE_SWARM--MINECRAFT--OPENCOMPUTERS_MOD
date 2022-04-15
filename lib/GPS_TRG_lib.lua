@@ -29,7 +29,7 @@ function GPS_TRG.bcGPSTRGPos(tpBook,gpsC)
 		if gpsPos then
 			--print("gpsPos: ",gpsPos.x,gpsPos.y,gpsPos.z)
 			gpsPos = vec_trunc(gpsPos)
-			print("gpsPos: ",gpsPos.x,gpsPos.y,gpsPos.z)
+			--print("gpsPos: ",gpsPos.x,gpsPos.y,gpsPos.z)
 			for tport,tname in pairs(tpBook) do
 				--print("tport: ",tport,"tname: ",tname)
 				--local radPos = radar_targeting.getPlayerCoord(tname)
@@ -38,7 +38,7 @@ function GPS_TRG.bcGPSTRGPos(tpBook,gpsC)
 				radPos.c = vec_trunc(radPos.c)
 				if radPos.d then
 					local trgPos = add(radPos.c,gpsPos)
-					print("tport: ",tport,"tname: ",tname,"trgPos: ",trgPos.x,trgPos.y,trgPos.z)
+					--print("tport: ",tport,"tname: ",tname,"trgPos: ",trgPos.x,trgPos.y,trgPos.z)
 					modem.broadcast(tport,"trg",trgPos.x,trgPos.y,trgPos.z)
 				end
 			end
