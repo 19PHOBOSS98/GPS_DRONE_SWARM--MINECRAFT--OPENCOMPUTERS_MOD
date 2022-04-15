@@ -6,7 +6,7 @@ local thread= require("thread")
 local term= require("term")
 local modem = component.modem
 --local Tn = component.navigation
-local Tr = component.radar
+--local Tr = component.radar
 local radar_targeting = require("radar_targeting")
 local QueensChannel = 2412
 local QueensResponseChannel = 2402
@@ -200,10 +200,9 @@ local function getGPSPos(gpsT) --**********************--
 end
 
 
-local refreshGPSInterval = 0
-function refreshGPSTable() --**********************--
-	if refreshGPSInterval >= 60 then gpsSats={} refreshGPSInterval = 0 end
-	refreshGPSInterval = refreshGPSInterval + 1
+function refreshGPSTable(gpsT,refreshCounter,refreshInterval) --************--
+	if refreshCounter >= refreshInterval then gpsT={} refreshCounter = 0 end
+	refreshCounter = refreshCounter + 1
 end
 
 
@@ -216,6 +215,8 @@ function bcGPSTRGPos(tpBook,gpsC)
 	modem.open(gpsC)
 	modem.setStrength(math.huge)
 	local gpsTable = {}
+	local refreshGPSInterval = 60
+	local refreshGPSCounter = 0
 	event.listen("modem_message",function(_,_,r_addr,_,dist,msg,xg,yg,zg,...)
 		if msg == "gps" then
 			add2GPSTable(r_addr,xg,yg,zg,dist,gpsTable)
@@ -240,6 +241,7 @@ function bcGPSTRGPos(tpBook,gpsC)
 				end
 			end
 		end
+		refreshGPSTable(gpsTable,refreshGPSCounter,refreshGPSInterval)
 		os.sleep(0.5)
 	end
 	
