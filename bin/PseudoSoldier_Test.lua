@@ -239,8 +239,9 @@ end
 
 --gpsMoveToTarget({x=10,y=23,z=35})
 while true do
-	_,_,r_addr,_,dist,msg,trgCh,x,y,z = computer.pullSignal(0.5)
-	term.clear()
+	--_,_,r_addr,_,dist,msg,trgCh,x,y,z = computer.pullSignal(0.5)
+	_,_,r_addr,_,dist,msg,trgCh,x,y,z = computer.pullSignal()
+	--term.clear()
 	print("msg: ",msg)
 	if acts[msg] then
 		acts[msg](r_addr,x,y,z,dist,trgCh)
