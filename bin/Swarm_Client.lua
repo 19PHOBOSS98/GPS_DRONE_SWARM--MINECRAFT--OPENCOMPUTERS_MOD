@@ -215,9 +215,9 @@ end
 ]]
 
 function add(v, b) return {x=v.x+b.x, y=v.y+b.y, z=v.z+b.z} end
+local function trunc(v) local t = math.modf(v) return t end
 function vec_trunc(A)
 	if A then
-		print(A.x,A.y,A.z)
 		return {x=trunc(A.x),y=trunc(A.y),z=trunc(A.z)}
 	end
 	return nil
@@ -243,7 +243,6 @@ function bcGPSTRGPos(tpBook,gpsC)
 		term.clear()
 		local gpsPos = GPS.getGPSPos(gpsTable)
 		if gpsPos then
-			print("gpsPos: ",gpsPos.x,gpsPos.y,gpsPos.z)
 			gpsPos = vec_trunc(gpsPos)
 			print("gpsPos: ",gpsPos.x,gpsPos.y,gpsPos.z)
 			for tport,tname in pairs(tpBook) do
