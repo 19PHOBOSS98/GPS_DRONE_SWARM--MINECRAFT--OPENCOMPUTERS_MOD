@@ -273,7 +273,7 @@ gpsChannel = 2
 
 local gpstrgThread = nil
 function updateGPSTRGs(tpBook,gpsC) --**********************-- --only call this sparingly, don't want to stall other flight formations
-	if gpstrgThread then gpstrgThread:kill() modem.open(gpsC) end
+	killGPSTRGThread(gpsC)
 	gpstrgThread = thread.create(function(tpb,gpsC) print("threading") bcGPSTRGPos(tpb,gpsC) end,tpBook,gpsC)
 end
 function killGPSTRGThread(gpsC) --**********************--
