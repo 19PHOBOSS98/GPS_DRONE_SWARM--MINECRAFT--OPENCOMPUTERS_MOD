@@ -53,7 +53,7 @@ GPS_TRG.gpstrgThread = nil
 
 function GPS_TRG.updateGPSTRGs(tpBook,gpsC) --**********************-- --only call this sparingly, don't want to stall other flight formations
 	GPS_TRG.killGPSTRGThread(gpsC)
-	GPS_TRG.gpstrgThread = thread.create(function(tpb,gpsC) print("threading") bcGPSTRGPos(tpb,gpsC) end,tpBook,gpsC)
+	GPS_TRG.gpstrgThread = thread.create(function(tpb,gpsC) print("threading") GPS_TRG.bcGPSTRGPos(tpb,gpsC) end,tpBook,gpsC)
 end
 function GPS_TRG.killGPSTRGThread(gpsC) --**********************--
 	if GPS_TRG.gpstrgThread then GPS_TRG.gpstrgThread:kill() modem.close(gpsC) end
