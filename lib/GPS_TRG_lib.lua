@@ -51,7 +51,7 @@ end
 
 local GPS_TRG.gpstrgThread = nil
 
-function updateGPSTRGs(tpBook,gpsC) --**********************-- --only call this sparingly, don't want to stall other flight formations
+function GPS_TRG.updateGPSTRGs(tpBook,gpsC) --**********************-- --only call this sparingly, don't want to stall other flight formations
 	GPS_TRG.killGPSTRGThread(gpsC)
 	GPS_TRG.gpstrgThread = thread.create(function(tpb,gpsC) print("threading") bcGPSTRGPos(tpb,gpsC) end,tpBook,gpsC)
 end
