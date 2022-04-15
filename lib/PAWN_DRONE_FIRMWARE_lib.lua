@@ -47,7 +47,7 @@ local function sub(v, b) return {x=v.x-b.x, y=v.y-b.y, z=v.z-b.z} end
 local function mul(v, m) return {x=v.x*m, y=v.y*m, z=v.z*m} end
 local function norm(v) return mul(v, 1/len(v)) end
 	
-function length(a)
+function arr_length(a)
   local c = 0
   for k,_ in pairs(a) do c=c+1 end
   return c
@@ -64,7 +64,7 @@ end
 
 [[
 function add2GPSTable(r_addr,x,y,z,dist)
-  if length(gpsSats) < 7 then gpsSats[r_addr] = {x=x,y=y,z=z,d=dist} end 
+  if arr_length(gpsSats) < 7 then gpsSats[r_addr] = {x=x,y=y,z=z,d=dist} end 
 end
 ]]
 ,
@@ -120,15 +120,11 @@ local function trilaterate(A, B, C)
 		local result2 = sub(result, mul(ez, z))
 		local rnd1, rnd2 = result1,result2
 		if rnd1.x ~= rnd2.x or rnd1.y ~= rnd2.y or rnd1.z ~= rnd2.z then
-			--print("rnd1: ",rnd1.x,rnd1.y,rnd1.z)
-			--print("rnd2: ",rnd2.x,rnd2.y,rnd2.z)
 			return rnd1, rnd2
 		else
-			--print("rnd1: ",rnd1.x,rnd1.y,rnd1.z)
 			return rnd1
 		end
 	end
-	--print("result: ",result.x,result.y,result.z)
 	return result
 end
 ]]
@@ -152,7 +148,6 @@ local function getGPSlocation()
 	modem.open(gpsChannel)
 	local fixes = {}
 	local pos1, pos2 = nil, nil
-	local deadline = computer.uptime()+2
 	for addr,fix in pairs(gpsSats) do
 		if fix.d == 0 then 
 			pos1, pos2 = {x=fix.x, y=fix.y, z=fix.z}, nil
@@ -161,15 +156,13 @@ local function getGPSlocation()
 		end
 	end
 	if #fixes >= 3 then
-		if fixes[1].z then
-			if not pos1 then
-				pos1, pos2 = trilaterate(fixes[1], fixes[2], fixes[3])
-			end
-			if pos1 and pos2 then
-				for f=4,#fixes do
-					pos1, pos2 = narrow(pos1, pos2, fixes[f])
-					if pos1 and not pos2 then break end
-				end
+		if not pos1 then
+			pos1, pos2 = trilaterate(fixes[1], fixes[2], fixes[3])
+		end
+		if pos1 and pos2 then
+			for f=4,#fixes do
+				pos1, pos2 = narrow(pos1, pos2, fixes[f])
+				if pos1 and not pos2 then break end
 			end
 		end
 	end        
@@ -200,13 +193,11 @@ end
 [[
 function gpsMoveToTarget(offset,trgChannel)
 	checkArg(1,e_name,"string","nil")
+	d.setLightColor(0xFFFFFF)
 	local ctrlTRGPos = nil
 	modem.open(trgChannel)
 	repeat
-		term.clear()
-		print("phase1")
-		printGPSTRG()
-		if length(gpsSats)>=3 then
+		if arr_length(gpsSats)>=3 then
 			ctrlTRGPos = getGPSlocation()
 		end
 	
@@ -220,27 +211,28 @@ function gpsMoveToTarget(offset,trgChannel)
 	until msg == "stop" or ctrlTRGPos
 	
 	local mv = {0,0,0},msg,r_add,dist,x,y,z
-	
-	repeat
-		_,_,r_add,_,dist,msg,x,y,z,_ = computer.pullSignal(0.5)
-		if actsWhileMoving[msg] then
-			actsWhileMoving[msg](r_add,x,y,z,dist)
-		end
-		
-		local trgPos = getTRGPos()
-		if trgPos.d and trgPos.d < 50 then
-			trgPos.c = vec_trunc(trgPos.c)
-			local trgPosOffset = add(trgPos.c, offset)
-			mv = sub(trgPosOffset,ctrlTRGPos)
-			d.move(mv.x,mv.y,mv.z)
-			ctrlTRGPos = trgPosOffset
-		else
-			d.setLightColor(0xFF0000)
-			d.setStatusText("Out Of\nRange")
-			d.move(-mv.x,-mv.y,-mv.z)
-		end
-		refreshGPSTable()
-	until msg == "stop"
+	if ctrlTRGPos then
+		repeat
+			_,_,r_add,_,dist,msg,x,y,z,_ = computer.pullSignal(0.5)
+			if actsWhileMoving[msg] then
+				actsWhileMoving[msg](r_add,x,y,z,dist)
+			end
+
+			local trgPos = getTRGPos()
+			if trgPos.d and trgPos.d < 50 then
+				trgPos.c = vec_trunc(trgPos.c)
+				local trgPosOffset = add(trgPos.c, offset)
+				mv = sub(trgPosOffset,ctrlTRGPos)
+				d.move(mv.x,mv.y,mv.z)
+				ctrlTRGPos = trgPosOffset
+			else
+				d.setLightColor(0xFF0000)
+				d.setStatusText("Out Of\nRange")
+				d.move(-mv.x,-mv.y,-mv.z)
+			end
+			refreshGPSTable()
+		until msg == "stop"
+	end
 	modem.close(trgChannel)
 	return d.name()
 end
@@ -248,7 +240,6 @@ end
 ,
 [[
 d.setAcceleration(100)
-local cmd,tag,x,y,z
 d.setLightColor(0x007B62)
 while true do
 	_,_,r_addr,_,dist,msg,x,y,z,trgCh = computer.pullSignal(0.5)
