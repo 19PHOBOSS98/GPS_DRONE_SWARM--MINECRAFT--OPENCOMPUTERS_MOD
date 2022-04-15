@@ -14,6 +14,7 @@ local dot = s_utils.dot
 local add = s_utils.add
 local sub = s_utils.sub
 local mul = s_utils.mul
+local norm = s_utils.norm
 --local function round(v, m) return {x = floor((v.x+(m*0.5))/m)*m, y = floor((v.y+(m*0.5))/m)*m, z = floor((v.z+(m*0.5))/m)*m} end
 --local function cross(v, b) return {x = v.y*b.z-v.z*b.y, y = v.z*b.x-v.x*b.z, z = v.x*b.y-v.y*b.x} end
 --local function len(v) return sqrt(v.x^2+v.y^2+v.z^2) end
@@ -21,7 +22,7 @@ local mul = s_utils.mul
 --local function add(v, b) return {x=v.x+b.x, y=v.y+b.y, z=v.z+b.z} end
 --local function sub(v, b) return {x=v.x-b.x, y=v.y-b.y, z=v.z-b.z} end
 --local function mul(v, m) return {x=v.x*m, y=v.y*m, z=v.z*m} end
-local function norm(v) return mul(v, 1/len(v)) end
+--local function norm(v) return mul(v, 1/len(v)) end
 --[[
 local function trunc(v) local t = math.modf(v) return t end
 local function vec_trunc(A)
