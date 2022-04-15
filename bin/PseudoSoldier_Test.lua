@@ -215,14 +215,17 @@ function gpsMoveToTarget(offset,trgChannel)
 		
 		term.clear()
 		print("phase2")
+		print("ctrlTRGPos: ",ctrlTRGPos.x,ctrlTRGPos.y,ctrlTRGPos.z)
 		printGPSTRG()
 		local trgPos = getTRGPos()
 		if trgPos.d and trgPos.d < 50 then
 			trgPos.c = vec_trunc(trgPos.c)
 			print("trgPos: ",trgPos.c.x,trgPos.c.y,trgPos.c.z)
-			--trgPos.c = add(trgPos.c, offset)
-			--print("trgPosWOffset: ",trgPos.c.x,trgPos.c.y,trgPos.c.z)
 			print("Offset: ",offset.x,offset.y,offset.z)
+			
+			trgPos.c = add(trgPos.c, offset)
+			print("trgPosWOffset: ",trgPos.c.x,trgPos.c.y,trgPos.c.z)
+			
 			mv = sub(trgPos.c,ctrlTRGPos)
 			--d.move(mv.x,mv.y,mv.z)
 			print("mv: ",mv.x,mv.y,mv.z)
