@@ -7,7 +7,6 @@ local term= require("term")
 local modem = component.modem
 --local Tn = component.navigation
 --local Tr = component.radar
-local radar_targeting = require("radar_targeting")
 local QueensChannel = 2412
 local QueensResponseChannel = 2402
 local SoldiersChannel = 2413
@@ -19,6 +18,8 @@ local drone_is_queen = true
 local s_utils = require("swarm_utilities")
 local q_firmware = require("queen_firmware")
 local flightform = require("flight_formation")
+local radar_targeting = require("radar_targeting")
+local GPS = require("GPS")
 
 modem.open(QueensResponseChannel)
 
@@ -221,12 +222,12 @@ function bcGPSTRGPos(tpBook,gpsC)
 	local refreshGPSCounter = 0
 	event.listen("modem_message",function(_,_,r_addr,_,dist,msg,xg,yg,zg,...)
 		if msg == "gps" then
-			add2GPSTable(r_addr,xg,yg,zg,dist,gpsTable)
+			GPS.add2GPSTable(r_addr,xg,yg,zg,dist,gpsTable)
 		end
 	end)
 	while true do
 		term.clear()
-		local gpsPos = getGPSPos(gpsTable)
+		local gpsPos = GPS.getGPSPos(gpsTable)
 		if gpsPos then
 			gpsPos = vec_trunc(gpsPos)
 			print("gpsPos: ",gpsPos.x,gpsPos.y,gpsPos.z)
@@ -243,7 +244,7 @@ function bcGPSTRGPos(tpBook,gpsC)
 				end
 			end
 		end
-		refreshGPSCounter,gpsTable = refreshGPSTable(gpsTable,refreshGPSCounter,refreshGPSInterval)
+		refreshGPSCounter,gpsTable = GPS.refreshGPSTable(gpsTable,refreshGPSCounter,refreshGPSInterval)
 		os.sleep(0.5)
 	end
 	
