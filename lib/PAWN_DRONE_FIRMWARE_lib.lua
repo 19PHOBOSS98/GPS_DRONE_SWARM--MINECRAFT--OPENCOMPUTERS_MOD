@@ -6,8 +6,6 @@ local PAWN = {}
 
 local FIRMWARE = {
 [[
-r= component.proxy(component.list('radar')())
-n= component.proxy(component.list('navigation')())
 d= component.proxy(component.list('drone')())
 m= component.proxy(component.list('modem')())
 Channel = 2413
