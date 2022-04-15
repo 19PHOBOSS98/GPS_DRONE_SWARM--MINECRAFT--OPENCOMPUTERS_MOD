@@ -23,9 +23,8 @@ local GPS = require("GPS")
 local GPS_TRG = require("GPS_TRG")
 
 modem.open(QueensResponseChannel)
-
---[[
 modem.open(PawnsResponseChannel)
+--[[
 modem.broadcast(PawnsChannel,"Sr= component.proxy(component.list('radar')())")
 modem.broadcast(PawnsChannel,"Sn= component.proxy(component.list('navigation')())")
 modem.broadcast(PawnsChannel,"Sd= component.proxy(component.list('drone')())")
