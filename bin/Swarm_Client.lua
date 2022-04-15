@@ -217,7 +217,7 @@ function bcGPSTRGPos(tpBook,gpsC)
 	modem.setStrength(math.huge)
 	local gpsTable = {}
 	local refreshGPSInterval = 60
-	local refreshGPSCounter = 0
+	refreshGPSCounter = 0
 	event.listen("modem_message",function(_,_,r_addr,_,dist,msg,xg,yg,zg,...)
 		if msg == "gps" then
 			add2GPSTable(r_addr,xg,yg,zg,dist,gpsTable)
