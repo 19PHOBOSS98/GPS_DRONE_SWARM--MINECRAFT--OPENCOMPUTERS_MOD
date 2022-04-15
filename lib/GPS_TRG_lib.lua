@@ -44,8 +44,7 @@ function GPS_TRG.bcGPSTRGPos(tpBook,gpsC)
 			end
 		end
 		refreshGPSCounter,gpsTable = GPS.refreshGPSTable(gpsTable,refreshGPSCounter,refreshGPSInterval)
-		--os.sleep(0.5)
-		os.sleep(1)
+		os.sleep(0.5)
 	end
 	
 end
