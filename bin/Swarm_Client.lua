@@ -20,6 +20,7 @@ local q_firmware = require("queen_firmware")
 local flightform = require("flight_formation")
 local radar_targeting = require("radar_targeting")
 local GPS = require("GPS")
+local GPS_TRG = require("GPS_TRG")
 
 modem.open(QueensResponseChannel)
 
@@ -213,7 +214,7 @@ function add2GPSTable(r_addr,x,y,z,dist,gpsT)
   if length(gpsT) < 7 then gpsT[r_addr] = {x=x,y=y,z=z,d=dist} end 
 end
 ]]
-
+--[[
 function add(v, b) return {x=v.x+b.x, y=v.y+b.y, z=v.z+b.z} end
 local function trunc(v) local t = math.modf(v) return t end
 function vec_trunc(A)
@@ -266,11 +267,6 @@ function bcGPSTRGPos(tpBook,gpsC)
 	
 end
 
-
---trgPortBook = {}--{[trgport]="target"} multiple to fixed single relationship
-trgPortBook = {[3]="Bingus",[4]="Floppa",[5]="FloppaMi",[7]="FloppaNi"}
-gpsChannel = 2 
-
 local gpstrgThread = nil
 function updateGPSTRGs(tpBook,gpsC) --**********************-- --only call this sparingly, don't want to stall other flight formations
 	killGPSTRGThread(gpsC)
@@ -279,6 +275,13 @@ end
 function killGPSTRGThread(gpsC) --**********************--
 	if gpstrgThread then gpstrgThread:kill() modem.close(gpsC) end
 end
+]]
+
+--trgPortBook = {}--{[trgport]="target"} multiple to fixed single relationship
+trgPortBook = {[3]="Bingus",[4]="Floppa",[5]="FloppaMi",[7]="FloppaNi"}
+gpsChannel = 2 
+
+
 
 
 
@@ -348,11 +351,11 @@ while true do
 		modem.broadcast(QueensChannel,"startgps")
     	os.sleep(0.5)
 	elseif(cmd == "TRG") then
-		updateGPSTRGs(trgPortBook,gpsChannel)
+		GPS_TRG.updateGPSTRGs(trgPortBook,gpsChannel)
     	os.sleep(0.5)
 		
 	elseif(cmd == "K") then
-		killGPSTRGThread(gpsChannel)
+		GPS_TRG.killGPSTRGThread(gpsChannel)
     	os.sleep(0.5)
 		
 	elseif(cmd == "S") then
