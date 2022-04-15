@@ -202,7 +202,7 @@ end
 
 function refreshGPSTable(gpsT,refreshCounter,refreshInterval) --************--
 	print("refreshCounter: ",refreshCounter)
-	if refreshCounter >= refreshInterval then gpsT={} return refreshCounter = 0 end
+	if refreshCounter >= refreshInterval then gpsT={} return 0 end
 	return refreshCounter + 1
 end
 
