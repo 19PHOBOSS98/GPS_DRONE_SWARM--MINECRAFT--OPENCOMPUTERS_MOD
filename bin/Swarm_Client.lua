@@ -244,7 +244,7 @@ function bcGPSTRGPos(tpBook,gpsC)
 		term.clear()
 		local gpsPos = GPS.getGPSPos(gpsTable)
 		if gpsPos then
-			print("gpsPos: ",gpsPos.x,gpsPos.y,gpsPos.z)
+			--print("gpsPos: ",gpsPos.x,gpsPos.y,gpsPos.z)
 			gpsPos = vec_trunc(gpsPos)
 			print("gpsPos: ",gpsPos.x,gpsPos.y,gpsPos.z)
 			for tport,tname in pairs(tpBook) do
