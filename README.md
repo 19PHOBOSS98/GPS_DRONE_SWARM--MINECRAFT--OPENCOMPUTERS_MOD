@@ -3,6 +3,7 @@ survival friendly drone swarm using GPS location and Radar targeting (Computroni
 
 
 This actually started around 2018-2019:
+
 https://oc.cil.li/topic/1687-delux-drone-swarmarmyfor-free/
 
 https://oc.cil.li/topic/1856-budget-drone-army-for-free/?tab=comments#comment-8680
