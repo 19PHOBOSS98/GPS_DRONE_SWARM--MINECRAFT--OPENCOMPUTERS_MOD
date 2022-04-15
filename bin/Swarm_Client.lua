@@ -180,7 +180,9 @@ while true do
 	elseif(cmd == "PRINTP") then
 		printSwarmStatsPawn()
 		os.sleep(0.5)
-	
+	elseif(cmd == "SP") then
+    	modem.broadcast(PawnsChannel,"stop")
+    	os.sleep(0.5)
 		
 	elseif(cmd == "S") then
     	modem.broadcast(QueensChannel,"stop")
