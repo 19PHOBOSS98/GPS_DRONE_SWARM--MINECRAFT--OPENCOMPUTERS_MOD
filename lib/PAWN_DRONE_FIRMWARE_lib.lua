@@ -251,10 +251,10 @@ d.setAcceleration(100)
 local cmd,tag,x,y,z
 d.setLightColor(0x007B62)
 while true do
-	_,_,r_add,_,dist,cmd,tag,x,y,z = computer.pullSignal(0.5)
+	_,_,r_addr,_,dist,msg,x,y,z,trgCh = computer.pullSignal(0.5)
 	if d.name():match("^S%d+$") then
-		if acts[cmd] then
-			acts[cmd](r_add,tag,x,y,z,dist)
+		if acts[msg] then
+			acts[msg](r_addr,x,y,z,dist,trgCh)
 		end
 	end
 	--d.setLightColor(0xFFAF00)
