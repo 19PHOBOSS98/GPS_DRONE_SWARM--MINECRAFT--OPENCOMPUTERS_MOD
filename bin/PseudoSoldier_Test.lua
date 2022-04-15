@@ -29,6 +29,7 @@ end
 acts = {
 ["gps"] = function(r_addr,x,y,z,dist) add2GPSTable(r_addr,x,y,z,dist) end,
 ["trg"] = function(_,x,y,z) cmdTRGPos={c={x,y,z},d=dist} end
+["formup"] = function(_,x,y,z) gpsMoveToTarget({x=x,y=y,z=z}) end
 }
 
 
@@ -213,6 +214,8 @@ function gpsMoveToTarget(offset)
 		if trgPos.d and trgPos.d < 50 then
 			trgPos.c = vec_trunc(trgPos.c)
 			print("trgPos: ",trgPos.c.x,trgPos.c.y,trgPos.c.z)
+			--trgPos.c = add(trgPos.c, offset)
+			print("trgPosWOffset: ",trgPos.c.x,trgPos.c.y,trgPos.c.z)
 			mv = sub(trgPos.c,ctrlTRGPos)
 			--d.move(mv.x,mv.y,mv.z)
 			print("mv: ",mv.x,mv.y,mv.z)
