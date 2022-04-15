@@ -7,7 +7,7 @@ function swarm_utilities.cross(v, b) return {x = v.y*b.z-v.z*b.y, y = v.z*b.x-v.
 function swarm_utilities.len(v) return sqrt(v.x^2+v.y^2+v.z^2) end
 function swarm_utilities.dot(v, b) return v.x*b.x+v.y*b.y+v.z*b.z end
 function swarm_utilities.add(v, b) return {x=v.x+b.x, y=v.y+b.y, z=v.z+b.z} end
-function swarm_utilities.sub(v, b) return {x=v.x-b.x, y=v.y-b.y, z=v.z-b.z} end
+function swarm_utilities.sub(v, b) print("sub utils") return {x=v.x-b.x, y=v.y-b.y, z=v.z-b.z} end
 function swarm_utilities.mul(v, m) return {x=v.x*m, y=v.y*m, z=v.z*m} end
 function swarm_utilities.norm(v) return swarm_utilities.mul(v, 1/len(v)) end
 function swarm_utilities.trunc(v) local t = math.modf(v) return t end
