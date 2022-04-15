@@ -215,8 +215,8 @@ function gpsMoveToTarget(offset,trgChannel)
 		
 		term.clear()
 		print("phase2")
-		print("ctrlTRGPos: ",ctrlTRGPos.x,ctrlTRGPos.y,ctrlTRGPos.z)
 		printGPSTRG()
+		print("ctrlTRGPos: ",ctrlTRGPos.x,ctrlTRGPos.y,ctrlTRGPos.z)
 		local trgPos = getTRGPos()
 		if trgPos.d and trgPos.d < 50 then
 			trgPos.c = vec_trunc(trgPos.c)
