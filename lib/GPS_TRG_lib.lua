@@ -49,7 +49,7 @@ function GPS_TRG.bcGPSTRGPos(tpBook,gpsC)
 	
 end
 
-local GPS_TRG.gpstrgThread = nil
+GPS_TRG.gpstrgThread
 
 function GPS_TRG.updateGPSTRGs(tpBook,gpsC) --**********************-- --only call this sparingly, don't want to stall other flight formations
 	GPS_TRG.killGPSTRGThread(gpsC)
