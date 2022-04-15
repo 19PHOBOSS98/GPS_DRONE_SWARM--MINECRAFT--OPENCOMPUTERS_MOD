@@ -17,7 +17,7 @@ local function add(v, b) return {x=v.x+b.x, y=v.y+b.y, z=v.z+b.z} end
 local function sub(v, b) return {x=v.x-b.x, y=v.y-b.y, z=v.z-b.z} end
 local function mul(v, m) return {x=v.x*m, y=v.y*m, z=v.z*m} end
 local function norm(v) return mul(v, 1/len(v)) end
-
+--[[
 local function trunc(v) local t = math.modf(v) return t end
 local function vec_trunc(A)
 	if A then
