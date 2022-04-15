@@ -20,10 +20,11 @@ local function vec_trunc(A)
 	end
 	return nil
 end
-function arr_length(a)
-  local c = 0
-  for k,_ in pairs(a) do c=c+1 end
-  return c
+local function arr_length(a)
+	print("arr_local")
+	local c = 0
+	for k,_ in pairs(a) do c=c+1 end
+	return c
 end
 
 
@@ -116,7 +117,8 @@ end
 
 
 function GPS.add2GPSTable(r_addr,x,y,z,dist,gpsT) --************--
-  if arr_length(gpsT) < 7 then gpsT[r_addr] = {x=x,y=y,z=z,d=dist} end 
+	print("add2GPSTable")
+	if arr_length(gpsT) < 7 then gpsT[r_addr] = {x=x,y=y,z=z,d=dist} end 
 end
 
 return GPS
