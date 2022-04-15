@@ -4,9 +4,11 @@ local event = require 'event'
 local component = require 'component'
 local modem = component.modem
 
-local Radar_Targeting = require 'Radar_Targeting_lib'
+local radar_targeting = require 'Radar_Targeting_lib'
 local s_utils = require 'swarm_utilities'
 local GPS = require 'GPS'
+
+local vec_trunc,add = s_utils.vec_trunc,s_utils.add
 
 local GPS_TRG = {}
 
