@@ -32,7 +32,7 @@ function add2GPSTable(r_addr,x,y,z,dist)
 end
 
 acts = {
-	[drone_inv] = function(r_add) print("inv_s: ",r_add) replyInv(r_add) end,
+	[drone_inv] = function(r_add) replyInv(r_add) end,
 	["commit"] = function() isFree = false end,
 	["uncommit"] = function() isFree = true end,
 	["gps"] = function(r_addr,x,y,z,dist) add2GPSTable(r_addr,x,y,z,dist) end,
