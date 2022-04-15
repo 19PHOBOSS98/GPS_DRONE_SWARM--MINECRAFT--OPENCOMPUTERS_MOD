@@ -20,7 +20,7 @@ local function vec_trunc(A)
 	end
 	return nil
 end
-function length(a)
+function arr_length(a)
   local c = 0
   for k,_ in pairs(a) do c=c+1 end
   return c
