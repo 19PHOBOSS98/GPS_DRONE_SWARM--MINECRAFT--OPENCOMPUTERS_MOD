@@ -18,6 +18,7 @@ drone_inv = "inv_s"
 ResponseChannel = 2403
 isFree = true
 function replyInv(add)
+	print("replying to add: ",add)
 	modem.send(add,ResponseChannel,"stats",isFree,false)--Queens send "true"
 end
 
@@ -119,13 +120,15 @@ local function getGPSlocation()
 		end
 	end
 	if #fixes >= 3 then
-		if not pos1 then
-			pos1, pos2 = trilaterate(fixes[1], fixes[2], fixes[3])
-		end
-		if pos1 and pos2 then
-			for f=4,#fixes do
-				pos1, pos2 = narrow(pos1, pos2, fixes[f])
-				if pos1 and not pos2 then break end
+		if fixes[1].z then
+			if not pos1 then
+				pos1, pos2 = trilaterate(fixes[1], fixes[2], fixes[3])
+			end
+			if pos1 and pos2 then
+				for f=4,#fixes do
+					pos1, pos2 = narrow(pos1, pos2, fixes[f])
+					if pos1 and not pos2 then break end
+				end
 			end
 		end
 	end        
@@ -239,10 +242,8 @@ end
 
 --gpsMoveToTarget({x=10,y=23,z=35})
 while true do
-	--_,_,r_addr,_,dist,msg,trgCh,x,y,z = computer.pullSignal(0.5)
-	_,_,r_addr,_,dist,msg,trgCh,x,y,z = computer.pullSignal()
-	--term.clear()
-	print("msg: ",msg)
+	_,_,r_addr,_,dist,msg,trgCh,x,y,z = computer.pullSignal(0.5)
+	--_,_,r_addr,_,dist,msg,trgCh,x,y,z = computer.pullSignal()
 	if acts[msg] then
 		acts[msg](r_addr,x,y,z,dist,trgCh)
 	end
