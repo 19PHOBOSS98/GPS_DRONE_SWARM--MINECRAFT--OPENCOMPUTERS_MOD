@@ -73,7 +73,7 @@ end
 local gpsChannel = 2
 local trgChannel = 3
 
-
+--[[
 function getPlayerCoord(e_name) 
 	checkArg(1,e_name,'string','nil') 
 	for k,v in ipairs(Tr.getPlayers()) do 
@@ -212,7 +212,20 @@ end
 function add2GPSTable(r_addr,x,y,z,dist,gpsT)
   if length(gpsT) < 7 then gpsT[r_addr] = {x=x,y=y,z=z,d=dist} end 
 end
+]]
 
+local function add(v, b) return {x=v.x+b.x, y=v.y+b.y, z=v.z+b.z} end
+local function vec_trunc(A)
+	if A then
+		return {x=trunc(A.x),y=trunc(A.y),z=trunc(A.z)}
+	end
+	return nil
+end
+function length(a)
+  local c = 0
+  for k,_ in pairs(a) do c=c+1 end
+  return c
+end
 
 function bcGPSTRGPos(tpBook,gpsC)
 	modem.open(gpsC)
