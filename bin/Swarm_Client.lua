@@ -202,6 +202,7 @@ end
 
 function refreshGPSTable(gpsT,refreshCounter,refreshInterval) --************--
 	print("refreshCounter: ",refreshCounter)
+	print("refreshInterval: ",refreshInterval)
 	if refreshCounter >= refreshInterval then gpsT={} return 0 end
 	return refreshCounter + 1
 end
@@ -216,7 +217,7 @@ function bcGPSTRGPos(tpBook,gpsC)
 	modem.open(gpsC)
 	modem.setStrength(math.huge)
 	local gpsTable = {}
-	local refreshGPSInterval = 60
+	local refreshGPSInterval = 5
 	local refreshGPSCounter = 0
 	event.listen("modem_message",function(_,_,r_addr,_,dist,msg,xg,yg,zg,...)
 		if msg == "gps" then
