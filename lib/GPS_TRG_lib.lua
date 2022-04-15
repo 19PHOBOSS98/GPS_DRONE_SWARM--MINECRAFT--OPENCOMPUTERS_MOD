@@ -24,7 +24,7 @@ function GPS_TRG.bcGPSTRGPos(tpBook,gpsC)
 		end
 	end)
 	while true do
-		term.clear()
+		--term.clear()
 		local gpsPos = GPS.getGPSPos(gpsTable)
 		if gpsPos then
 			--print("gpsPos: ",gpsPos.x,gpsPos.y,gpsPos.z)
