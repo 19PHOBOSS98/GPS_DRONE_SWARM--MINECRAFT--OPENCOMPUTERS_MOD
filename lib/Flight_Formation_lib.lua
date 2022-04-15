@@ -2,8 +2,6 @@ local event = require 'event'
 local component = require 'component'
 local modem = component.modem
 
-local swarm_utilities = require("swarm_utilities")
-
 local flight_formation = {}
 
 flight_formation.pool_Q={}
@@ -150,12 +148,6 @@ function flight_formation.formUP(e_name,ff,f,port,is_Queen) --******************
 		for addr,pos in pairs(ff) do
 			modem.send(addr,port,"formup")
 		end
-	end
-end
-function flight_formation.updateOffset(ff,f,e_pos,port) --**********************-- --generally reserved for soldiers
-	for addr,pos in pairs(ff) do
-		local trgPos = swarm_utilities.add_vec(e_pos,pos)
-		modem.send(addr,port,"trg",trgPos[1],trgPos[2],trgPos[3])
 	end
 end
  
