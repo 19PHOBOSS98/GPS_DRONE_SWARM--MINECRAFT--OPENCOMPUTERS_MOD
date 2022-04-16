@@ -78,7 +78,7 @@ acts = {
 	["commit"] = function() d.setLightColor(0x5E00FF) isFree = false end,
 	["uncommit"] = function() isFree = true end,
 
-	["gps"] = function(r_addr,x,y,z,dist,_) add2GPSTable(r_addr,x,y,z,dist) end,
+	["gps"] = function(r_addr,x,y,z,dist) add2GPSTable(r_addr,x,y,z,dist) end,
 	["trg"] = function(_,x,y,z) cmdTRGPos={c={x,y,z},d=dist} end,
 	["formup"] = function(_,x,y,z,_,trgC) d.setStatusText(gpsMoveToTarget({x=x,y=y,z=z},trgC)) end,	
 	
