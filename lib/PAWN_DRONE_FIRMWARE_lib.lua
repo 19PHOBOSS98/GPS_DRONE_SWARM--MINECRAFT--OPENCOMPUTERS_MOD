@@ -143,7 +143,6 @@ end
 ,
 [[
 function getGPSlocation()
-	m.open(gpsChannel)
 	local fixes = {}
 	local pos1, pos2 = nil, nil
 	for addr,fix in pairs(gpsSats) do
@@ -194,10 +193,9 @@ end
 function gpsMoveToTarget(offset,trgChannel)
 	--checkArg(1,trgChannel,"number","nil")
 	d.setLightColor(0xFFFFFF)
-	
+	m.open(gpsChannel)
 	local ctrlTRGPos = nil
 	--d.setStatusText(tostring(trgChannel))
-	m.open(trgChannel)
 	local gg = 0
 	repeat
 		--d.setStatusText(tostring(arr_length(gpsSats)))
@@ -215,6 +213,7 @@ function gpsMoveToTarget(offset,trgChannel)
 		end
 	until msg == "stop" or ctrlTRGPos
 	d.setLightColor(0xFFFFFF)
+	m.open(trgChannel)
 	local mv = {x=0,y=0,z=0},msg,r_add,dist,x,y,z
 	if ctrlTRGPos then
 	local trgUpdate = {}
