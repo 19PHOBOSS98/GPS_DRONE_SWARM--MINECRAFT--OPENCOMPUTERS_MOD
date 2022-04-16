@@ -216,6 +216,7 @@ function gpsMoveToTarget(offset,trgChannel)
 	
 	local mv = {x=0,y=0,z=0},msg,r_add,dist,x,y,z
 	if ctrlTRGPos then
+	local cc = 0
 		repeat
 			_,_,r_add,_,dist,msg,x,y,z,_ = computer.pullSignal(0.5)
 			if actsWhileMoving[msg] then
@@ -231,7 +232,8 @@ function gpsMoveToTarget(offset,trgChannel)
 				ctrlTRGPos = trgPosOffset
 			else
 				d.setLightColor(0xFF0000)
-				d.setStatusText("Out Of\nRange")
+				d.setStatusText("Out Of\nRange"..tostring(cc))
+				cc=cc+1
 				d.move(-mv.x,-mv.y,-mv.z)
 			end
 			refreshGPSTable()
