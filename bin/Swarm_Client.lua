@@ -181,7 +181,7 @@ while true do
 		
 	elseif(cmd == "GP") then -- recall PAWNS
 		modem.broadcast(PawnsChannel,"stop")
-		GPS_TRG.GPSRecall(trgPortBook,gpsChannel)
+		GPS_TRG.GPSRecall(trgPortBook,gpsChannel,PawnsChannel)
 		os.sleep(0.5)	
 		
 	elseif(cmd == "FP") then
