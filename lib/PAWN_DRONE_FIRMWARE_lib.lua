@@ -13,7 +13,7 @@ ResponseChannel = 2403
 gpsChannel = 2
 
 m.open(Channel)
-m.open(gpsChannel)
+
 
 drone_inv = "inv_s"
 isDroneQueen = false
@@ -216,6 +216,7 @@ function gpsMoveToTarget(offset,trgChannel)
 	
 	local mv = {x=0,y=0,z=0},msg,r_add,dist,x,y,z
 	if ctrlTRGPos then
+	m.close(gpsChannel)
 	--local cc = 0
 		repeat
 			_,_,r_addr,_,dist,msg,x,y,z,trgCh = computer.pullSignal(0.5)
