@@ -1,6 +1,6 @@
 local m=component.proxy(component.list("modem")())
 local d=component.proxy(component.list("drone")())
-d.setLightColor(0x00FFE8﻿)               -- the first character 's' of the method should have been in lower case
+d.setLightColor(0x4287F5)               -- the first character 's' of the method should have been in lower case
 d.setStatusText(d.name())                -- same here... my bad
 m.open(2413)
 m.setWakeMessage("RISE")
