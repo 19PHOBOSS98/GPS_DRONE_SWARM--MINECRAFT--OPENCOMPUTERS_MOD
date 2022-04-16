@@ -212,37 +212,39 @@ function gpsMoveToTarget(offset,trgChannel)
 			actsWhileMoving[msg](r_addr,x,y,z,dist)
 		end
 	until msg == "stop" or ctrlTRGPos
-	d.setLightColor(0xFFFFFF)
-	m.open(trgChannel)
-	local mv = {x=0,y=0,z=0},msg,r_add,dist,x,y,z
-	if ctrlTRGPos then
-	local trgUpdate = {}
-	--local cc = 0
-		repeat
-			_,_,r_addr,_,dist,msg,x,y,z,trgCh = computer.pullSignal(0.5)
 
-			--if actsWhileMoving[msg] then
-			--	actsWhileMoving[msg](r_addr,x,y,z,dist)
-			--end
-			if msg == "trg" then
-				trgUpdate = {c={x=x,y=y,z=z},d=dist}
-			end
-			local trgPos = trgUpdate
-			if trgPos.d and trgPos.d < 50 then
-				d.setLightColor(0x00FF00)
-				trgPos.c = vec_trunc(trgPos.c)
-				local trgPosOffset = add(trgPos.c, offset)
-				mv = sub(trgPosOffset,ctrlTRGPos)
-				d.move(mv.x,mv.y,mv.z)
-				ctrlTRGPos = trgPosOffset
-			else
-				d.setLightColor(0xFF0000)
-				--d.setStatusText("Out Of\nRange"..tostring(cc))
-				--cc=cc+1
-				d.move(-mv.x,-mv.y,-mv.z)
-			end
-			refreshGPSTable()
-		until msg == "stop"
+	if ctrlTRGPos then
+		m.close(gpsChannel)
+		d.setLightColor(0xFFFFFF)
+		m.open(trgChannel)
+		local mv = {x=0,y=0,z=0},msg,r_add,dist,x,y,z
+		local trgUpdate = {}
+		--local cc = 0
+			repeat
+				_,_,r_addr,_,dist,msg,x,y,z,trgCh = computer.pullSignal(0.5)
+
+				--if actsWhileMoving[msg] then
+				--	actsWhileMoving[msg](r_addr,x,y,z,dist)
+				--end
+				if msg == "trg" then
+					trgUpdate = {c={x=x,y=y,z=z},d=dist}
+				end
+				local trgPos = trgUpdate
+				if trgPos.d and trgPos.d < 50 then
+					d.setLightColor(0x00FF00)
+					trgPos.c = vec_trunc(trgPos.c)
+					local trgPosOffset = add(trgPos.c, offset)
+					mv = sub(trgPosOffset,ctrlTRGPos)
+					d.move(mv.x,mv.y,mv.z)
+					ctrlTRGPos = trgPosOffset
+				else
+					d.setLightColor(0xFF0000)
+					d.setStatusText("Out Of\nRange"..tostring(cc))
+					--cc=cc+1
+					d.move(-mv.x,-mv.y,-mv.z)
+				end
+				refreshGPSTable()
+			until msg == "stop"
 	end
 	m.close(trgChannel)
 	return d.name()
