@@ -214,7 +214,7 @@ function gpsMoveToTarget(offset,trgChannel)
 		end
 	until msg == "stop" or ctrlTRGPos
 	
-	local mv = {0,0,0},msg,r_add,dist,x,y,z
+	local mv = {x=0,y=0,z=0},msg,r_add,dist,x,y,z
 	if ctrlTRGPos then
 		repeat
 			_,_,r_add,_,dist,msg,x,y,z,_ = computer.pullSignal(0.5)
