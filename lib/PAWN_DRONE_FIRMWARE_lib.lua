@@ -92,7 +92,7 @@ actsWhileMoving = {
 	["commit"] = function() d.setLightColor(0x0077FF) isFree = false end,
 	["uncommit"] = function() isFree = true end,
 	["gps"] = function(r_addr,x,y,z,dist) add2GPSTable(r_addr,x,y,z,dist) end,
-	["trg"] = function(_,x,y,z,dist) cmdTRGPos={c={x=x,y=y,z=z},d=dist} end,
+	["trg"] = function(_,x,y,z,dist) cmdTRGPos={c={x=x,y=y,z=z},d=dist} d.setStatusText("trg2:"..tostring(cmdTRGPos.c.x))  end,
 	["HUSH"] = function() d.setLightColor(0xFF0000) sleep(1) computer.shutdown() end
 }
 ]]
@@ -213,19 +213,22 @@ function gpsMoveToTarget(offset,trgChannel)
 			actsWhileMoving[msg](r_addr,x,y,z,dist)
 		end
 	until msg == "stop" or ctrlTRGPos
-	
+	d.setLightColor(0xFFFFFF)
 	local mv = {x=0,y=0,z=0},msg,r_add,dist,x,y,z
 	if ctrlTRGPos then
 	m.close(gpsChannel)
+	local trgUpdate = {}
 	--local cc = 0
 		repeat
 			_,_,r_addr,_,dist,msg,x,y,z,trgCh = computer.pullSignal(0.5)
-			d.setStatusText(tostring(msg))
-			if actsWhileMoving[msg] then
-				actsWhileMoving[msg](r_addr,x,y,z,dist)
-			end
 
-			local trgPos = getTRGPos()
+			--if actsWhileMoving[msg] then
+			--	actsWhileMoving[msg](r_addr,x,y,z,dist)
+			--end
+			if msg == "trg" then
+				trgUpdate = {c={x=x,y=y,z=z},d=dist}
+			end
+			local trgPos = trgUpdate
 			if trgPos.d and trgPos.d < 50 then
 				d.setLightColor(0x00FF00)
 				trgPos.c = vec_trunc(trgPos.c)
