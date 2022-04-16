@@ -34,16 +34,16 @@ end
 ]]
 ,
 [[
-local floor, sqrt, abs = math.floor, math.sqrt, math.abs
+floor, sqrt, abs = math.floor, math.sqrt, math.abs
 
-local function round(v, m) return {x = floor((v.x+(m*0.5))/m)*m, y = floor((v.y+(m*0.5))/m)*m, z = floor((v.z+(m*0.5))/m)*m} end
-local function cross(v, b) return {x = v.y*b.z-v.z*b.y, y = v.z*b.x-v.x*b.z, z = v.x*b.y-v.y*b.x} end
-local function len(v) return sqrt(v.x^2+v.y^2+v.z^2) end
-local function dot(v, b) return v.x*b.x+v.y*b.y+v.z*b.z end
-local function add(v, b) return {x=v.x+b.x, y=v.y+b.y, z=v.z+b.z} end
-local function sub(v, b) return {x=v.x-b.x, y=v.y-b.y, z=v.z-b.z} end
-local function mul(v, m) return {x=v.x*m, y=v.y*m, z=v.z*m} end
-local function norm(v) return mul(v, 1/len(v)) end
+function round(v, m) return {x = floor((v.x+(m*0.5))/m)*m, y = floor((v.y+(m*0.5))/m)*m, z = floor((v.z+(m*0.5))/m)*m} end
+function cross(v, b) return {x = v.y*b.z-v.z*b.y, y = v.z*b.x-v.x*b.z, z = v.x*b.y-v.y*b.x} end
+function len(v) return sqrt(v.x^2+v.y^2+v.z^2) end
+function dot(v, b) return v.x*b.x+v.y*b.y+v.z*b.z end
+function add(v, b) return {x=v.x+b.x, y=v.y+b.y, z=v.z+b.z} end
+function sub(v, b) return {x=v.x-b.x, y=v.y-b.y, z=v.z-b.z} end
+function mul(v, m) return {x=v.x*m, y=v.y*m, z=v.z*m} end
+function norm(v) return mul(v, 1/len(v)) end
 	
 function arr_length(a)
   local c = 0
@@ -98,7 +98,7 @@ actsWhileMoving = {
 ]]
 ,
 [[
-local function trilaterate(A, B, C)
+function trilaterate(A, B, C)
 	local a2b = {x=B.x-A.x, y=B.y-A.y, z=B.z-A.z}
 	local a2c = {x=C.x-A.x, y=C.y-A.y, z=C.z-A.z}
 	if abs(dot(norm(a2b), norm(a2c))) > 0.999 then return nil end
@@ -128,7 +128,7 @@ end
 ]]
 ,
 [[
-local function narrow(p1, p2, fix)
+function narrow(p1, p2, fix)
 	local d1 = abs(len(sub(p1, fix))-fix.d)
 	local d2 = abs(len(sub(p2, fix))-fix.d)
 	if abs(d1-d2) < 0.01 then 
@@ -180,7 +180,7 @@ end
 ]]
 ,
 [[
-local refreshGPSInterval = 0
+refreshGPSInterval = 0
 function refreshGPSTable()
 	if refreshGPSInterval >= 17 then gpsSats={} refreshGPSInterval = 0 end
 	refreshGPSInterval = refreshGPSInterval + 1
