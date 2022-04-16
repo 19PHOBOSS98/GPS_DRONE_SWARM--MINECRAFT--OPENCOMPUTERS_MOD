@@ -77,8 +77,8 @@ trgPortBook = {[3]="Bingus",[4]="Floppa",[5]="FloppaMi",[7]="FloppaNi"}
 
 Pawnffbook = {}
 Pawnffbook[1] = {}
---Pawnform1 = {{3,2,-2},{-3,2,-2},{0,2,3}}
-Pawnform1 = {{0,2,0}}
+Pawnform1 = {{3,2,-2},{-3,2,-2},{0,2,3}}
+--Pawnform1 = {{0,2,0}}
 Pawnfbook = {Pawnform1}
 Pawndynamic_fbook = Pawnfbook
 
