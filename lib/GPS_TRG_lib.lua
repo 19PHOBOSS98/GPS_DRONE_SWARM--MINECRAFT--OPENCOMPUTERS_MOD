@@ -126,7 +126,7 @@ end
 
 function GPS_TRG.updateGPSTRGsPRINT(tpBook,gpsC) --**********************-- --only call this sparingly, don't want to stall other flight formations
 	GPS_TRG.killGPSTRGThread(gpsC)
-	GPS_TRG.gpstrgThread = thread.create(function(tpb,gpsC) print("threading") GPS_TRG.gpstrgThread(tpb,gpsC) end,tpBook,gpsC)
+	GPS_TRG.gpstrgThread = thread.create(function(tpb,gpsC) print("threading") GPS_TRG.bcGPSTRGPosPRINT(tpb,gpsC) end,tpBook,gpsC)
 end
 
 function GPS_TRG.GPSRecall(tpBook,gpsC) --**********************-- --only call this sparingly, don't want to stall other flight formations
