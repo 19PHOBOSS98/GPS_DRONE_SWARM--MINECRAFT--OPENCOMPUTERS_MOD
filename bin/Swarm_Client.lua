@@ -21,6 +21,7 @@ local flightform = require("flight_formation")
 local radar_targeting = require("radar_targeting")
 local GPS = require("GPS")
 local GPS_TRG = require("GPS_TRG")
+local p_firmware = require("pawn_firmware")
 
 modem.open(QueensResponseChannel)
 modem.open(PawnsResponseChannel)
@@ -183,6 +184,9 @@ while true do
 		flightform.PformUP(4,Pawnffbook[1],PawnsChannel)
 		printSwarmStatsPawn()
 		os.sleep(0.5)
+	elseif(cmd == "FP") then
+		p_firmware.broadcastFirmWare(PawnsChannel)
+    	os.sleep(0.5)
 	elseif(cmd == "EP") then 
 		for i = 1,#Pawnffbook do
 			flightform.breakFormation(Pawnffbook[i],Pawndynamic_fbook[i],PawnsChannel,false)
