@@ -142,7 +142,8 @@ end
 ]]
 ,
 [[
-local function getGPSlocation()
+function getGPSlocation()
+	d.setStatusText("getGPS")
 	m.open(gpsChannel)
 	local fixes = {}
 	local pos1, pos2 = nil, nil
