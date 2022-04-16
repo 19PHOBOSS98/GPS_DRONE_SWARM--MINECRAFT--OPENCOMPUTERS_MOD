@@ -35,7 +35,7 @@ function GPS_TRG.bcGPSTRGPos(tpBook,gpsC)
 				--local radPos = radar_targeting.getPlayerCoord(tname)
 				local radPos = radar_targeting.getEntityCoord(tname)
 				--print("tport: ",tport,"tname: ",tname,"radPos: ",radPos.c.x,radPos.c.y,radPos.c.z)
-				if radPos.d then
+				if radPos then
 					radPos.c = vec_trunc(radPos.c)
 					local trgPos = add(radPos.c,gpsPos)
 					--print("tport: ",tport,"tname: ",tname,"trgPos: ",trgPos.x,trgPos.y,trgPos.z)
@@ -72,7 +72,7 @@ function GPS_TRG.bcGPSTRGPosPRINT(tpBook,gpsC)
 				--local radPos = radar_targeting.getPlayerCoord(tname)
 				local radPos = radar_targeting.getEntityCoord(tname)
 				--print("tport: ",tport,"tname: ",tname,"radPos: ",radPos.c.x,radPos.c.y,radPos.c.z)
-				if radPos.d then
+				if radPos then
 					radPos.c = vec_trunc(radPos.c)
 					local trgPos = add(radPos.c,gpsPos)
 					print("tport: ",tport,"tname: ",tname,"trgPos: ",trgPos.x,trgPos.y,trgPos.z)
