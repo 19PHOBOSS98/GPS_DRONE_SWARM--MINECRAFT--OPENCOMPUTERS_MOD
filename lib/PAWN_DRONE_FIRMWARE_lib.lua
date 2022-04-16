@@ -175,7 +175,7 @@ local function getGPSlocation()
 	end
 end
 ]]
-'
+,
 [[
 local refreshGPSInterval = 0
 function refreshGPSTable()
