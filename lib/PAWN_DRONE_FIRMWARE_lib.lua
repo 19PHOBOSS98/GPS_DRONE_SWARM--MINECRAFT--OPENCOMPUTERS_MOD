@@ -166,11 +166,13 @@ local function getGPSlocation()
 	end        
 
 	if pos1 and pos2 then
+		d.setStatusText("ps12")
 		return nil
 	elseif pos1 then
 		local c = round(pos1,1)
 		return {x=c.x,y=c.y,z=c.z}
 	else 
+		d.setStatusText("else")
 		return nil
 	end
 end
@@ -197,7 +199,7 @@ function gpsMoveToTarget(offset,trgChannel)
 	--d.setStatusText(tostring(trgChannel))
 	m.open(trgChannel)
 	repeat
-		d.setStatusText(tostring(arr_length(gpsSats)))
+		--d.setStatusText(tostring(arr_length(gpsSats)))
 		if arr_length(gpsSats)>=3 then
 			ctrlTRGPos = getGPSlocation()
 		end
