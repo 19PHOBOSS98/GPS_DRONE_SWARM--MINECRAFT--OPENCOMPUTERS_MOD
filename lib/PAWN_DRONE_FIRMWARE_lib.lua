@@ -192,8 +192,9 @@ end
 function gpsMoveToTarget(offset,trgChannel)
 	checkArg(1,e_name,"string","nil")
 	d.setLightColor(0xFFFFFF)
-	local ctrlTRGPos = nil
 	d.setStatusText(trgChannel)
+	local ctrlTRGPos = nil
+	
 	m.open(trgChannel)
 	repeat
 		if arr_length(gpsSats)>=3 then
