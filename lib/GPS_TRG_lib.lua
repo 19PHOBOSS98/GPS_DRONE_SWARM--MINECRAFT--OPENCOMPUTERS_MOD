@@ -49,6 +49,43 @@ function GPS_TRG.bcGPSTRGPos(tpBook,gpsC)
 	
 end
 
+function GPS_TRG.bcGPSTRGPosPRINT(tpBook,gpsC)
+	modem.open(gpsC)
+	modem.setStrength(math.huge)
+	local gpsTable = {}
+	local refreshGPSInterval = 5
+	local refreshGPSCounter = 0
+	event.listen("modem_message",function(_,_,r_addr,_,dist,msg,xg,yg,zg,...)
+		if msg == "gps" then
+			GPS.add2GPSTable(r_addr,xg,yg,zg,dist,gpsTable)
+		end
+	end)
+	while true do
+		term.clear()
+		local gpsPos = GPS.getGPSPos(gpsTable)
+		if gpsPos then
+			print("gpsPos: ",gpsPos.x,gpsPos.y,gpsPos.z)
+			gpsPos = vec_trunc(gpsPos)
+			print("gpsPos: ",gpsPos.x,gpsPos.y,gpsPos.z)
+			for tport,tname in pairs(tpBook) do
+				print("tport: ",tport,"tname: ",tname)
+				--local radPos = radar_targeting.getPlayerCoord(tname)
+				local radPos = radar_targeting.getEntityCoord(tname)
+				--print("tport: ",tport,"tname: ",tname,"radPos: ",radPos.c.x,radPos.c.y,radPos.c.z)
+				radPos.c = vec_trunc(radPos.c)
+				if radPos.d then
+					local trgPos = add(radPos.c,gpsPos)
+					print("tport: ",tport,"tname: ",tname,"trgPos: ",trgPos.x,trgPos.y,trgPos.z)
+					modem.broadcast(tport,"trg",trgPos.x,trgPos.y,trgPos.z)
+				end
+			end
+		end
+		refreshGPSCounter,gpsTable = GPS.refreshGPSTable(gpsTable,refreshGPSCounter,refreshGPSInterval)
+		os.sleep(0.5)
+	end
+	
+end
+
 GPS_TRG.gpstrgThread = nil
 
 function GPS_TRG.updateGPSTRGs(tpBook,gpsC) --**********************-- --only call this sparingly, don't want to stall other flight formations
