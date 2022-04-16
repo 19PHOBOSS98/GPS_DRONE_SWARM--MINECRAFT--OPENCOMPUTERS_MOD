@@ -103,7 +103,7 @@ function GPS_TRG.bcGPSRecall(tpBook,gpsC,PawnsC)
 			GPS.add2GPSTable(r_addr,xg,yg,zg,dist,gpsTable)
 		end
 	end)
-	modem.broadcast(PawnsC,"formup",0,0,0,1)
+	modem.broadcast(PawnsC,"formup",0,2,0,1)
 	while true do
 		term.clear()
 		local gpsPos = GPS.getGPSPos(gpsTable)
