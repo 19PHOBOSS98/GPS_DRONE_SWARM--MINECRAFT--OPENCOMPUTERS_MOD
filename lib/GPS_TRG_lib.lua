@@ -35,8 +35,8 @@ function GPS_TRG.bcGPSTRGPos(tpBook,gpsC)
 				--local radPos = radar_targeting.getPlayerCoord(tname)
 				local radPos = radar_targeting.getEntityCoord(tname)
 				--print("tport: ",tport,"tname: ",tname,"radPos: ",radPos.c.x,radPos.c.y,radPos.c.z)
-				radPos.c = vec_trunc(radPos.c)
 				if radPos.d then
+					radPos.c = vec_trunc(radPos.c)
 					local trgPos = add(radPos.c,gpsPos)
 					--print("tport: ",tport,"tname: ",tname,"trgPos: ",trgPos.x,trgPos.y,trgPos.z)
 					modem.broadcast(tport,"trg",trgPos.x,trgPos.y,trgPos.z)
@@ -68,15 +68,17 @@ function GPS_TRG.bcGPSTRGPosPRINT(tpBook,gpsC)
 			gpsPos = vec_trunc(gpsPos)
 			print("gpsPos: ",gpsPos.x,gpsPos.y,gpsPos.z)
 			for tport,tname in pairs(tpBook) do
-				print("tport: ",tport,"tname: ",tname)
+				--print("tport: ",tport,"tname: ",tname)
 				--local radPos = radar_targeting.getPlayerCoord(tname)
 				local radPos = radar_targeting.getEntityCoord(tname)
 				--print("tport: ",tport,"tname: ",tname,"radPos: ",radPos.c.x,radPos.c.y,radPos.c.z)
-				radPos.c = vec_trunc(radPos.c)
 				if radPos.d then
+					radPos.c = vec_trunc(radPos.c)
 					local trgPos = add(radPos.c,gpsPos)
 					print("tport: ",tport,"tname: ",tname,"trgPos: ",trgPos.x,trgPos.y,trgPos.z)
 					modem.broadcast(tport,"trg",trgPos.x,trgPos.y,trgPos.z)
+				else
+					print(tname," is out of radar Range")
 				end
 			end
 		end
