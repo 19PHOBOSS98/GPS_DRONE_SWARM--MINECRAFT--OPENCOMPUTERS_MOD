@@ -192,11 +192,12 @@ end
 function gpsMoveToTarget(offset,trgChannel)
 	--checkArg(1,trgChannel,"number","nil")
 	d.setLightColor(0xFFFFFF)
-	d.setStatusText(tostring(trgChannel))
-	local ctrlTRGPos = nil
 	
+	local ctrlTRGPos = nil
+	--d.setStatusText(tostring(trgChannel))
 	m.open(trgChannel)
 	repeat
+		d.setStatusText(tostring(arr_length(gpsSats)))
 		if arr_length(gpsSats)>=3 then
 			ctrlTRGPos = getGPSlocation()
 		end
