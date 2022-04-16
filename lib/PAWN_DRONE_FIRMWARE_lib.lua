@@ -143,7 +143,7 @@ end
 ,
 [[
 local function getGPSlocation()
-	modem.open(gpsChannel)
+	m.open(gpsChannel)
 	local fixes = {}
 	local pos1, pos2 = nil, nil
 	for addr,fix in pairs(gpsSats) do
@@ -193,7 +193,7 @@ function gpsMoveToTarget(offset,trgChannel)
 	checkArg(1,e_name,"string","nil")
 	d.setLightColor(0xFFFFFF)
 	local ctrlTRGPos = nil
-	modem.open(trgChannel)
+	m.open(trgChannel)
 	repeat
 		if arr_length(gpsSats)>=3 then
 			ctrlTRGPos = getGPSlocation()
@@ -231,7 +231,7 @@ function gpsMoveToTarget(offset,trgChannel)
 			refreshGPSTable()
 		until msg == "stop"
 	end
-	modem.close(trgChannel)
+	m.close(trgChannel)
 	return d.name()
 end
 ]]
