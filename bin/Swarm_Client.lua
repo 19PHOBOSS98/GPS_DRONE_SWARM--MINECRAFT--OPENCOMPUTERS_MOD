@@ -25,12 +25,6 @@ local p_firmware = require("pawn_firmware")
 
 modem.open(QueensResponseChannel)
 modem.open(PawnsResponseChannel)
---[[
-modem.broadcast(PawnsChannel,"Sr= component.proxy(component.list('radar')())")
-modem.broadcast(PawnsChannel,"Sn= component.proxy(component.list('navigation')())")
-modem.broadcast(PawnsChannel,"Sd= component.proxy(component.list('drone')())")
-modem.broadcast(PawnsChannel,"function sleep(timeout) checkArg(1, timeout, 'number', 'nil') local deadline = computer.uptime() + (timeout or 0) repeat computer.pullSignal(deadline - computer.uptime()) until computer.uptime() >= deadline end")
-]]
 
 flightformation={}
 ffbook={flightformation}
@@ -184,6 +178,12 @@ while true do
 		flightform.PformUP(4,Pawnffbook[1],PawnsChannel)
 		printSwarmStatsPawn()
 		os.sleep(0.5)
+		
+	elseif(cmd == "GP") then -- recall PAWNS
+		modem.broadcast(PawnsChannel,"stop")
+		GPS_TRG.GPSRecall(trgPortBook,gpsChannel)
+		os.sleep(0.5)	
+		
 	elseif(cmd == "FP") then
 		p_firmware.broadcastFirmWare(PawnsChannel)
     	os.sleep(0.5)
