@@ -192,6 +192,7 @@ end
 [[
 function gpsMoveToTarget(offset,trgChannel)
 	d.setLightColor(0xFFFFFF)
+	gpsSats={}
 	m.open(gpsChannel)
 	local ctrlTRGPos = nil
 	repeat
