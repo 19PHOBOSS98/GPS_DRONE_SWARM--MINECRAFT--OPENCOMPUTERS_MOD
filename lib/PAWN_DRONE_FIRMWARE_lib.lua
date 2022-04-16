@@ -91,7 +91,7 @@ actsWhileMoving = {
 	[drone_inv] = function(r_add) replyInv(r_add) end,
 	["commit"] = function() d.setLightColor(0x0077FF) isFree = false end,
 	["uncommit"] = function() isFree = true end,
-	["gps"] = function(r_addr,x,y,z,dist,_) add2GPSTable(r_addr,x,y,z,dist) end,
+	["gps"] = function(r_addr,x,y,z,dist) add2GPSTable(r_addr,x,y,z,dist) end,
 	["trg"] = function(_,x,y,z,dist) cmdTRGPos={c={x=x,y=y,z=z},d=dist} end,
 	["HUSH"] = function() d.setLightColor(0xFF0000) sleep(1) computer.shutdown() end
 }
