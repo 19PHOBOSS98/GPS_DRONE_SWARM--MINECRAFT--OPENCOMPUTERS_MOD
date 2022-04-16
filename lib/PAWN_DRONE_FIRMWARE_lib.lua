@@ -79,7 +79,7 @@ acts = {
 	["uncommit"] = function() isFree = true end,
 
 	["gps"] = function(r_addr,x,y,z,dist) add2GPSTable(r_addr,x,y,z,dist) end,
-	["trg"] = function(_,x,y,z,dist) d.setStatusText("trg1") cmdTRGPos={c={x,y,z},d=dist} end,
+	["trg"] = function(_,x,y,z,dist) cmdTRGPos={c={x,y,z},d=dist} end,
 	["formup"] = function(_,x,y,z,_,trgC) d.setStatusText(gpsMoveToTarget({x=x,y=y,z=z},trgC)) end,	
 	
 	["HUSH"] = function() computer.shutdown() end
@@ -92,7 +92,7 @@ actsWhileMoving = {
 	["commit"] = function() d.setLightColor(0x0077FF) isFree = false end,
 	["uncommit"] = function() isFree = true end,
 	["gps"] = function(r_addr,x,y,z,dist) add2GPSTable(r_addr,x,y,z,dist) end,
-	["trg"] = function(_,x,y,z,dist) d.setStatusText("trg2") cmdTRGPos={c={x=x,y=y,z=z},d=dist} end,
+	["trg"] = function(_,x,y,z,dist) cmdTRGPos={c={x=x,y=y,z=z},d=dist} end,
 	["HUSH"] = function() d.setLightColor(0xFF0000) sleep(1) computer.shutdown() end
 }
 ]]
@@ -225,8 +225,9 @@ function gpsMoveToTarget(offset,trgChannel)
 				actsWhileMoving[msg](r_addr,x,y,z,dist)
 			end
 
-			local trgPos = cmdTRGPos--getTRGPos()
+			local trgPos = getTRGPos()
 			if trgPos.d and trgPos.d < 50 then
+				d.setLightColor(0x00FF00)
 				trgPos.c = vec_trunc(trgPos.c)
 				local trgPosOffset = add(trgPos.c, offset)
 				mv = sub(trgPosOffset,ctrlTRGPos)
