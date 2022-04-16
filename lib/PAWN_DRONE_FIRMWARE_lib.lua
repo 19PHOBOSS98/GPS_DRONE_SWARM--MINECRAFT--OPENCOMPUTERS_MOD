@@ -79,7 +79,7 @@ acts = {
 	["uncommit"] = function() isFree = true end,
 
 	["gps"] = function(r_addr,x,y,z,dist) add2GPSTable(r_addr,x,y,z,dist) end,
-	["trg"] = function(_,x,y,z,dist) d.setStatusText("trg2") cmdTRGPos={c={x,y,z},d=dist} end,
+	["trg"] = function(_,x,y,z,dist) d.setStatusText("trg1") cmdTRGPos={c={x,y,z},d=dist} end,
 	["formup"] = function(_,x,y,z,_,trgC) d.setStatusText(gpsMoveToTarget({x=x,y=y,z=z},trgC)) end,	
 	
 	["HUSH"] = function() computer.shutdown() end
@@ -143,7 +143,6 @@ end
 ,
 [[
 function getGPSlocation()
-	d.setStatusText("getGPS")
 	m.open(gpsChannel)
 	local fixes = {}
 	local pos1, pos2 = nil, nil
@@ -208,9 +207,10 @@ function gpsMoveToTarget(offset,trgChannel)
 		if ctrlTRGPos then ctrlTRGPos = vec_trunc(ctrlTRGPos) 
 		else d.setLightColor(0xFF0000) d.setStatusText("No GPS") end
 	
-		_,_,r_add,_,dist,msg,x,y,z,_ = computer.pullSignal(0.5)
+		_,_,r_addr,_,dist,msg,x,y,z,trgCh = computer.pullSignal(0.5)
+		
 		if actsWhileMoving[msg] then
-			actsWhileMoving[msg](r_add,x,y,z,dist)
+			actsWhileMoving[msg](r_addr,x,y,z,dist)
 		end
 	until msg == "stop" or ctrlTRGPos
 	
@@ -218,9 +218,10 @@ function gpsMoveToTarget(offset,trgChannel)
 	if ctrlTRGPos then
 	--local cc = 0
 		repeat
-			_,_,r_add,_,dist,msg,x,y,z,_ = computer.pullSignal(0.5)
+			_,_,r_addr,_,dist,msg,x,y,z,trgCh = computer.pullSignal(0.5)
+			d.setStatusText(tostring(msg))
 			if actsWhileMoving[msg] then
-				actsWhileMoving[msg](r_add,x,y,z,dist)
+				actsWhileMoving[msg](r_addr,x,y,z,dist)
 			end
 
 			local trgPos = cmdTRGPos--getTRGPos()
