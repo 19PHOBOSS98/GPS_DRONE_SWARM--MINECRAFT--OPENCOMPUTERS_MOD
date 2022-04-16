@@ -167,7 +167,7 @@ while true do
 		modem.broadcast(QueensChannel,"startgps")
     	os.sleep(0.5)
 	elseif(cmd == "TRG") then
-		GPS_TRG.updateGPSTRGs(trgPortBook,gpsChannel)
+		GPS_TRG.updateGPSTRGsPRINT(trgPortBook,gpsChannel)
     	os.sleep(0.5)
 		
 	elseif(cmd == "K") then
