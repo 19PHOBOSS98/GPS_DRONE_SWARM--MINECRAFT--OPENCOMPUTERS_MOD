@@ -198,6 +198,7 @@ function gpsMoveToTarget(offset,trgChannel)
 	local ctrlTRGPos = nil
 	--d.setStatusText(tostring(trgChannel))
 	m.open(trgChannel)
+	local gg = 0
 	repeat
 		--d.setStatusText(tostring(arr_length(gpsSats)))
 		if arr_length(gpsSats)>=3 then
@@ -205,7 +206,7 @@ function gpsMoveToTarget(offset,trgChannel)
 		end
 	
 		if ctrlTRGPos then ctrlTRGPos = vec_trunc(ctrlTRGPos) 
-		else d.setLightColor(0xFF0000) d.setStatusText("No GPS") end
+		else d.setLightColor(0xFF0000) d.setStatusText("No GPS:"..tostring(gg)) gg=gg+1 end
 	
 		_,_,r_addr,_,dist,msg,x,y,z,trgCh = computer.pullSignal(0.5)
 		
@@ -216,7 +217,6 @@ function gpsMoveToTarget(offset,trgChannel)
 	d.setLightColor(0xFFFFFF)
 	local mv = {x=0,y=0,z=0},msg,r_add,dist,x,y,z
 	if ctrlTRGPos then
-	m.close(gpsChannel)
 	local trgUpdate = {}
 	--local cc = 0
 		repeat
