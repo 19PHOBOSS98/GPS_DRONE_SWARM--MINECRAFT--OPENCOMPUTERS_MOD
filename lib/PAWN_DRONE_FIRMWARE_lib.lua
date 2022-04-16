@@ -92,7 +92,7 @@ actsWhileMoving = {
 	["commit"] = function() d.setLightColor(0x0077FF) isFree = false end,
 	["uncommit"] = function() isFree = true end,
 	["gps"] = function(r_addr,x,y,z,dist) add2GPSTable(r_addr,x,y,z,dist) end,
-	["trg"] = function(_,x,y,z,dist) cmdTRGPos={c={x=x,y=y,z=z},d=dist} d.setStatusText("trg2:"..tostring(cmdTRGPos.c.x))  end,
+	--["trg"] = function(_,x,y,z,dist) cmdTRGPos={c={x=x,y=y,z=z},d=dist} d.setStatusText("trg2:"..tostring(cmdTRGPos.c.x))  end,
 	["HUSH"] = function() d.setLightColor(0xFF0000) sleep(1) computer.shutdown() end
 }
 ]]
@@ -191,26 +191,23 @@ end
 ,
 [[
 function gpsMoveToTarget(offset,trgChannel)
-	--checkArg(1,trgChannel,"number","nil")
 	d.setLightColor(0xFFFFFF)
 	m.open(gpsChannel)
 	local ctrlTRGPos = nil
-	--d.setStatusText(tostring(trgChannel))
-	local gg = 0
 	repeat
-		--d.setStatusText(tostring(arr_length(gpsSats)))
 		if arr_length(gpsSats)>=3 then
 			ctrlTRGPos = getGPSlocation()
 		end
 	
 		if ctrlTRGPos then ctrlTRGPos = vec_trunc(ctrlTRGPos) 
-		else d.setLightColor(0xFF0000) d.setStatusText("No GPS:"..tostring(gg)) gg=gg+1 end
+		else d.setLightColor(0xFF0000) d.setStatusText("No GPS:") end
 	
 		_,_,r_addr,_,dist,msg,x,y,z,trgCh = computer.pullSignal(0.5)
 		
 		if actsWhileMoving[msg] then
 			actsWhileMoving[msg](r_addr,x,y,z,dist)
 		end
+		refreshGPSTable()
 	until msg == "stop" or ctrlTRGPos
 
 	if ctrlTRGPos then
@@ -219,31 +216,30 @@ function gpsMoveToTarget(offset,trgChannel)
 		m.open(trgChannel)
 		local mv = {x=0,y=0,z=0},msg,r_add,dist,x,y,z
 		local trgUpdate = {}
-		--local cc = 0
 			repeat
 				_,_,r_addr,_,dist,msg,x,y,z,trgCh = computer.pullSignal(0.5)
-
-				--if actsWhileMoving[msg] then
-				--	actsWhileMoving[msg](r_addr,x,y,z,dist)
-				--end
+	
 				if msg == "trg" then
 					trgUpdate = {c={x=x,y=y,z=z},d=dist}
 				end
 				local trgPos = trgUpdate
+
 				if trgPos.d and trgPos.d < 50 then
-					d.setLightColor(0x00FF00)
 					trgPos.c = vec_trunc(trgPos.c)
 					local trgPosOffset = add(trgPos.c, offset)
 					mv = sub(trgPosOffset,ctrlTRGPos)
 					d.move(mv.x,mv.y,mv.z)
 					ctrlTRGPos = trgPosOffset
+					d.setLightColor(0x00FF00)
+					d.setStatusText(d.name())
 				else
 					d.setLightColor(0xFF0000)
-					d.setStatusText("Out Of\nRange"..tostring(cc))
-					--cc=cc+1
+					d.setStatusText("Out Of\nRange")
 					d.move(-mv.x,-mv.y,-mv.z)
 				end
-				refreshGPSTable()
+				if actsWhileMoving[msg] then
+					actsWhileMoving[msg](r_addr,x,y,z,dist)
+				end
 			until msg == "stop"
 	end
 	m.close(trgChannel)
