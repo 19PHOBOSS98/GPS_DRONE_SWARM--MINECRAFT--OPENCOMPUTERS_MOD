@@ -190,9 +190,9 @@ end
 ,
 [[
 function gpsMoveToTarget(offset,trgChannel)
-	checkArg(1,e_name,"string","nil")
+	--checkArg(1,trgChannel,"number","nil")
 	d.setLightColor(0xFFFFFF)
-	d.setStatusText(trgChannel)
+	d.setStatusText(tostring(trgChannel))
 	local ctrlTRGPos = nil
 	
 	m.open(trgChannel)
