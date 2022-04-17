@@ -262,7 +262,8 @@ end
 ,
 [[
 --rotationInterval = math.pi/4
-rotationInterval = math.pi/8
+--rotationInterval = math.pi/8
+rotationInterval = math.pi/2
 twPI = 2*math.pi
 function gpsOrbitTRG(offset,trgChannel)
 	d.setLightColor(0xFFFFFF)
