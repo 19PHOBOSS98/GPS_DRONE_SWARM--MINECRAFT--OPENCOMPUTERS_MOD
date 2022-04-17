@@ -150,7 +150,14 @@ function flight_formation.PformUP(trgPort,ff,port) --**********************--
 		modem.send(addr,port,"formup",pos[1],pos[2],pos[3],trgPort)
 	end
 end
- 
+
+
+function flight_formation.POrbit(trgPort,ff,port) --**********************--
+	for addr,pos in pairs(ff) do
+		modem.send(addr,port,"orbit",pos[1],pos[2],pos[3],trgPort)
+	end
+end
+
 function flight_formation.breakFormation(ff,f,port,is_Queen) --**********************--
 	for addr,pos in pairs(ff) do
 		table.insert(f,1,pos)
