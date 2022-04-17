@@ -80,9 +80,10 @@ Pawnffbook[2] = {}
 Pawnffbook[3] = {}
 dynamicTriangle = {{3,2,-2},{-3,2,-2},{0,2,3}}
 staticTriangle = {{3,2,-2},{-3,2,-2},{0,2,3}}
-staticOrbitTriangle = {{3,2,-2},{-3,2,-2},{0,2,3}}
+--staticOrbitTriangle = {{3,2,-2},{-3,2,-2},{0,2,3}}
+staticOrbitSquare = {{2,1,0},{-2,1,0},{0,1,2},{0,1,-2}}
 --Pawnform1 = {{0,2,0}}
-Pawnfbook = {dynamicTriangle,staticTriangle,staticOrbitTriangle}
+Pawnfbook = {dynamicTriangle,staticTriangle,staticOrbitSquare}
 Pawndynamic_fbook = Pawnfbook
 
 
