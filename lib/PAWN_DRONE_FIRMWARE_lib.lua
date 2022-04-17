@@ -315,7 +315,7 @@ function gpsOrbitTRG(offset,trgChannel)
 					d.setStatusText(d.name())
 				else
 					d.setLightColor(0xFF0000)
-					d.setStatusText("Out Of\nRange"...tostring(trgChannel))
+					d.setStatusText("Out Of\nRange "..tostring(trgChannel))
 					d.move(-mv.x,-mv.y,-mv.z)
 				end
 				if actsWhileMoving[msg] then
