@@ -81,7 +81,7 @@ acts = {
 	["gps"] = function(r_addr,x,y,z,dist) add2GPSTable(r_addr,x,y,z,dist) end,
 	["trg"] = function(_,x,y,z,dist) cmdTRGPos={c={x,y,z},d=dist} end,
 	["formup"] = function(_,x,y,z,_,trgC) d.setStatusText(gpsMoveToTarget({x=x,y=y,z=z},trgC)) end,	
-	["orbit"] = function(_,x,y,z,_,trgC) d.setStatusText("orbiting") d.setStatusText(gpsOrbitTRG({x=x,y=y,z=z},trgC)) end,
+	["orbit"] = function(_,x,y,z,_,trgC) d.setStatusText(gpsOrbitTRG({x=x,y=y,z=z},trgC)) end,
 	["HUSH"] = function() computer.shutdown() end
 }
 ]]
@@ -315,7 +315,7 @@ function gpsOrbitTRG(offset,trgChannel)
 					d.setStatusText(d.name())
 				else
 					d.setLightColor(0xFF0000)
-					d.setStatusText("Out Of\nRange")
+					d.setStatusText("Out Of\nRange O")
 					d.move(-mv.x,-mv.y,-mv.z)
 				end
 				if actsWhileMoving[msg] then
@@ -334,7 +334,6 @@ d.setLightColor(0x007B62)
 while true do
 	_,_,r_addr,_,dist,msg,x,y,z,trgCh = computer.pullSignal(0.5)
 	if d.name():match("^S%d+$") then
-		if msg =="orbit"then d.setStatusText("orbitter") end
 		if acts[msg] then
 			acts[msg](r_addr,x,y,z,dist,trgCh)
 		end
