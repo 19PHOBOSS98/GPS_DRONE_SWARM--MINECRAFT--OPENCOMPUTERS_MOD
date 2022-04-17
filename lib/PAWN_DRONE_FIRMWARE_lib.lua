@@ -293,8 +293,9 @@ function gpsOrbitTRG(offset,trgChannel)
 		local rotationInterval = 0.785 -- PI/4
 			repeat
 				_,_,r_addr,_,dist,msg,x,y,z,trgCh = computer.pullSignal(0.5)
-				d.setStatusText("msg: "..msg)
+				
 				if msg == "trg" then
+					d.setStatusText("x: "..x)
 					trgUpdate = {c={x=x,y=y,z=z},d=dist}
 				end
 				local trgPos = trgUpdate
