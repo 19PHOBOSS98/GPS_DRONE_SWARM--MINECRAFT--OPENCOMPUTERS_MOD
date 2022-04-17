@@ -7,7 +7,7 @@ local modem = component.modem
 local radar_targeting = require 'radar_targeting'
 local s_utils = require 'swarm_utilities'
 local GPS = require 'GPS'
-
+local flightform = require 'flight_formation'
 local vec_trunc,add = s_utils.vec_trunc,s_utils.add
 
 local GPS_TRG = {}
@@ -146,8 +146,13 @@ function GPS_TRG.bcStaticGPSPos(tpBook,gpsC)
 		else
 			print("GPS Out Of Range")
 		end
+		refreshGPSCounter,gpsTable = GPS.refreshGPSTable(gpsTable,refreshGPSCounter,refreshGPSInterval)
+		os.sleep(0.5)
 	until gpsPos
 	modem.close(gpsC)
+	print("PAWNS:")
+	flightform.printDronePool(false)
+	flightform.printFFAssignment(Pawnffbook)
 	
 end
 
