@@ -250,19 +250,19 @@ end
 ,
 [[
 function rotatePoint(rad,point)
+	d.setStatusText("pointx: "..tostring(point.x))
 	local s = math.sin(rad);
 	local c = math.cos(rad);
-
-	// rotate point
+	
 	local xnew = point.x * c - point.z * s;
 	local znew = point.x * s + point.z * c;
-	point.x = xnew
-	point.z = znew
-	return point
+	return {x=xnew,y=point.y,z=znew}
 end
 ]]
 ,
 [[
+rotationInterval = math.pi/4
+twPI = 2*math.pi
 function gpsOrbitTRG(offset,trgChannel)
 	d.setLightColor(0xFFFFFF)
 	gpsSats={}
@@ -291,7 +291,7 @@ function gpsOrbitTRG(offset,trgChannel)
 		local mv = {x=0,y=0,z=0},msg,r_add,dist,x,y,z
 		local trgUpdate = {}
 		local currentAngle = 0 -- in radians
-		local rotationInterval = 0.785 -- PI/4
+		
 			repeat
 				_,_,r_addr,_,dist,msg,x,y,z,trgCh = computer.pullSignal(0.5)
 				
@@ -302,9 +302,9 @@ function gpsOrbitTRG(offset,trgChannel)
 				
 				if trgPos.d and trgPos.d < 50 then
 					trgPos.c = vec_trunc(trgPos.c)
+
+					local rotatedOffset = rotatePoint(currentAngle%twPI,offset)
 					
-					if currentAngle >= 6.3832 then currentAngle = 0 end
-					local rotatedOffset = rotatePoint(currentAngle,offset)
 					currentAngle = currentAngle + rotationInterval
 					
 					local trgPosOffset = add(trgPos.c, rotatedOffset)
