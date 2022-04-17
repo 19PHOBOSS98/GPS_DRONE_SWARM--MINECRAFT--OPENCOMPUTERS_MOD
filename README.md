@@ -16,28 +16,38 @@ I didn't realise my build wasn't survival friendly. Each drone needed a Radar Up
 
 I finally want to come back and work on the project, hoping this Computer Engineering degree would be enough to improve whatever cringy code I started with.
 
-## HOW IT WORKS...
+## HOW IT WORKS
 
 See, I have two kinds of drones in my swarm. I call them the QUEENS and the PAWNS. 
 
 ### QUEENS
-The Queens are a bit more expensive than Pawns. They each use a Navigation Upgrade and a Radar Upgrade (from the Computronics Addon) to intercept a target and fly in formation. They are expensive cause drones can only ever hold three upgrade slots at max:
+The Queens are a bit more expensive than Pawns. They each use a [Navigation Upgrade](https://ocdoc.cil.li/item:navigation_upgrade) and a [Radar Upgrage](https://wiki.vexatos.com/wiki:computronics:radar) (from the Computronics Addon) to intercept a target and fly in formation. They're expensive cause drones can only ever hold three upgrade slots at max:
 <img width="354" alt="Screen Shot 2022-04-17 at 11 47 12 AM" src="https://user-images.githubusercontent.com/37253663/163699591-344cb3fa-c74d-42cd-8148-07c39084b1ac.png">
 
 The Radar Upgrage tells them where players are and the Navigation Upgrade tells them where they are on a map. Now at first, I thought i could get away with only using the Radar Upgrade but the drones kept over shooting and getting stuck in a loop when they gets too far from their target.
 
-The navigation Upgrade fixes this. Knowing where it is relative to a target and doing simple math, it can intercept it without overshooting. Getting stuck in a corner wouldn't even be a big issue anymore. If the target gets near enough, it can change direction easily and get's itself unstuck.
+<img width="78" alt="Screen Shot 2022-04-17 at 3 27 37 PM" src="https://user-images.githubusercontent.com/37253663/163705055-0d4a3473-0e40-4b5f-b62e-c8589422796a.png">
 
-The down side is that the Navigation Upgrade can only work within a range of a map that you crafted it with.
 
-Queens are fast but they only can operate within a certain range before replacing them with another set of Queens that can operate in the next map.
+The Navigation Upgrade fixes this. Knowing where it is relative to a target and doing simple math, it can intercept it without overshooting that much. Getting stuck in a corner wouldn't even be a big issue anymore. If the target gets near enough, it can change direction easily and get itself unstuck.
 
-That's why they're mostly used for setting up GPS satellite clusters for Pawns to use and navigate the world (More about the GPS System bellow).
+<img width="71" alt="Screen Shot 2022-04-17 at 3 27 43 PM" src="https://user-images.githubusercontent.com/37253663/163705059-542e6d76-1aac-48c6-acd4-ce31b85bbe1c.png">
+
+
+
+The down side is that the Navigation Upgrade can only work within the range of a map that you crafted it with.
+
+<img width="1280" alt="Screen Shot 2022-04-17 at 3 35 57 PM" src="https://user-images.githubusercontent.com/37253663/163705254-274faaef-4d57-4f05-9afd-2399fa81dbb7.png">
+
+Queens are fast but they only can operate within a certain range before we can replace them with another set of Queens that can operate in the next map.
+
+That's why they're mostly used for setting up stationary GPS satellite clusters for Pawns to move around with (More about the GPS System bellow).
+
 
 
 ### PAWNS
 
-Despite their name, these guys are the main attraction. They don't need upgrades to get arround, they can be as cheap as they can be. 
+Despite their name, these guys are the main attraction. They don't need upgrades to get arround, they can be as cheap as they can get. 
 
 Instead of each having a Navigation upgrade they can calculate their own GPS location with the help of Queens flying in a satellite formation. 
 
@@ -49,20 +59,25 @@ And as long as you're within radar range of the command tablet, They'll know whe
 
 Depending on how many GPS Satellite Clusters you have spread out in different maps, they can operate almost anywhere.
 
-The best part is that they have free upgrade slots that you can use to make them do almost anything from delivering Amazon packages to planting bombs... not necessarily in that order.
+The best part is that this frees up upgrade slots that you can use to make them do almost anything from delivering Amazon packages to planting bombs... not necessarily in that order.
+
+<img width="327" alt="Screen Shot 2022-04-17 at 3 40 37 PM" src="https://user-images.githubusercontent.com/37253663/163705409-0a514314-fca7-4b3f-bf62-4959398bf62b.png">
+
 
 The only downside I see is their target intercepting speed because of the delay in broadcasting their targets location from the command tablet.
+
 
 ### SWARM MANAGEMENT
 
 #### MULTIPLE FLIGHT FORMATIONS
 The drone manager maintains a pool of available drones. A player can request some drones from the pool to fill a flight formation. Depending on the size of the swarm a player can have multiple independent flight formations active all at the same time.
+<img width="692" alt="Screen Shot 2022-04-17 at 1 35 03 PM" src="https://user-images.githubusercontent.com/37253663/163704219-0b43ea8d-11ba-4cda-8a08-b89fcb7dfcbb.png">
 
 #### IMMORTAL FORMS
 Each flight formation is regenerative. That means in case a drone falls out of formation, a player can simply hit refresh and request for a replacement from the pool without disturbing the rest of the flight formation. As long as you have enough spare drones the flight formation will stay immortal.
 
 #### DYNAMIC FIRMWARE
-Each drone has a base firmware in their BIOS chip enough to receive and load commands in memory through a wireless receiver. The rest of the Firmware is broadcasted to the drones as they get activated. This way I wouldn't need to replace each drone's BIOS chip whenever I need to tweak their firmware.
+Each drone has a base firmware in their BIOS chip enough to receive and load commands in memory through a wireless receiver. The rest of the Firmware is broadcasted to the drones as they get activated. This way I wouldn't need to replace each drone's BIOS chip each time I need to tweak their firmware.
 
 #### CLIENT BASED REQUEST
 A swarm can be controlled through more than one command tablet. Depending on the number of available drones, more than one client can request for a formation from ~~the pool~~ THE SWARM.
@@ -77,11 +92,11 @@ ds84182: https://github.com/OpenPrograms/ds84182-Programs/blob/master/gps/libgps
 
 BigSHinyToys: http://www.computercraft.info/forums2/index.php?/topic/3088-how-to-guide-gps-global-position-system/ (for the satelite formation)
 
-I tweaked their code a bit to make the GPS updates dynamic. I based it on credomane and DOOBW's work. I have the Sattelite Cluster constantly broadcast GPS coordinates thru a dedicated channel for anyone to listen to. I know this is a big power drain especially since PAWNS only ever need to know ther GPS position once every movement command from the tablet. However, a command tablet does need that sweet fast GPS channel to constantly update target entity positions for the PAWNS.
+I tweaked their code a bit to make the GPS updates dynamic. I based it on credomane and DOOBW's work. I have the Sattelite Cluster constantly broadcast GPS coordinates thru a dedicated channel for anyone to listen to. I know this is a big power drain especially since PAWNS only ever need to know ther GPS position once every movement command from the tablet. However, a command tablet, does need that sweet fast GPS channel to constantly update target entity positions for the PAWNS.
 
-Moreover, you'de need to mess with the configuration anyways to get the radar upgrade to work so might as well mess with the power cost for broadcasting wireless signals.
+Moreover, you'de need to mess with the configurations anyway to get the radar upgrade to work, so might as well mess with the power cost for broadcasting wireless signals.
 
-Computronics Addon Configuration:
+My Computronics Addon Configurations:
 ```
 ...
     # How much energy each 1-block distance takes by OpenComputers radars. [range: 0.0 ~ 10000.0, default: 50.0]
@@ -98,36 +113,42 @@ radar {
 }
 ...
 ```
-OpenComputers Configuration:
+My OpenComputers Configurations:
 ```
 ...
-
+    # The maximum distance a wireless message can be sent. In other words,
+    # this is the maximum signal strength a wireless network card supports.
+    # This is used to limit the search range in which to check for modems,
+    # which may or may not lead to performance issues for ridiculous ranges -
+    # like, you know, more than the loaded area.
+    # See also: `wirelessCostPerRange`.
+    # These values are for the tier 1 and 2 wireless cards, in that order.
+    maxWirelessRange=[
+      160,
+      4000
+    ]
+...
+      # The amount of energy it costs to send a wireless message with signal
+      # strength one, which means the signal reaches one block. This is
+      # scaled up linearly, so for example to send a signal 400 blocks a
+      # signal strength of 400 is required, costing a total of
+      # 400 * `wirelessCostPerRange`. In other words, the higher this value,
+      # the higher the cost of wireless messages.
+      # See also: `maxWirelessRange`.
+      # These values are for the tier 1 and 2 wireless cards, in that order.
+      wirelessCostPerRange=[
+        0.0001,
+        0.0001
+      ]
+    }
 ...
 ```
-
-Now the plan is to use only a few drones with the radar upgrade (QUEENS) as satellites and have the rest of the swarm (SOLDIERS/PAWNS) use the GPS system instead of having each drone with its own radar upgrade.
-
-Along the way, I realised the radar upgrade wasn't enough for flying in formation and intercepting targets. I needed navigation upgrades for my QUEENS to know where they are and calculate their movement properly. The down side to the navigation upgrade is that it needs a map to craft it. It stops working whe the drone flies out of range of the map.
-
-As I said QUEENS are meant to be GPS satelite references for the PAWNS, they would be stationary most of the time so they don't need to move as much. If need be, I can easily replace QUEENS with ones that have navigation upgrades crafted for the neighboring map.
-
-I made it so that flight formations are regenerative. That is if a drone stops working or gets knocked out of formation I can request another free drone from the swarm to take its place without disturbing the rest of the formation.
-
-Right, flight formations. give the swarm an array of coordinates and they'll do their best to position themselves as so, around a "target". For the GPS Satellite formation the target is myself so I could easily position them better.
+Here are some QUEENS in a "Tetrahedron" formation acting as GPS satellites:
+<img width="1280" alt="Screen Shot 2022-04-17 at 1 36 24 PM" src="https://user-images.githubusercontent.com/37253663/163704228-d59ab99a-0319-4fea-8329-a2871817e758.png">
 
 
-
-I needed to tweak their code a bit tho. See, their system is request based which means your gps location is only ever updated whenever you ask for it. That means I have to wait for at least 3 satellites to respond before I even have the chance to calculate my GPS position. This gets worse for a drone that needs its GPS location on the spot. In my experience I needed 7 QUEENS in a formation to get a more accurate GPS reading so I'd have to wait a bit longer. Moreover, there's also a chance of having to wait longer for a dead satellite to reply.
-
-So, what I did was have each GPS Satellite continuously broadcast their position instead. This updates a GPS table on each PAWN. This way, the drone can get it's coordinates faster. Refreshing the table would automatically get rid of dead satellites as well. 
-
-
-In summary, so far I:
-+ separated most of the code into libraries
-+ made flight formations are easier to edit
-+ made swarm flight formations regenerative
-
-
+### SWARM CHANNEL/PORTS
+I haven't implemented these yet but might as well put it here.
 
 gpsChannel = 65535
 
@@ -143,4 +164,28 @@ QUEEN_ErrorChannel = 65530
 
 PAWN_ErrorChannel = 65529
 
-trgChannel = [1-65528]
+trgChannel = [1-65528]  --these are where separate PAWN formations listen to for their targets location
+
+### DOWNLOAD SHELL COMMANDS
+Here are the shell commands to get all the libraries and programs you need, straight from this repo:
+
+#### Libraries:
+```
+wget -f "https://raw.githubusercontent.com/19PHOBOSS98/GPS_DRONE_SWARM--MINECRAFT--OPENCOMPUTERS_MOD/main/lib/Swarm_Utilities_lib.lua" /lib/swarm_utilities.lua
+wget -f "https://raw.githubusercontent.com/19PHOBOSS98/GPS_DRONE_SWARM--MINECRAFT--OPENCOMPUTERS_MOD/main/lib/QUEEN_DRONE_FIRMWARE_lib.lua" /lib/queen_firmware.lua
+wget -f "https://raw.githubusercontent.com/19PHOBOSS98/GPS_DRONE_SWARM--MINECRAFT--OPENCOMPUTERS_MOD/main/lib/Flight_Formation_lib.lua" /lib/flight_formation.lua
+wget -f "https://raw.githubusercontent.com/19PHOBOSS98/GPS_DRONE_SWARM--MINECRAFT--OPENCOMPUTERS_MOD/main/lib/PAWN_DRONE_FIRMWARE_lib.lua" /lib/pawn_firmware.lua
+wget -f "https://raw.githubusercontent.com/19PHOBOSS98/GPS_DRONE_SWARM--MINECRAFT--OPENCOMPUTERS_MOD/main/lib/Radar_Targeting_lib.lua" /lib/radar_targeting.lua
+
+```
+#### Flash these onto your drones' EEPROM Chip:
+```
+wget -f "https://raw.githubusercontent.com/19PHOBOSS98/GPS_DRONE_SWARM--MINECRAFT--OPENCOMPUTERS_MOD/main/flash_BIOS/DRONE_BRAIN_QUEEN.lua" /home/QUEEN_BRAIN.lua
+wget -f "https://raw.githubusercontent.com/19PHOBOSS98/GPS_DRONE_SWARM--MINECRAFT--OPENCOMPUTERS_MOD/main/flash_BIOS/DRONE_BRAIN_PAWN.lua" /home/PAWN_BRAIN.lua
+```
+#### Main Client:
+```
+wget -f "https://raw.githubusercontent.com/19PHOBOSS98/GPS_DRONE_SWARM--MINECRAFT--OPENCOMPUTERS_MOD/main/bin/Swarm_Client.lua" /home/Swarm7.lua
+```
+
+have fun!
