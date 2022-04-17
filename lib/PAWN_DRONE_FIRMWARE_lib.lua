@@ -254,9 +254,10 @@ function rotatePoint(rad,point)
 	local c = math.cos(rad);
 
 	// rotate point
-	float xnew = point.x * c - point.y * s;
-	float ynew = point.x * s + point.y * c;
-
+	local xnew = point.x * c - point.z * s;
+	local znew = point.x * s + point.z * c;
+	point.x = xnew
+	point.z = znew
 	return point
 end
 ]]
@@ -295,18 +296,17 @@ function gpsOrbitTRG(offset,trgChannel)
 				_,_,r_addr,_,dist,msg,x,y,z,trgCh = computer.pullSignal(0.5)
 				
 				if msg == "trg" then
-					d.setStatusText("d: "..dist)
 					trgUpdate = {c={x=x,y=y,z=z},d=dist}
 				end
 				local trgPos = trgUpdate
-
+				
 				if trgPos.d and trgPos.d < 50 then
 					trgPos.c = vec_trunc(trgPos.c)
-
+					
 					if currentAngle >= 6.3832 then currentAngle = 0 end
 					local rotatedOffset = rotatePoint(currentAngle,offset)
 					currentAngle = currentAngle + rotationInterval
-	
+					
 					local trgPosOffset = add(trgPos.c, rotatedOffset)
 	
 					mv = sub(trgPosOffset,ctrlTRGPos)
@@ -316,7 +316,7 @@ function gpsOrbitTRG(offset,trgChannel)
 					d.setStatusText(d.name())
 				else
 					d.setLightColor(0xFF0000)
-					--d.setStatusText("Out Of\nRange "..tostring(trgChannel))
+					--d.setStatusText("Out Of\nRange ")
 					d.move(-mv.x,-mv.y,-mv.z)
 				end
 				if actsWhileMoving[msg] then
