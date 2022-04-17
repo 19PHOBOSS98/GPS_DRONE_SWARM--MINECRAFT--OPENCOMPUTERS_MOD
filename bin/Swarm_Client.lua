@@ -190,7 +190,8 @@ while true do
 		modem.broadcast(targetingChannel,"stop")
 		flightform.refreshFFT(Pawnffbook,Pawndynamic_fbook,PawnsChannel,false)
 		flightform.formFF(Pawnffbook[2],Pawndynamic_fbook[2],PawnsChannel,false)
-		flightform.PformUP(targetingChannel,Pawnffbook[2],PawnsChannel)
+		--flightform.PformUP(targetingChannel,Pawnffbook[2],PawnsChannel)
+		flightform.POrbit(targetingChannel,Pawnffbook[2],PawnsChannel)
 		os.sleep(0.5)
 	elseif(cmd == "USFP") then -- Update Static Formation PAWNS
 		GPS_TRG.updateStaticGPS(8,gpsChannel)
