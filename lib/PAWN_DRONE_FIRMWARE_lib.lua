@@ -334,7 +334,7 @@ d.setLightColor(0x007B62)
 while true do
 	_,_,r_addr,_,dist,msg,x,y,z,trgCh = computer.pullSignal(0.5)
 	if d.name():match("^S%d+$") then
-		m.broadcast(3000,msg)
+		if msg =="orbit"then d.setStatusText("orbitter") end
 		if acts[msg] then
 			acts[msg](r_addr,x,y,z,dist,trgCh)
 		end
