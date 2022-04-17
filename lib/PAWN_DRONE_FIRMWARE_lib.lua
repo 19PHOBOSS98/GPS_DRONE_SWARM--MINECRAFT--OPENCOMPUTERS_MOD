@@ -295,7 +295,7 @@ function gpsOrbitTRG(offset,trgChannel)
 				_,_,r_addr,_,dist,msg,x,y,z,trgCh = computer.pullSignal(0.5)
 				
 				if msg == "trg" then
-					d.setStatusText("x: "..x)
+					d.setStatusText("d: "..dist)
 					trgUpdate = {c={x=x,y=y,z=z},d=dist}
 				end
 				local trgPos = trgUpdate
