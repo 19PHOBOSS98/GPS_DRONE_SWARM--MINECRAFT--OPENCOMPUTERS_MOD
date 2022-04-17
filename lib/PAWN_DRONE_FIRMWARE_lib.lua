@@ -293,7 +293,7 @@ function gpsOrbitTRG(offset,trgChannel)
 		local rotationInterval = 0.785 -- PI/4
 			repeat
 				_,_,r_addr,_,dist,msg,x,y,z,trgCh = computer.pullSignal(0.5)
-	
+				d.setStatusText("msg: "..msg)
 				if msg == "trg" then
 					trgUpdate = {c={x=x,y=y,z=z},d=dist}
 				end
@@ -315,7 +315,7 @@ function gpsOrbitTRG(offset,trgChannel)
 					d.setStatusText(d.name())
 				else
 					d.setLightColor(0xFF0000)
-					d.setStatusText("Out Of\nRange "..tostring(trgChannel))
+					--d.setStatusText("Out Of\nRange "..tostring(trgChannel))
 					d.move(-mv.x,-mv.y,-mv.z)
 				end
 				if actsWhileMoving[msg] then
