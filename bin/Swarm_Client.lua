@@ -193,6 +193,11 @@ while true do
 		printSwarmStatsPawn()
 		os.sleep(0.5)	
 		
+	elseif(cmd == "USFP") then -- Update Static Formation PAWNS
+		GPS_TRG.updateStaticGPS(StaticFormationtrgPortBook,gpsChannel)
+		printSwarmStatsPawn()
+		os.sleep(0.5)
+		
 	elseif(cmd == "GP") then -- recall PAWNS
 		modem.broadcast(PawnsChannel,"stop")
 		GPS_TRG.GPSRecall(trgPortBook,gpsChannel,PawnsChannel)
