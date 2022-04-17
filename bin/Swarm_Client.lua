@@ -80,13 +80,15 @@ Pawnffbook[1] = {}
 Pawnffbook[2] = {}
 Pawnffbook[3] = {}
 Pawnffbook[4] = {}
+Pawnffbook[5] = {}
 dynamicTriangle = {{3,2,-2},{-3,2,-2},{0,2,3}}
 staticTriangle = {{3,2,-2},{-3,2,-2},{0,2,3}}
 --staticOrbitTriangle = {{3,2,-2},{-3,2,-2},{0,2,3}}
 staticOrbitSquare = {{1,1,0},{-1,1,0},{0,1,1},{0,1,-1}}
 dynamicOrbitSquareMe = {{1,2,0},{-1,2,0},{0,2,1},{0,2,-1}}
+dynamicTriangleMe = {{3,2,-2},{-3,2,-2},{0,2,3}}
 --Pawnform1 = {{0,2,0}}
-Pawnfbook = {dynamicTriangle,staticTriangle,staticOrbitSquare,dynamicOrbitSquareMe}
+Pawnfbook = {dynamicTriangle,staticTriangle,staticOrbitSquare,dynamicOrbitSquareMe,dynamicTriangleMe}
 Pawndynamic_fbook = Pawnfbook
 
 
@@ -163,22 +165,17 @@ while true do
 		
 		
 		
-	elseif(cmd == "GPS") then
+	elseif(cmd == "GPS") then -- activate QUEEN satellite GPS broadcasting
 		for addr,c in pairs(ffbook[1]) do
 			print(addr,c)
 			modem.send(addr,QueensChannel,"setgpspos",_,c[1],c[2],c[3])
 		end
 		modem.broadcast(QueensChannel,"startgps")
     	os.sleep(0.5)
-	elseif(cmd == "TRG") then
-		GPS_TRG.updateGPSTRGsPRINT(trgPortBook,gpsChannel)
-    	os.sleep(0.5)
-		
-	elseif(cmd == "K") then
+
+	elseif(cmd == "K") then -- terminate GPS targeting thread
 		GPS_TRG.killGPSTRGThread(gpsChannel)
     	os.sleep(0.5)
-
-
 
 
 
@@ -188,6 +185,9 @@ while true do
 		flightform.PformUP(4,Pawnffbook[1],PawnsChannel)
 		printSwarmStatsPawn()
 		os.sleep(0.5)
+	elseif(cmd == "TRG") then -- start entity (Floppa) targeting broadcast
+		GPS_TRG.updateGPSTRGsPRINT(trgPortBook,gpsChannel)
+    	os.sleep(0.5)
 		
 	elseif(cmd == "SFP") then -- Static Formation PAWNS
 		local targetingChannel = 8
@@ -214,10 +214,13 @@ while true do
 		
 	elseif(cmd == "RM") then -- Rotating Me
 		local targetingChannel = 11
-		modem.broadcast(targetingChannel,"stop")
+		modem.broadcast(targetingChannel,"stop")		
 		flightform.refreshFFT(Pawnffbook,Pawndynamic_fbook,PawnsChannel,false)
 		flightform.formFF(Pawnffbook[4],Pawndynamic_fbook[4],PawnsChannel,false)
 		flightform.POrbit(targetingChannel,Pawnffbook[4],PawnsChannel)
+		flightform.formFF(Pawnffbook[5],Pawndynamic_fbook[5],PawnsChannel,false)
+		flightform.PformUP(targetingChannel,Pawnffbook[5],PawnsChannel)
+		
 		os.sleep(0.5)	
 	elseif(cmd == "URM") then -- Update Static Formation PAWNS
 		GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel)
