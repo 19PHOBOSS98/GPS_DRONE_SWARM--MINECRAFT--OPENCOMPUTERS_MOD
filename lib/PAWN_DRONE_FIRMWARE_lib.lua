@@ -81,7 +81,7 @@ acts = {
 	["gps"] = function(r_addr,x,y,z,dist) add2GPSTable(r_addr,x,y,z,dist) end,
 	["trg"] = function(_,x,y,z,dist) cmdTRGPos={c={x,y,z},d=dist} end,
 	["formup"] = function(_,x,y,z,_,trgC) d.setStatusText(gpsMoveToTarget({x=x,y=y,z=z},trgC)) end,	
-	
+	["orbit"] = function(_,x,y,z,_,trgC) d.setStatusText(gpsOrbitTRG({x=x,y=y,z=z},trgC)) end,
 	["HUSH"] = function() computer.shutdown() end
 }
 ]]
@@ -228,6 +228,86 @@ function gpsMoveToTarget(offset,trgChannel)
 				if trgPos.d and trgPos.d < 50 then
 					trgPos.c = vec_trunc(trgPos.c)
 					local trgPosOffset = add(trgPos.c, offset)
+					mv = sub(trgPosOffset,ctrlTRGPos)
+					d.move(mv.x,mv.y,mv.z)
+					ctrlTRGPos = trgPosOffset
+					d.setLightColor(0x00FF00)
+					d.setStatusText(d.name())
+				else
+					d.setLightColor(0xFF0000)
+					d.setStatusText("Out Of\nRange")
+					d.move(-mv.x,-mv.y,-mv.z)
+				end
+				if actsWhileMoving[msg] then
+					actsWhileMoving[msg](r_addr,x,y,z,dist)
+				end
+			until msg == "stop"
+	end
+	m.close(trgChannel)
+	return d.name()
+end
+]]
+,
+[[
+function rotatePoint(rad,point)
+	local s = math.sin(rad);
+	local c = math.cos(rad);
+
+	// rotate point
+	float xnew = point.x * c - point.y * s;
+	float ynew = point.x * s + point.y * c;
+
+	return point
+end
+]]
+,
+[[
+function gpsOrbitTRG(offset,trgChannel)
+	d.setLightColor(0xFFFFFF)
+	gpsSats={}
+	m.open(gpsChannel)
+	local ctrlTRGPos = nil
+	repeat
+		if arr_length(gpsSats)>=3 then
+			ctrlTRGPos = getGPSlocation()
+		end
+	
+		if ctrlTRGPos then ctrlTRGPos = vec_trunc(ctrlTRGPos) 
+		else d.setLightColor(0xFF0000) d.setStatusText("No GPS:") end
+	
+		_,_,r_addr,_,dist,msg,x,y,z,trgCh = computer.pullSignal(0.5)
+		
+		if actsWhileMoving[msg] then
+			actsWhileMoving[msg](r_addr,x,y,z,dist)
+		end
+		refreshGPSTable()
+	until msg == "stop" or ctrlTRGPos
+
+	if ctrlTRGPos then
+		m.close(gpsChannel)
+		d.setLightColor(0xFFFFFF)
+		m.open(trgChannel)
+		local mv = {x=0,y=0,z=0},msg,r_add,dist,x,y,z
+		local trgUpdate = {}
+		local currentAngle = 0 -- in radians
+		local rotationInterval = 0.785 -- PI/4
+			repeat
+				_,_,r_addr,_,dist,msg,x,y,z,trgCh = computer.pullSignal(0.5)
+	
+				if msg == "trg" then
+					trgUpdate = {c={x=x,y=y,z=z},d=dist}
+				end
+				local trgPos = trgUpdate
+
+				if trgPos.d and trgPos.d < 50 then
+					trgPos.c = vec_trunc(trgPos.c)
+
+					if currentAngle >= 6.3832 then currentAngle = 0 end
+					local rotatedOffset = rotatePoint(currentAngle,offset)
+					currentAngle = currentAngle + rotationInterval
+	
+					local trgPosOffset = add(trgPos.c, rotatedOffset)
+	
 					mv = sub(trgPosOffset,ctrlTRGPos)
 					d.move(mv.x,mv.y,mv.z)
 					ctrlTRGPos = trgPosOffset
