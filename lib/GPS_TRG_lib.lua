@@ -122,7 +122,7 @@ function GPS_TRG.bcGPSRecall(tpBook,gpsC,PawnsC)
 end
 
 
-function GPS_TRG.bcStaticGPSPos(tpBook,gpsC)
+function GPS_TRG.bcStaticGPSPos(tport,gpsC)
 	modem.open(gpsC)
 	modem.setStrength(math.huge)
 	local gpsTable = {}
@@ -140,9 +140,8 @@ function GPS_TRG.bcStaticGPSPos(tpBook,gpsC)
 		if gpsPos then
 			gpsPos = vec_trunc(gpsPos)
 			print("GPS Formation Center: ",gpsPos.x,gpsPos.y,gpsPos.z)
-			for tport,tname in pairs(tpBook) do
-				modem.broadcast(tport,"trg",gpsPos.x,gpsPos.y,gpsPos.z)
-			end
+			print("Broadcasting to trgChannel: ",tport)
+			modem.broadcast(tport,"trg",gpsPos.x,gpsPos.y,gpsPos.z)
 		else
 			print("GPS Out Of Range")
 		end
