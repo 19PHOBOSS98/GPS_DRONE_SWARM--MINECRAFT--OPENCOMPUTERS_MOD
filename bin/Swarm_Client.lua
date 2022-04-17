@@ -189,13 +189,10 @@ while true do
 		flightform.refreshFFT(Pawnffbook,Pawndynamic_fbook,PawnsChannel,false)
 		flightform.formFF(Pawnffbook[2],Pawndynamic_fbook[2],PawnsChannel,false)
 		flightform.PformUP(targetingChannel,Pawnffbook[2],PawnsChannel)
-		GPS_TRG.updateStaticGPS(StaticFormationtrgPortBook,gpsChannel)
-		printSwarmStatsPawn()
 		os.sleep(0.5)	
 		
 	elseif(cmd == "USFP") then -- Update Static Formation PAWNS
 		GPS_TRG.updateStaticGPS(StaticFormationtrgPortBook,gpsChannel)
-		printSwarmStatsPawn()
 		os.sleep(0.5)
 		
 	elseif(cmd == "GP") then -- recall PAWNS
