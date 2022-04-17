@@ -77,14 +77,16 @@ trgPortBook = {[3]="Bingus",[4]="Floppa",[5]="FloppaMi",[7]="FloppaNi"}
 Pawnffbook = {}
 Pawnffbook[1] = {}
 Pawnffbook[2] = {}
-triangle = {{3,2,-2},{-3,2,-2},{0,2,3}}
+Pawnffbook[3] = {}
+dynamicTriangle = {{3,2,-2},{-3,2,-2},{0,2,3}}
 staticTriangle = {{3,2,-2},{-3,2,-2},{0,2,3}}
+staticOrbitTriangle = {{3,2,-2},{-3,2,-2},{0,2,3}}
 --Pawnform1 = {{0,2,0}}
-Pawnfbook = {triangle,staticTriangle}
+Pawnfbook = {dynamicTriangle,staticTriangle,staticOrbitTriangle}
 Pawndynamic_fbook = Pawnfbook
 
 
-StaticFormationtrgPortBook = {[8]="team1"}
+StaticFormationtrgPortBook = {[8]="team1",[10]="team2"}
 
 
 function printSwarmStatsPawn()
@@ -189,11 +191,22 @@ while true do
 		flightform.refreshFFT(Pawnffbook,Pawndynamic_fbook,PawnsChannel,false)
 		flightform.formFF(Pawnffbook[2],Pawndynamic_fbook[2],PawnsChannel,false)
 		flightform.PformUP(targetingChannel,Pawnffbook[2],PawnsChannel)
-		os.sleep(0.5)	
-		
-	elseif(cmd == "USFP") then -- Update Static Formation PAWNS
-		GPS_TRG.updateStaticGPS(StaticFormationtrgPortBook,gpsChannel)
 		os.sleep(0.5)
+	elseif(cmd == "USFP") then -- Update Static Formation PAWNS
+		GPS_TRG.updateStaticGPS(8,gpsChannel)
+		os.sleep(0.5)
+
+	elseif(cmd == "SRFP") then -- Static Rotating Formation PAWNS
+		local targetingChannel = 10
+		modem.broadcast(targetingChannel,"stop")
+		flightform.refreshFFT(Pawnffbook,Pawndynamic_fbook,PawnsChannel,false)
+		flightform.formFF(Pawnffbook[3],Pawndynamic_fbook[3],PawnsChannel,false)
+		flightform.POrbit(targetingChannel,Pawnffbook[3],PawnsChannel)
+		os.sleep(0.5)	
+	elseif(cmd == "USRFP") then -- Update Static Formation PAWNS
+		GPS_TRG.updateStaticGPS(10,gpsChannel)
+		os.sleep(0.5)		
+
 		
 	elseif(cmd == "GP") then -- recall PAWNS
 		modem.broadcast(PawnsChannel,"stop")
