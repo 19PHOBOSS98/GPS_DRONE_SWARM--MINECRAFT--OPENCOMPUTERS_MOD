@@ -74,13 +74,17 @@ local gpsChannel = 2
 
 --trgPortBook = {}--{[trgport]="target"} multiple to fixed single relationship
 trgPortBook = {[3]="Bingus",[4]="Floppa",[5]="FloppaMi",[7]="FloppaNi"}
-
 Pawnffbook = {}
 Pawnffbook[1] = {}
-Pawnform1 = {{3,2,-2},{-3,2,-2},{0,2,3}}
+Pawnffbook[2] = {}
+triangle = {{3,2,-2},{-3,2,-2},{0,2,3}}
+staticTriangle = {{3,2,-2},{-3,2,-2},{0,2,3}}
 --Pawnform1 = {{0,2,0}}
-Pawnfbook = {Pawnform1}
+Pawnfbook = {triangle,staticTriangle}
 Pawndynamic_fbook = Pawnfbook
+
+
+StaticFormationtrgPortBook = {[8]="team1"}
 
 
 function printSwarmStatsPawn()
@@ -179,10 +183,20 @@ while true do
 		printSwarmStatsPawn()
 		os.sleep(0.5)
 		
+	elseif(cmd == "SFP") then -- Static Formation PAWNS
+		local targetingChannel = 8
+		modem.broadcast(targetingChannel,"stop")
+		flightform.refreshFFT(Pawnffbook,Pawndynamic_fbook,PawnsChannel,false)
+		flightform.formFF(Pawnffbook[2],Pawndynamic_fbook[2],PawnsChannel,false)
+		flightform.PformUP(targetingChannel,Pawnffbook[2],PawnsChannel)
+		GPS_TRG.updateStaticGPS(StaticFormationtrgPortBook,gpsChannel)
+		printSwarmStatsPawn()
+		os.sleep(0.5)	
+		
 	elseif(cmd == "GP") then -- recall PAWNS
 		modem.broadcast(PawnsChannel,"stop")
 		GPS_TRG.GPSRecall(trgPortBook,gpsChannel,PawnsChannel)
-		os.sleep(0.5)	
+		os.sleep(0.5)
 		
 	elseif(cmd == "FP") then
 		p_firmware.broadcastFirmWare(PawnsChannel)
