@@ -39,7 +39,7 @@ function GPS_TRG.bcGPSTRGPos(tpBook,gpsC,rotAnglInt)
 					radPos.c = vec_trunc(radPos.c)
 					local trgPos = add(radPos.c,gpsPos)
 					--print("tport: ",tport,"tname: ",tname,"trgPos: ",trgPos.x,trgPos.y,trgPos.z)
-					modem.broadcast(tport,"trg",trgPos.x,trgPos.y,trgPos.z,nil,rotAnglInt)
+					modem.broadcast(tport,"trg",trgPos.x,trgPos.y,trgPos.z,"",rotAnglInt)
 				end
 			end
 		else
@@ -78,7 +78,7 @@ function GPS_TRG.bcGPSTRGPosPRINT(tpBook,gpsC,rotAnglInt)
 					radPos.c = vec_trunc(radPos.c)
 					local trgPos = add(radPos.c,gpsPos)
 					print("tport: ",tport,"tname: ",tname,"trgPos: ",trgPos.x,trgPos.y,trgPos.z,",rotAnglInt",rotAnglInt)
-					modem.broadcast(tport,"trg",trgPos.x,trgPos.y,trgPos.z,nil,rotAnglInt)
+					modem.broadcast(tport,"trg",trgPos.x,trgPos.y,trgPos.z,"",rotAnglInt)
 				else
 					print(tname," is out of radar Range")
 				end
@@ -141,7 +141,7 @@ function GPS_TRG.bcStaticGPSPos(tport,gpsC,rotAnglInt)
 			gpsPos = vec_trunc(gpsPos)
 			print("GPS Formation Center: ",gpsPos.x,gpsPos.y,gpsPos.z)
 			print("Broadcasting to trgChannel: ",tport)
-			modem.broadcast(tport,"trg",gpsPos.x,gpsPos.y,gpsPos.z,nil,rotAnglInt)
+			modem.broadcast(tport,"trg",gpsPos.x,gpsPos.y,gpsPos.z,"",rotAnglInt)
 		else
 			print("GPS Out Of Range")
 		end
