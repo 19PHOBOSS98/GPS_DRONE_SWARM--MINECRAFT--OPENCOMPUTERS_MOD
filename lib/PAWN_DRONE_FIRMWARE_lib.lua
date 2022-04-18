@@ -79,7 +79,7 @@ acts = {
 	["uncommit"] = function() isFree = true end,
 
 	["gps"] = function(r_addr,x,y,z,dist) add2GPSTable(r_addr,x,y,z,dist) end,
-	["trg"] = function(_,x,y,z,dist) cmdTRGPos={c={x,y,z},d=dist} end,
+	--["trg"] = function(_,x,y,z,dist) cmdTRGPos={c={x,y,z},d=dist} end,
 	["formup"] = function(_,x,y,z,_,trgC) d.setStatusText(gpsMoveToTarget({x=x,y=y,z=z},trgC)) end,	
 	["orbit"] = function(_,x,y,z,_,trgC) d.setStatusText(gpsOrbitTRG({x=x,y=y,z=z},trgC)) end,	
 	["HUSH"] = function() computer.shutdown() end
@@ -263,7 +263,7 @@ end
 [[
 --rotationInterval = math.pi/4
 --rotationInterval = math.pi/8
-rotationInterval = math.pi/2
+--rotationInterval = math.pi/2
 twPI = 2*math.pi
 function gpsOrbitTRG(offset,trgChannel)
 	d.setLightColor(0xFFFFFF)
@@ -278,7 +278,7 @@ function gpsOrbitTRG(offset,trgChannel)
 		if ctrlTRGPos then ctrlTRGPos = vec_trunc(ctrlTRGPos) 
 		else d.setLightColor(0xFF0000) d.setStatusText("No GPS:") end
 	
-		_,_,r_addr,_,dist,msg,x,y,z,trgCh = computer.pullSignal(0.5)
+		_,_,r_addr,_,dist,msg,x,y,z,trgCh,rotationInterval = computer.pullSignal(0.5)
 		
 		if actsWhileMoving[msg] then
 			actsWhileMoving[msg](r_addr,x,y,z,dist)
@@ -293,9 +293,9 @@ function gpsOrbitTRG(offset,trgChannel)
 		local mv = {x=0,y=0,z=0},msg,r_add,dist,x,y,z
 		local trgUpdate = {}
 		local currentAngle = 0 -- in radians
-		
+		local rotationInterval = 0
 			repeat
-				_,_,r_addr,_,dist,msg,x,y,z,trgCh = computer.pullSignal(0.5)
+				_,_,r_addr,_,dist,msg,x,y,z,trgCh,rotationInterval = computer.pullSignal(0.5)
 				
 				if msg == "trg" then
 					trgUpdate = {c={x=x,y=y,z=z},d=dist}
