@@ -224,6 +224,10 @@ while true do
 		
 		os.sleep(0.5)	
 	elseif(cmd == "URM") then -- Update Static Formation PAWNS
+		local rotationAngleInterval = math.pi/4
+		GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval)
+		os.sleep(0.5)
+	elseif(cmd == "URMREV") then -- Update Static Formation PAWNS Reverse
 		local rotationAngleInterval = -math.pi/4
 		GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval)
 		os.sleep(0.5)	
