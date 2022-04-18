@@ -159,14 +159,14 @@ end
 
 GPS_TRG.gpstrgThread = nil
 
-function GPS_TRG.updateGPSTRGs(tpBook,gpsC) --**********************-- --only call this sparingly, don't want to stall other flight formations
+function GPS_TRG.updateGPSTRGs(tpBook,gpsC,rotAngInt) --**********************-- --only call this sparingly, don't want to stall other flight formations
 	GPS_TRG.killGPSTRGThread(gpsC)
-	GPS_TRG.gpstrgThread = thread.create(function(tpb,gpsC) print("threading") GPS_TRG.bcGPSTRGPos(tpb,gpsC) end,tpBook,gpsC)
+	GPS_TRG.gpstrgThread = thread.create(function(tpb,gpsC,rotAngInt) print("threading") GPS_TRG.bcGPSTRGPos(tpb,gpsC,rotAngInt) end,tpBook,gpsC,rotAngInt)
 end
 
-function GPS_TRG.updateGPSTRGsPRINT(tpBook,gpsC) --**********************-- --only call this sparingly, don't want to stall other flight formations
+function GPS_TRG.updateGPSTRGsPRINT(tpBook,gpsC,rotAngInt) --**********************-- --only call this sparingly, don't want to stall other flight formations
 	GPS_TRG.killGPSTRGThread(gpsC)
-	GPS_TRG.gpstrgThread = thread.create(function(tpb,gpsC) print("threading") GPS_TRG.bcGPSTRGPosPRINT(tpb,gpsC) end,tpBook,gpsC)
+	GPS_TRG.gpstrgThread = thread.create(function(tpb,gpsC,rotAngInt) print("threading") GPS_TRG.bcGPSTRGPosPRINT(tpb,gpsC,rotAngInt) end,tpBook,gpsC,rotAngInt)
 end
 
 function GPS_TRG.GPSRecall(tpBook,gpsC,PawnsC) --**********************-- --only call this sparingly, don't want to stall other flight formations
@@ -174,9 +174,9 @@ function GPS_TRG.GPSRecall(tpBook,gpsC,PawnsC) --**********************-- --only
 	GPS_TRG.gpstrgThread = thread.create(function(tpb,gpsC,PawnsC) print("threading") GPS_TRG.bcGPSRecall(tpb,gpsC,PawnsC) end,tpBook,gpsC,PawnsC)
 end
 
-function GPS_TRG.updateStaticGPS(tpBook,gpsC) --**********************--
+function GPS_TRG.updateStaticGPS(tpBook,gpsC,rotAngInt) --**********************--
 	GPS_TRG.killGPSTRGThread(gpsC)
-	GPS_TRG.gpstrgThread = thread.create(function(tpb,gpsC) print("threading") GPS_TRG.bcStaticGPSPos(tpb,gpsC) end,tpBook,gpsC)
+	GPS_TRG.gpstrgThread = thread.create(function(tpb,gpsC,rotAngInt) print("threading") GPS_TRG.bcStaticGPSPos(tpb,gpsC,rotAngInt) end,tpBook,gpsC,rotAngInt)
 end
 
 function GPS_TRG.killGPSTRGThread(gpsC) --**********************--
