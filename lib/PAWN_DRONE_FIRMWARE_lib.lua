@@ -218,7 +218,7 @@ function gpsMoveToTarget(offset,trgChannel)
 		local mv = {x=0,y=0,z=0},msg,r_add,dist,x,y,z
 		local trgUpdate = {}
 			repeat
-				_,_,r_addr,_,dist,msg,x,y,z,trgCh = computer.pullSignal(0.5)
+				_,_,r_addr,_,dist,msg,x,y,z,trgCh,_ = computer.pullSignal(0.5)
 	
 				if msg == "trg" then
 					trgUpdate = {c={x=x,y=y,z=z},d=dist}
@@ -278,7 +278,7 @@ function gpsOrbitTRG(offset,trgChannel)
 		if ctrlTRGPos then ctrlTRGPos = vec_trunc(ctrlTRGPos) 
 		else d.setLightColor(0xFF0000) d.setStatusText("No GPS:") end
 	
-		_,_,r_addr,_,dist,msg,x,y,z,trgCh,rotationInterval = computer.pullSignal(0.5)
+		_,_,r_addr,_,dist,msg,x,y,z,trgCh,_ = computer.pullSignal(0.5)
 		
 		if actsWhileMoving[msg] then
 			actsWhileMoving[msg](r_addr,x,y,z,dist)
@@ -295,10 +295,11 @@ function gpsOrbitTRG(offset,trgChannel)
 		local currentAngle = 0 -- in radians
 		local rotationInterval = 0
 			repeat
-				_,_,r_addr,_,dist,msg,x,y,z,trgCh,rotationInterval = computer.pullSignal(0.5)
+				_,_,r_addr,_,dist,msg,x,y,z,trgCh,rotInt = computer.pullSignal(0.5)
 				
 				if msg == "trg" then
 					trgUpdate = {c={x=x,y=y,z=z},d=dist}
+					rotationInterval = rotInt
 				end
 				local trgPos = trgUpdate
 				
@@ -335,7 +336,7 @@ end
 d.setAcceleration(100)
 d.setLightColor(0x007B62)
 while true do
-	_,_,r_addr,_,dist,msg,x,y,z,trgCh = computer.pullSignal(0.5)
+	_,_,r_addr,_,dist,msg,x,y,z,trgCh,_ = computer.pullSignal(0.5)
 	if d.name():match("^S%d+$") then
 		if acts[msg] then
 			acts[msg](r_addr,x,y,z,dist,trgCh)
