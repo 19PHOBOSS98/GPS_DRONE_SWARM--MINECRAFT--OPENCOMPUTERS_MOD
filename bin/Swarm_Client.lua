@@ -186,7 +186,7 @@ while true do
 		printSwarmStatsPawn()
 		os.sleep(0.5)
 	elseif(cmd == "TRG") then -- start entity (Floppa) targeting broadcast
-		GPS_TRG.updateGPSTRGsPRINT(trgPortBook,gpsChannel)
+		GPS_TRG.updateGPSTRGsPRINT(trgPortBook,gpsChannel,0)
     	os.sleep(0.5)
 		
 	elseif(cmd == "SFP") then -- Static Formation PAWNS
@@ -198,7 +198,7 @@ while true do
 		--flightform.POrbit(targetingChannel,Pawnffbook[2],PawnsChannel)
 		os.sleep(0.5)
 	elseif(cmd == "USFP") then -- Update Static Formation PAWNS
-		GPS_TRG.updateStaticGPS(8,gpsChannel)
+		GPS_TRG.updateStaticGPS(8,gpsChannel,0)
 		os.sleep(0.5)
 
 	elseif(cmd == "SRFP") then -- Static Rotating Formation PAWNS
@@ -208,11 +208,12 @@ while true do
 		flightform.formFF(Pawnffbook[3],Pawndynamic_fbook[3],PawnsChannel,false)
 		flightform.POrbit(targetingChannel,Pawnffbook[3],PawnsChannel)
 		os.sleep(0.5)	
-	elseif(cmd == "USRFP") then -- Update Static Formation PAWNS
-		GPS_TRG.updateStaticGPS(10,gpsChannel)
+	elseif(cmd == "USRFP") then -- Update Static Rotating Formation PAWNS
+		local rotationAngleInterval = math.pi/2
+		GPS_TRG.updateStaticGPS(10,gpsChannel,rotationAngleInterval)
 		os.sleep(0.5)	
 		
-	elseif(cmd == "RM") then -- Rotating Me
+	elseif(cmd == "RM") then -- Rotating on Me
 		local targetingChannel = 11
 		modem.broadcast(targetingChannel,"stop")		
 		flightform.refreshFFT(Pawnffbook,Pawndynamic_fbook,PawnsChannel,false)
@@ -223,7 +224,8 @@ while true do
 		
 		os.sleep(0.5)	
 	elseif(cmd == "URM") then -- Update Static Formation PAWNS
-		GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel)
+		local rotationAngleInterval = math.pi/4
+		GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval)
 		os.sleep(0.5)	
 		
 	elseif(cmd == "GP") then -- recall PAWNS
