@@ -250,7 +250,7 @@ end
 ,
 [[
 function rotatePoint(rad,point)
-	d.setStatusText("pointx: "..tostring(point.x))
+	--d.setStatusText("pointx: "..tostring(point.x))
 	local s = math.sin(rad);
 	local c = math.cos(rad);
 	
@@ -304,7 +304,7 @@ function gpsOrbitTRG(offset,trgChannel)
 				
 				if trgPos.d and trgPos.d < 50 then
 					trgPos.c = vec_trunc(trgPos.c)
-
+					d.setStatusText("rotInt: "..tostring(rotationInterval))
 					local rotatedOffset = rotatePoint(currentAngle%twPI,offset)
 					
 					currentAngle = currentAngle + rotationInterval
