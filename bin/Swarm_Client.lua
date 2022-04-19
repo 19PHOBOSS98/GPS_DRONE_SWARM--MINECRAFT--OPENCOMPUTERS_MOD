@@ -209,8 +209,10 @@ while true do
 		flightform.POrbit(targetingChannel,Pawnffbook[3],PawnsChannel)
 		os.sleep(0.5)	
 	elseif(cmd == "USRFP") then -- Update Static Rotating Formation PAWNS
+		local targetingChannel = 10
 		local rotationAngleInterval = math.pi/2
-		GPS_TRG.updateStaticGPS(10,gpsChannel,rotationAngleInterval)
+		modem.broadcast(targetingChannel,"color",0x9900FF)
+		GPS_TRG.updateStaticGPS(targetingChannel,gpsChannel,rotationAngleInterval)
 		os.sleep(0.5)	
 		
 	elseif(cmd == "RM") then -- Rotating on Me
@@ -219,7 +221,10 @@ while true do
 		flightform.refreshFFT(Pawnffbook,Pawndynamic_fbook,PawnsChannel,false)
 		flightform.formFF(Pawnffbook[4],Pawndynamic_fbook[4],PawnsChannel,false)
 		flightform.POrbit(targetingChannel,Pawnffbook[4],PawnsChannel)
+		modem.broadcast(targetingChannel,"color",0x00FF29)
 		flightform.formFF(Pawnffbook[5],Pawndynamic_fbook[5],PawnsChannel,false)
+		flightform.PformUP(1100,Pawnffbook[5],PawnsChannel) -- temporarily set the next group to listen to a different targetChannel to set their colors right
+		modem.broadcast(1100,"color",0xFF9900)
 		flightform.PformUP(targetingChannel,Pawnffbook[5],PawnsChannel)
 		
 		os.sleep(0.5)	
