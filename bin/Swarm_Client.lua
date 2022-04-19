@@ -226,6 +226,7 @@ while true do
 		flightform.PformUP(1100,Pawnffbook[5],PawnsChannel) -- temporarily set the next group to listen to a different targetChannel to set their colors right
 		modem.broadcast(1100,"color",0xFF9900)
 		modem.broadcast(1100,"stop")
+		os.sleep(1)
 		flightform.PformUP(targetingChannel,Pawnffbook[5],PawnsChannel)
 		
 		os.sleep(0.5)	
