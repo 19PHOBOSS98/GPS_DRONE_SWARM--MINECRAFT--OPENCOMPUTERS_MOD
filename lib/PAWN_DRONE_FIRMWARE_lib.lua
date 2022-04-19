@@ -85,7 +85,8 @@ acts = {
 	--["trg"] = function(_,x,y,z,dist) cmdTRGPos={c={x,y,z},d=dist} end,
 	["formup"] = function(_,x,y,z,_,trgC) d.setStatusText(gpsMoveToTarget({x=x,y=y,z=z},trgC)) end,	
 	["orbit"] = function(_,x,y,z,_,trgC) d.setStatusText(gpsOrbitTRG({x=x,y=y,z=z},trgC)) end,
-	["color"] = function(_,x) d.setStatusText(tostring(x).."\nacts") lightColor = x end,	
+	["color"] = function(_,x) d.setStatusText(tostring(x).."\nacts") lightColor = x end,
+	["wru"] = function(r_addr) local whereRU = gpsLocateMe() m.send(r_addr,ResponseChannel,whereRU.x,whereRU.y,whereRU.z) end,
 	["HUSH"] = function() computer.shutdown() end
 }
 ]]
@@ -98,6 +99,7 @@ actsWhileMoving = {
 	["gps"] = function(r_addr,x,y,z,dist) add2GPSTable(r_addr,x,y,z,dist) end,
 	--["trg"] = function(_,x,y,z,dist) cmdTRGPos={c={x=x,y=y,z=z},d=dist} d.setStatusText("trg2:"..tostring(cmdTRGPos.c.x))  end,
 	["color"] = function(_,x) d.setStatusText("awm: "..tostring(x)) lightColor = x end,
+	["wru"] = function(r_addr) local whereRU = gpsLocateMe() m.send(r_addr,ResponseChannel,whereRU.x,whereRU.y,whereRU.z) end,
 	["HUSH"] = function() d.setLightColor(0xFF0000) sleep(1) computer.shutdown() end
 }
 ]]
@@ -338,6 +340,30 @@ function gpsOrbitTRG(offset,trgChannel)
 	end
 	m.close(trgChannel)
 	return d.name()
+end
+]]
+,
+[[
+function gpsLocateMe()
+	gpsSats={}
+	m.open(gpsChannel)
+	local ctrlTRGPos = nil
+	repeat
+		if arr_length(gpsSats)>=3 then
+			ctrlTRGPos = getGPSlocation()
+		end
+	
+		if ctrlTRGPos then ctrlTRGPos = vec_trunc(ctrlTRGPos) 
+		else d.setLightColor(0xFF0000) end --d.setStatusText("No GPS:") end
+	
+		_,_,r_addr,_,dist,msg,x,y,z,trgCh,_ = computer.pullSignal(0.5)
+		
+		if actsWhileMoving[msg] then
+			actsWhileMoving[msg](r_addr,x,y,z,dist)
+		end
+		refreshGPSTable()
+	until msg == "stop" or ctrlTRGPos
+	return ctrlTRGPos
 end
 ]]
 ,
