@@ -235,8 +235,10 @@ function gpsMoveToTarget(offset,trgChannel)
 					mv = sub(trgPosOffset,ctrlTRGPos)
 					d.move(mv.x,mv.y,mv.z)
 					ctrlTRGPos = trgPosOffset
-					d.setLightColor(0x00FF00)
-					d.setStatusText(d.name())
+					--d.setLightColor(0x00FF00)
+					d.setLightColor(lightColor)
+					--d.setStatusText(d.name())
+					d.setStatusText(tostring(lightColor))
 				else
 					d.setLightColor(0xFF0000)
 					d.setStatusText("No TRG:/n"..tostring(trgChannel))
@@ -325,7 +327,7 @@ function gpsOrbitTRG(offset,trgChannel)
 					d.setStatusText(tostring(lightColor))
 				else
 					d.setLightColor(0xFF0000)
-					--d.setStatusText("Out Of\nRange ")
+					d.setStatusText("No TRG:/n"..tostring(trgChannel))
 					d.move(-mv.x,-mv.y,-mv.z)
 				end
 				if actsWhileMoving[msg] then
