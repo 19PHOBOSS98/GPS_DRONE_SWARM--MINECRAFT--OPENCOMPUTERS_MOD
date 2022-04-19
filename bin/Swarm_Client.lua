@@ -274,7 +274,7 @@ while true do
 	elseif(cmd == "WRU") then
 		modem.broadcast(PawnsChannel,"wru")
 		modem.close(gpsChannel)
-		local _,_,r_addr,_,_,msg,x,y,z = event.listen("modem_message")
+		local _,_,r_addr,_,_,msg,x,y,z = event.pull("modem_message")
 		if msg == "here" then
 			print("r_addr: ",r_addr,"c: ",x,y,z)
 		end
