@@ -224,13 +224,17 @@ while true do
 		flightform.POrbit(targetingChannel,Pawnffbook[4],PawnsChannel)
 		flightform.formFF(Pawnffbook[5],Pawndynamic_fbook[5],PawnsChannel,false)
 		flightform.PformUP(targetingChannel,Pawnffbook[5],PawnsChannel)
-		modem.broadcast(targetingChannel,"color",tonumber(0x00FF29))
+		
 		os.sleep(0.5)	
 	elseif(cmd == "URM") then -- Update Static Formation PAWNS
+		local targetingChannel = 11
+		modem.broadcast(targetingChannel,"color",tonumber(0xFFFF00))
 		local rotationAngleInterval = math.pi/4
 		GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval)
 		os.sleep(0.5)
 	elseif(cmd == "URMREV") then -- Update Static Formation PAWNS Reverse
+		local targetingChannel = 11
+		modem.broadcast(targetingChannel,"color",tonumber(0x00FFFF))
 		local rotationAngleInterval = -math.pi/4
 		GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval)
 		os.sleep(0.5)	
