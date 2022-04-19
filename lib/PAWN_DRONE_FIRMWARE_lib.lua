@@ -22,7 +22,8 @@ isFree = true
 gpsSats={}
 cmdTRGPos={}
 
-lightColor = 0xFFFFFF
+--lightColor = 0xFFFFFF
+lightColor = 16777215
 ]]
 ,
 [[
@@ -206,7 +207,7 @@ function gpsMoveToTarget(offset,trgChannel)
 		end
 	
 		if ctrlTRGPos then ctrlTRGPos = vec_trunc(ctrlTRGPos) 
-		else d.setLightColor(0xFF0000) d.setStatusText("No GPS:") end
+		else d.setLightColor(0xFF0000) end --d.setStatusText("No GPS:") end
 	
 		_,_,r_addr,_,dist,msg,x,y,z,trgCh = computer.pullSignal(0.5)
 		
@@ -283,7 +284,7 @@ function gpsOrbitTRG(offset,trgChannel)
 		end
 	
 		if ctrlTRGPos then ctrlTRGPos = vec_trunc(ctrlTRGPos) 
-		else d.setLightColor(0xFF0000) d.setStatusText("No GPS:") end
+		else d.setLightColor(0xFF0000) end --d.setStatusText("No GPS:") end
 	
 		_,_,r_addr,_,dist,msg,x,y,z,trgCh,_ = computer.pullSignal(0.5)
 		
