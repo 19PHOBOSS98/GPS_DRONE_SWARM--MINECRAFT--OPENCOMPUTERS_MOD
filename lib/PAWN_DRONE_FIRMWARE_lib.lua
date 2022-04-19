@@ -97,7 +97,7 @@ actsWhileMoving = {
 	["uncommit"] = function() isFree = true end,
 	["gps"] = function(r_addr,x,y,z,dist) add2GPSTable(r_addr,x,y,z,dist) end,
 	--["trg"] = function(_,x,y,z,dist) cmdTRGPos={c={x=x,y=y,z=z},d=dist} d.setStatusText("trg2:"..tostring(cmdTRGPos.c.x))  end,
-	["color"] = function(_,x) d.setStatusText(tostring(x)) lightColor = x end,
+	["color"] = function(_,x) d.setStatusText("awm: "..tostring(x)) lightColor = x end,
 	["HUSH"] = function() d.setLightColor(0xFF0000) sleep(1) computer.shutdown() end
 }
 ]]
@@ -170,13 +170,13 @@ function getGPSlocation()
 	end        
 
 	if pos1 and pos2 then
-		d.setStatusText("ps12")
+		--d.setStatusText("ps12")
 		return nil
 	elseif pos1 then
 		local c = round(pos1,1)
 		return {x=c.x,y=c.y,z=c.z}
 	else 
-		d.setStatusText("else")
+		--d.setStatusText("else")
 		return nil
 	end
 end
