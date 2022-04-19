@@ -86,7 +86,7 @@ acts = {
 	["formup"] = function(_,x,y,z,_,trgC) d.setStatusText(gpsMoveToTarget({x=x,y=y,z=z},trgC)) end,	
 	["orbit"] = function(_,x,y,z,_,trgC) d.setStatusText(gpsOrbitTRG({x=x,y=y,z=z},trgC)) end,
 	["color"] = function(_,x) d.setStatusText(tostring(x).."\nacts") lightColor = x end,
-	["wru"] = function(r_addr) local whereRU = gpsLocateMe() m.send(r_addr,ResponseChannel,whereRU.x,whereRU.y,whereRU.z) end,
+	["wru"] = function(r_addr) local whereRU = gpsLocateMe() m.send(r_addr,ResponseChannel,"here",whereRU.x,whereRU.y,whereRU.z) end,
 	["HUSH"] = function() computer.shutdown() end
 }
 ]]
@@ -99,7 +99,7 @@ actsWhileMoving = {
 	["gps"] = function(r_addr,x,y,z,dist) add2GPSTable(r_addr,x,y,z,dist) end,
 	--["trg"] = function(_,x,y,z,dist) cmdTRGPos={c={x=x,y=y,z=z},d=dist} d.setStatusText("trg2:"..tostring(cmdTRGPos.c.x))  end,
 	["color"] = function(_,x) d.setStatusText("awm: "..tostring(x)) lightColor = x end,
-	["wru"] = function(r_addr) local whereRU = gpsLocateMe() m.send(r_addr,ResponseChannel,whereRU.x,whereRU.y,whereRU.z) end,
+	["wru"] = function(r_addr) local whereRU = gpsLocateMe() m.send(r_addr,ResponseChannel,"here",whereRU.x,whereRU.y,whereRU.z) end,
 	["HUSH"] = function() d.setLightColor(0xFF0000) sleep(1) computer.shutdown() end
 }
 ]]
