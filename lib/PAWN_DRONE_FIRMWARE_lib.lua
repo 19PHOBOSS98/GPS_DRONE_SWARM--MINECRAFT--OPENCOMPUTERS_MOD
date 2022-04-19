@@ -198,6 +198,7 @@ function gpsMoveToTarget(offset,trgChannel)
 	d.setLightColor(0xFFFFFF)
 	gpsSats={}
 	m.open(gpsChannel)
+	m.open(trgChannel)
 	local ctrlTRGPos = nil
 	repeat
 		if arr_length(gpsSats)>=3 then
@@ -218,36 +219,35 @@ function gpsMoveToTarget(offset,trgChannel)
 	if ctrlTRGPos then
 		m.close(gpsChannel)
 		d.setLightColor(0xFFFFFF)
-		m.open(trgChannel)
 		local mv = {x=0,y=0,z=0},msg,r_add,dist,x,y,z
 		local trgUpdate = {}
-			repeat
-				_,_,r_addr,_,dist,msg,x,y,z,trgCh,_ = computer.pullSignal(0.5)
-	
-				if msg == "trg" then
-					trgUpdate = {c={x=x,y=y,z=z},d=dist}
-				end
-				local trgPos = trgUpdate
+		repeat
+			_,_,r_addr,_,dist,msg,x,y,z,trgCh,_ = computer.pullSignal(0.5)
 
-				if trgPos.d and trgPos.d < 50 then
-					trgPos.c = vec_trunc(trgPos.c)
-					local trgPosOffset = add(trgPos.c, offset)
-					mv = sub(trgPosOffset,ctrlTRGPos)
-					d.move(mv.x,mv.y,mv.z)
-					ctrlTRGPos = trgPosOffset
-					--d.setLightColor(0x00FF00)
-					d.setLightColor(lightColor)
-					--d.setStatusText(d.name())
-					--d.setStatusText(tostring(lightColor))
-				else
-					d.setLightColor(0xFF0000)
-					--d.setStatusText("No TRG:\n"..tostring(trgChannel))
-					d.move(-mv.x,-mv.y,-mv.z)
-				end
-				if actsWhileMoving[msg] then
-					actsWhileMoving[msg](r_addr,x,y,z,dist)
-				end
-			until msg == "stop"
+			if msg == "trg" then
+				trgUpdate = {c={x=x,y=y,z=z},d=dist}
+			end
+			local trgPos = trgUpdate
+
+			if trgPos.d and trgPos.d < 50 then
+				trgPos.c = vec_trunc(trgPos.c)
+				local trgPosOffset = add(trgPos.c, offset)
+				mv = sub(trgPosOffset,ctrlTRGPos)
+				d.move(mv.x,mv.y,mv.z)
+				ctrlTRGPos = trgPosOffset
+				--d.setLightColor(0x00FF00)
+				d.setLightColor(lightColor)
+				--d.setStatusText(d.name())
+				--d.setStatusText(tostring(lightColor))
+			else
+				d.setLightColor(0xFF0000)
+				--d.setStatusText("No TRG:\n"..tostring(trgChannel))
+				d.move(-mv.x,-mv.y,-mv.z)
+			end
+			if actsWhileMoving[msg] then
+				actsWhileMoving[msg](r_addr,x,y,z,dist)
+			end
+		until msg == "stop"
 	end
 	m.close(trgChannel)
 	return d.name()
@@ -275,6 +275,7 @@ function gpsOrbitTRG(offset,trgChannel)
 	d.setLightColor(0xFFFFFF)
 	gpsSats={}
 	m.open(gpsChannel)
+	m.open(trgChannel)
 	local ctrlTRGPos = nil
 	repeat
 		if arr_length(gpsSats)>=3 then
@@ -295,45 +296,44 @@ function gpsOrbitTRG(offset,trgChannel)
 	if ctrlTRGPos then
 		m.close(gpsChannel)
 		d.setLightColor(0xFFFFFF)
-		m.open(trgChannel)
 		local mv = {x=0,y=0,z=0},msg,r_add,dist,x,y,z
 		local trgUpdate = {}
 		local currentAngle = 0 -- in radians
 		local rotationInterval = 0
-			repeat
-				_,_,r_addr,_,dist,msg,x,y,z,trgCh,rotInt = computer.pullSignal(0.5)
-				
-				if msg == "trg" then
-					trgUpdate = {c={x=x,y=y,z=z},d=dist}
-					rotationInterval = rotInt
-				end
-				local trgPos = trgUpdate
-				
-				if trgPos.d and trgPos.d < 50 then
-					trgPos.c = vec_trunc(trgPos.c)
-					--d.setStatusText("rotInt: "..tostring(rotationInterval))
-					local rotatedOffset = rotatePoint(currentAngle%twPI,offset)
-					
-					currentAngle = currentAngle + rotationInterval
-					
-					local trgPosOffset = add(trgPos.c, rotatedOffset)
-	
-					mv = sub(trgPosOffset,ctrlTRGPos)
-					d.move(mv.x,mv.y,mv.z)
-					ctrlTRGPos = trgPosOffset
-					--d.setLightColor(0x00FF00)
-					d.setLightColor(lightColor)
-					--d.setStatusText(d.name())
-					--d.setStatusText(tostring(lightColor))
-				else
-					d.setLightColor(0xFF0000)
-					--d.setStatusText("No TRG:\n"..tostring(trgChannel))
-					d.move(-mv.x,-mv.y,-mv.z)
-				end
-				if actsWhileMoving[msg] then
-					actsWhileMoving[msg](r_addr,x,y,z,dist)
-				end
-			until msg == "stop"
+		repeat
+			_,_,r_addr,_,dist,msg,x,y,z,trgCh,rotInt = computer.pullSignal(0.5)
+
+			if msg == "trg" then
+				trgUpdate = {c={x=x,y=y,z=z},d=dist}
+				rotationInterval = rotInt
+			end
+			local trgPos = trgUpdate
+
+			if trgPos.d and trgPos.d < 50 then
+				trgPos.c = vec_trunc(trgPos.c)
+				--d.setStatusText("rotInt: "..tostring(rotationInterval))
+				local rotatedOffset = rotatePoint(currentAngle%twPI,offset)
+
+				currentAngle = currentAngle + rotationInterval
+
+				local trgPosOffset = add(trgPos.c, rotatedOffset)
+
+				mv = sub(trgPosOffset,ctrlTRGPos)
+				d.move(mv.x,mv.y,mv.z)
+				ctrlTRGPos = trgPosOffset
+				--d.setLightColor(0x00FF00)
+				d.setLightColor(lightColor)
+				--d.setStatusText(d.name())
+				--d.setStatusText(tostring(lightColor))
+			else
+				d.setLightColor(0xFF0000)
+				--d.setStatusText("No TRG:\n"..tostring(trgChannel))
+				d.move(-mv.x,-mv.y,-mv.z)
+			end
+			if actsWhileMoving[msg] then
+				actsWhileMoving[msg](r_addr,x,y,z,dist)
+			end
+		until msg == "stop"
 	end
 	m.close(trgChannel)
 	return d.name()
