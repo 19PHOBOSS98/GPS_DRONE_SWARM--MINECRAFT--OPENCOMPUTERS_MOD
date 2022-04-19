@@ -271,8 +271,14 @@ while true do
 		modem.broadcast(PawnsChannel,"HUSH")
 	    	os.sleep(0.5)		
 		
-		
-
+	elseif(cmd == "WRU") then
+		modem.broadcast(PawnsChannel,"wru")
+		modem.close(gpsChannel)
+		local _,_,r_addr,_,_,msg,x,y,z = event.listen("modem_message")
+		if msg == "here" then
+			print("r_addr: ",r_addr,"c: ",x,y,z)
+		end
+	    	os.sleep(0.5)		
 
 		
 	elseif(cmd == "EXIT") then
