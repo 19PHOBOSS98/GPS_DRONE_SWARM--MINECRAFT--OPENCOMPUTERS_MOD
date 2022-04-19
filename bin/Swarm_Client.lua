@@ -229,16 +229,16 @@ while true do
 	elseif(cmd == "URM") then -- Update Static Formation PAWNS
 		local targetingChannel = 11
 		--modem.broadcast(targetingChannel,"color",tonumber(0xFF8800))
-		for addr,c in pairs(Pawnffbook[5]) do modem.send(addr,targetingChannel,"color",tonumber(0x8800FF)) end
-		for addr,c in pairs(Pawnffbook[4]) do modem.send(addr,targetingChannel,"color",tonumber(0xFF8800)) end
+		for addr,c in pairs(Pawnffbook[5]) do modem.send(addr,targetingChannel,"color",0x8800FF) end
+		for addr,c in pairs(Pawnffbook[4]) do modem.send(addr,targetingChannel,"color",0xFF8800) end
 		local rotationAngleInterval = math.pi/4
 		GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval)
 		os.sleep(0.5)
 	elseif(cmd == "URMREV") then -- Update Static Formation PAWNS Reverse
 		local targetingChannel = 11
 		--modem.broadcast(targetingChannel,"color",tonumber(0x8800FF))
-		for addr,c in pairs(Pawnffbook[5]) do modem.send(addr,targetingChannel,"color",tonumber(0xFF8800)) end
-		for addr,c in pairs(Pawnffbook[4]) do modem.send(addr,targetingChannel,"color",tonumber(0x8800FF)) end
+		for addr,c in pairs(Pawnffbook[5]) do modem.send(addr,targetingChannel,"color",0xFF8800) end
+		for addr,c in pairs(Pawnffbook[4]) do modem.send(addr,targetingChannel,"color",0x8800FF) end
 		local rotationAngleInterval = -math.pi/4
 		GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval)
 		os.sleep(0.5)	
