@@ -84,7 +84,7 @@ acts = {
 	--["trg"] = function(_,x,y,z,dist) cmdTRGPos={c={x,y,z},d=dist} end,
 	["formup"] = function(_,x,y,z,_,trgC) d.setStatusText(gpsMoveToTarget({x=x,y=y,z=z},trgC)) end,	
 	["orbit"] = function(_,x,y,z,_,trgC) d.setStatusText(gpsOrbitTRG({x=x,y=y,z=z},trgC)) end,
-	["color"] = function(_,x) lightColor = x end,	
+	["color"] = function(_,x) d.setStatusText(tostring(x).."\nacts") lightColor = x end,	
 	["HUSH"] = function() computer.shutdown() end
 }
 ]]
@@ -96,7 +96,7 @@ actsWhileMoving = {
 	["uncommit"] = function() isFree = true end,
 	["gps"] = function(r_addr,x,y,z,dist) add2GPSTable(r_addr,x,y,z,dist) end,
 	--["trg"] = function(_,x,y,z,dist) cmdTRGPos={c={x=x,y=y,z=z},d=dist} d.setStatusText("trg2:"..tostring(cmdTRGPos.c.x))  end,
-	["color"] = function(_,x) lightColor = x end,
+	["color"] = function(_,x) d.setStatusText(tostring(x)) lightColor = x end,
 	["HUSH"] = function() d.setLightColor(0xFF0000) sleep(1) computer.shutdown() end
 }
 ]]
@@ -238,10 +238,10 @@ function gpsMoveToTarget(offset,trgChannel)
 					--d.setLightColor(0x00FF00)
 					d.setLightColor(lightColor)
 					--d.setStatusText(d.name())
-					d.setStatusText(tostring(lightColor))
+					--d.setStatusText(tostring(lightColor))
 				else
 					d.setLightColor(0xFF0000)
-					d.setStatusText("No TRG:/n"..tostring(trgChannel))
+					d.setStatusText("No TRG:\n"..tostring(trgChannel))
 					d.move(-mv.x,-mv.y,-mv.z)
 				end
 				if actsWhileMoving[msg] then
@@ -324,10 +324,10 @@ function gpsOrbitTRG(offset,trgChannel)
 					--d.setLightColor(0x00FF00)
 					d.setLightColor(lightColor)
 					--d.setStatusText(d.name())
-					d.setStatusText(tostring(lightColor))
+					--d.setStatusText(tostring(lightColor))
 				else
 					d.setLightColor(0xFF0000)
-					d.setStatusText("No TRG:/n"..tostring(trgChannel))
+					d.setStatusText("No TRG:\n"..tostring(trgChannel))
 					d.move(-mv.x,-mv.y,-mv.z)
 				end
 				if actsWhileMoving[msg] then
