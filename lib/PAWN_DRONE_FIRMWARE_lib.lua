@@ -21,6 +21,8 @@ isFree = true
 
 gpsSats={}
 cmdTRGPos={}
+
+lightColor = 0xFFFFFF
 ]]
 ,
 [[
@@ -81,7 +83,8 @@ acts = {
 	["gps"] = function(r_addr,x,y,z,dist) add2GPSTable(r_addr,x,y,z,dist) end,
 	--["trg"] = function(_,x,y,z,dist) cmdTRGPos={c={x,y,z},d=dist} end,
 	["formup"] = function(_,x,y,z,_,trgC) d.setStatusText(gpsMoveToTarget({x=x,y=y,z=z},trgC)) end,	
-	["orbit"] = function(_,x,y,z,_,trgC) d.setStatusText(gpsOrbitTRG({x=x,y=y,z=z},trgC)) end,	
+	["orbit"] = function(_,x,y,z,_,trgC) d.setStatusText(gpsOrbitTRG({x=x,y=y,z=z},trgC)) end,
+	["color"] = function(_,x) lightColor = x end,	
 	["HUSH"] = function() computer.shutdown() end
 }
 ]]
@@ -93,6 +96,7 @@ actsWhileMoving = {
 	["uncommit"] = function() isFree = true end,
 	["gps"] = function(r_addr,x,y,z,dist) add2GPSTable(r_addr,x,y,z,dist) end,
 	--["trg"] = function(_,x,y,z,dist) cmdTRGPos={c={x=x,y=y,z=z},d=dist} d.setStatusText("trg2:"..tostring(cmdTRGPos.c.x))  end,
+	["color"] = function(_,x) lightColor = x end,
 	["HUSH"] = function() d.setLightColor(0xFF0000) sleep(1) computer.shutdown() end
 }
 ]]
@@ -305,7 +309,7 @@ function gpsOrbitTRG(offset,trgChannel)
 				
 				if trgPos.d and trgPos.d < 50 then
 					trgPos.c = vec_trunc(trgPos.c)
-					d.setStatusText("rotInt: "..tostring(rotationInterval))
+					--d.setStatusText("rotInt: "..tostring(rotationInterval))
 					local rotatedOffset = rotatePoint(currentAngle%twPI,offset)
 					
 					currentAngle = currentAngle + rotationInterval
@@ -315,7 +319,8 @@ function gpsOrbitTRG(offset,trgChannel)
 					mv = sub(trgPosOffset,ctrlTRGPos)
 					d.move(mv.x,mv.y,mv.z)
 					ctrlTRGPos = trgPosOffset
-					d.setLightColor(0x00FF00)
+					--d.setLightColor(0x00FF00)
+					d.setLightColor(lightColor)
 					d.setStatusText(d.name())
 				else
 					d.setLightColor(0xFF0000)
