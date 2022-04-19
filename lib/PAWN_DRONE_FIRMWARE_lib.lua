@@ -241,7 +241,7 @@ function gpsMoveToTarget(offset,trgChannel)
 					--d.setStatusText(tostring(lightColor))
 				else
 					d.setLightColor(0xFF0000)
-					d.setStatusText("No TRG:\n"..tostring(trgChannel))
+					--d.setStatusText("No TRG:\n"..tostring(trgChannel))
 					d.move(-mv.x,-mv.y,-mv.z)
 				end
 				if actsWhileMoving[msg] then
@@ -327,7 +327,7 @@ function gpsOrbitTRG(offset,trgChannel)
 					--d.setStatusText(tostring(lightColor))
 				else
 					d.setLightColor(0xFF0000)
-					d.setStatusText("No TRG:\n"..tostring(trgChannel))
+					--d.setStatusText("No TRG:\n"..tostring(trgChannel))
 					d.move(-mv.x,-mv.y,-mv.z)
 				end
 				if actsWhileMoving[msg] then
