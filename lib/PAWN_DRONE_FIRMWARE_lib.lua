@@ -321,7 +321,8 @@ function gpsOrbitTRG(offset,trgChannel)
 					ctrlTRGPos = trgPosOffset
 					--d.setLightColor(0x00FF00)
 					d.setLightColor(lightColor)
-					d.setStatusText(d.name())
+					--d.setStatusText(d.name())
+					d.setStatusText(tostring(lightColor))
 				else
 					d.setLightColor(0xFF0000)
 					--d.setStatusText("Out Of\nRange ")
