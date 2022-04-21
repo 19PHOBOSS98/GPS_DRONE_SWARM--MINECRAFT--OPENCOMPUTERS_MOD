@@ -155,5 +155,46 @@ XXX
 
 ]]
 
+--[[
+X	X       X       X       X
+    X                       X
+        X               X
+            X       X
+                X
+rise/run = slope = height/width
+rise/slope = run
+]]
 
+planeAxisTriangle = {
+    ["X"] = function(height_rise,b_run,basePoint) return {x=basePoint.x,y=basePoint.y+height_rise,z=basePoint.z+b_run},{x=basePoint.x,y=basePoint.y+height_rise,z=basePoint.z-b_run} end,
+    ["Y"] = function(height_rise,b_run,basePoint) return {x=basePoint.x+b_run,y=basePoint.y,z=basePoint.z+height_rise},{x=basePoint.x-b_run,y=basePoint.y,z=basePoint.z+height_rise} end,
+    ["Z"] = function(height_rise,b_run,basePoint) return {x=basePoint.x+b_run,y=basePoint.y+height_rise,z=basePoint.z},{x=basePoint.x-b_run,y=basePoint.y+height_rise,z=basePoint.z} end
+}
+
+function FORMATION_GENERATOR.TriangleFormation(plane_axis,height,base,spacing,basePoint)
+    local formationTable = {}
+    local slope = height/(base*0.5)
+    table.insert(formationTable,basePoint)
+    local run = 0
+    
+    for rise = 1,height,spacing do
+        run = rise/slope
+        local pos,neg = planeAxisTriangle[plane_axis](rise,run,basePoint)
+        table.insert(formationTable,pos)
+        table.insert(formationTable,neg)
+    end
+    for b = run-spacing,0,-spacing do 
+        local pos,neg = planeAxisTriangle[plane_axis](height,b,basePoint)
+        table.insert(formationTable,pos)
+        table.insert(formationTable,neg)
+    end
+    return formationTable
+end
+--[[
+print("\nTriangle:")
+t = TriangleFormation("Z",7,14,2,{x=0,y=0,z=0})
+for k,v in pairs(t) do
+    print(v.x,v.y,v.z)
+end
+]]
 return FORMATION_GENERATOR
