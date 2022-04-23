@@ -263,7 +263,7 @@ while true do
 		--for addr,c in pairs(Pawnffbook[4]) do modem.send(addr,targetingChannel,"color",0x8800FF) end
 		--local rotationAngleInterval = -math.pi/8
 		local rotationAngleInterval = -math.pi/4 -- for circles
-		local tiltAngle = math.pi/2 -- for circles
+		local tiltAngle = -math.pi/4 -- for circles
 		GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"Z",tiltAngle)
 		--GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"Z")
 		--GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"X")
