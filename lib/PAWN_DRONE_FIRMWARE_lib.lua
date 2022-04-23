@@ -327,7 +327,7 @@ end
 --rotationInterval = math.pi/8
 --rotationInterval = math.pi/2
 twPI = 2*math.pi
-function gpsOrbitTRG(axis,offset,trgChannel)
+function gpsOrbitTRG(offset,trgChannel)
 	d.setLightColor(0xFFFFFF)
 	m.open(trgChannel)
 	local ctrlTRGPos = nil
@@ -356,6 +356,8 @@ function gpsOrbitTRG(axis,offset,trgChannel)
 				--d.setStatusText("rotInt: "..tostring(rotationInterval))
 				--local rotatedOffset = rotatePoint(currentAngle%twPI,offset)
 	
+				--d.setStatusText("rInt: "..tostring(rotationInterval))
+				d.setStatusText("axis: "..tostring(axis))
 				local rotatedOffset = rotate[rotationAxis](currentAngle%twPI,offset)
 	
 				currentAngle = currentAngle + rotationInterval
