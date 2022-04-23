@@ -367,14 +367,16 @@ function gpsOrbitTRG(offset,trgChannel)
 		local trgUpdate = {}
 		local currentAngle = 0 -- in radians
 		local rotationInterval = 0
-		local tiltAxis = "Y"
+		local tiltAxis = "Z"
+		local tiltAngle = 0
 		repeat
-			_,_,r_addr,_,dist,msg,x,y,z,axis,rotInt,tiltAngl = computer.pullSignal(0.5)
+			_,_,r_addr,_,dist,msg,x,y,z,axis,rotInt,tilt = computer.pullSignal(0.5)
 
 			if msg == "trg" then
 				trgUpdate = {c={x=x,y=y,z=z},d=dist}
 				rotationInterval = rotInt
 				tiltAxis = axis
+				tiltAngle = tilt
 			end
 			local trgPos = trgUpdate
 
@@ -384,9 +386,8 @@ function gpsOrbitTRG(offset,trgChannel)
 				--local rotatedOffset = rotatePoint(currentAngle%twPI,offset)
 				
 				local rotatedOffset = rotate2["Y"](currentAngle%twPI,offset)
-	
 				--rotatedOffset = rotate["Z"](math.pi/4,rotatedOffset)-- tilted rotation??
-				rotatedOffset = rotate[tiltAxis](tiltAngl,rotatedOffset)-- tilted rotation??
+				rotatedOffset = rotate[tiltAxis](tiltAngle,rotatedOffset)-- tilted rotation??
 	
 				currentAngle = currentAngle + rotationInterval
 
