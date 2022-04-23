@@ -42,7 +42,7 @@ rotate = {
 function FORMATION_GENERATOR.rotateFormation(axis,radians,formationTable) --***************************--
     local newFormationTable = {}
     for k,position in pairs(formationTable) do
-        local newPos = rotate[axis](radians,{x=position.x,y=position.y,z=position.z})
+        local newPos = rotate[axis](radians,{x=position[1],y=position[2],z=position[3]})
         table.insert(newFormationTable,{newPos.x,newPos.y,newPos.z})
     end
     return newFormationTable
