@@ -94,7 +94,7 @@ Pawndynamic_fbook = Pawnfbook
 
 ring = formation_generator.circleFormation("Y",10,{x=0,y=0,z=7})
 hollow_square = formation_generator.hollowSquareFormation("Y",3,3,7,{x=-1,y=0,z=-1})
-triangle = formation_generator.TriangleFormation("Y:spanX",2,4,1,{x=0,y=2,z=0})
+triangle = formation_generator.TriangleFormation("Y:spanX",2,4,2,{x=0,y=2,z=0})
 PawnGeneratedFormBook = {ring,hollow_square,triangle}
 dynamicPawnPyramidBook = PawnGeneratedFormBook
 
