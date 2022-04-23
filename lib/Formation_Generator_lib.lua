@@ -282,7 +282,7 @@ function FORMATION_GENERATOR.TriangleFormation(plane_axis,height,base,scale,base
         table.insert(formationTable,{pos.x,pos.y,pos.z})
         table.insert(formationTable,{neg.x,neg.y,neg.z})
     end
-    for b = run,1,-1 do 
+    for b = run-1,1,-1 do 
         local pos,neg = triangleDirection[plane_axis](height,b,basePoint)
 	
         if not s_utils.isEqual(pos,neg) then
