@@ -22,6 +22,7 @@ local radar_targeting = require("radar_targeting")
 local GPS = require("GPS")
 local GPS_TRG = require("GPS_TRG")
 local p_firmware = require("pawn_firmware")
+local formation_generator = require("formation_generator")
 
 modem.open(QueensResponseChannel)
 modem.open(PawnsResponseChannel)
@@ -90,6 +91,10 @@ dynamicTriangleMe = {{3,4,-2},{-3,4,-2},{0,4,3}}
 --Pawnform1 = {{0,2,0}}
 Pawnfbook = {dynamicTriangle,staticTriangle,staticOrbitSquare,dynamicOrbitSquareMe,dynamicTriangleMe}
 Pawndynamic_fbook = Pawnfbook
+
+ring = circle formation_generator.circleFormation("Y",10,{x=0,y=0,z=7})
+PawnGeneratedFormBook = {ring}
+dynamicPawnPyramidBook = PawnGeneratedFormBook
 
 
 StaticFormationtrgPortBook = {[8]="team1",[10]="team2"}
@@ -219,18 +224,23 @@ while true do
 		local targetingChannel = 11
 		modem.broadcast(targetingChannel,"stop")		
 		flightform.refreshFFT(Pawnffbook,Pawndynamic_fbook,PawnsChannel,false)
+		--[[
 		flightform.formFF(Pawnffbook[4],Pawndynamic_fbook[4],PawnsChannel,false)
 		flightform.POrbit(targetingChannel,Pawnffbook[4],PawnsChannel)
-		flightform.POrbit(targetingChannel,Pawnffbook[4],PawnsChannel)
+		
 		flightform.formFF(Pawnffbook[5],Pawndynamic_fbook[5],PawnsChannel,false)
 		flightform.PformUP(targetingChannel,Pawnffbook[5],PawnsChannel)
+		]]
+		flightform.formFF(Pawnffbook[5],dynamicPawnPyramidBook[1],PawnsChannel,false)
+		flightform.PformUP(targetingChannel,Pawnffbook[5],PawnsChannel)
+
 		
 		os.sleep(0.5)	
 	elseif(cmd == "URM") then -- Update Static Formation PAWNS
 		local targetingChannel = 11
 		--modem.broadcast(targetingChannel,"color",tonumber(0xFF8800))
 		for addr,c in pairs(Pawnffbook[5]) do modem.send(addr,targetingChannel,"color",0x8800FF) end
-		for addr,c in pairs(Pawnffbook[4]) do modem.send(addr,targetingChannel,"color",0xFF8800) end
+		--for addr,c in pairs(Pawnffbook[4]) do modem.send(addr,targetingChannel,"color",0xFF8800) end
 		local rotationAngleInterval = math.pi/4
 		GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval)
 		os.sleep(0.5)
@@ -238,7 +248,7 @@ while true do
 		local targetingChannel = 11
 		--modem.broadcast(targetingChannel,"color",tonumber(0x8800FF))
 		for addr,c in pairs(Pawnffbook[5]) do modem.send(addr,targetingChannel,"color",0xFF8800) end
-		for addr,c in pairs(Pawnffbook[4]) do modem.send(addr,targetingChannel,"color",0x8800FF) end
+		--for addr,c in pairs(Pawnffbook[4]) do modem.send(addr,targetingChannel,"color",0x8800FF) end
 		local rotationAngleInterval = -math.pi/4
 		GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval)
 		os.sleep(0.5)	
