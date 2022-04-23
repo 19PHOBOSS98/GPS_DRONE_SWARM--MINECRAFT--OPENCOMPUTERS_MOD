@@ -235,10 +235,10 @@ while true do
 		flightform.formFF(Pawnffbook[5],Pawndynamic_fbook[5],PawnsChannel,false)
 		flightform.PformUP(targetingChannel,Pawnffbook[5],PawnsChannel)
 		]]
-		--flightform.formFF(Pawnffbook[5],dynamicPawnPyramidBook[1],PawnsChannel,false)
+		flightform.formFF(Pawnffbook[5],dynamicPawnPyramidBook[1],PawnsChannel,false)
 		--flightform.formFF(Pawnffbook[5],dynamicPawnPyramidBook[2],PawnsChannel,false)
 		--flightform.formFF(Pawnffbook[5],dynamicPawnPyramidBook[3],PawnsChannel,false)
-		flightform.formFF(Pawnffbook[5],dynamicPawnPyramidBook[4],PawnsChannel,false)
+		--flightform.formFF(Pawnffbook[5],dynamicPawnPyramidBook[4],PawnsChannel,false)
 		--flightform.PformUP(targetingChannel,Pawnffbook[5],PawnsChannel)
 		flightform.POrbit(targetingChannel,Pawnffbook[5],PawnsChannel)
 
@@ -249,16 +249,22 @@ while true do
 		--modem.broadcast(targetingChannel,"color",tonumber(0xFF8800))
 		for addr,c in pairs(Pawnffbook[5]) do modem.send(addr,targetingChannel,"color",0x8800FF) end
 		--for addr,c in pairs(Pawnffbook[4]) do modem.send(addr,targetingChannel,"color",0xFF8800) end
-		local rotationAngleInterval = math.pi/8
+		--local rotationAngleInterval = math.pi/8 -- for squares
+		local rotationAngleInterval = math.pi/4 -- for circles
 		GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"Y")
+		--GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"Z")
+		--GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"X")
 		os.sleep(0.5)
 	elseif(cmd == "URMREV") then -- Update Static Formation PAWNS Reverse
 		local targetingChannel = 11
 		--modem.broadcast(targetingChannel,"color",tonumber(0x8800FF))
 		for addr,c in pairs(Pawnffbook[5]) do modem.send(addr,targetingChannel,"color",0xFF8800) end
 		--for addr,c in pairs(Pawnffbook[4]) do modem.send(addr,targetingChannel,"color",0x8800FF) end
-		local rotationAngleInterval = -math.pi/8
+		--local rotationAngleInterval = -math.pi/8
+		local rotationAngleInterval = math.pi/4 -- for circles
 		GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"Y")
+		--GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"Z")
+		--GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"X")
 		os.sleep(0.5)	
 		
 	elseif(cmd == "GP") then -- recall PAWNS
