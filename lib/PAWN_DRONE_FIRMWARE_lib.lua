@@ -240,7 +240,7 @@ function gpsMoveToTarget(offset,trgChannel)
 		local mv = {x=0,y=0,z=0},msg,r_add,dist,x,y,z
 		local trgUpdate = {}
 		repeat
-			_,_,r_addr,_,dist,msg,x,y,z,trgCh,_ = computer.pullSignal(0.5)
+			_,_,r_addr,_,dist,msg,x,y,z,_,_ = computer.pullSignal(0.5)
 
 			if msg == "trg" then
 				trgUpdate = {c={x=x,y=y,z=z},d=dist}
@@ -342,7 +342,7 @@ function gpsOrbitTRG(axis,offset,trgChannel)
 		local rotationInterval = 0
 		local rotationAxis = "Y"
 		repeat
-			_,_,r_addr,_,dist,msg,x,y,z,trgCh,rotInt,axis = computer.pullSignal(0.5)
+			_,_,r_addr,_,dist,msg,x,y,z,axis,rotInt = computer.pullSignal(0.5)
 
 			if msg == "trg" then
 				trgUpdate = {c={x=x,y=y,z=z},d=dist}
