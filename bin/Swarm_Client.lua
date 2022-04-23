@@ -92,7 +92,8 @@ dynamicTriangleMe = {{3,4,-2},{-3,4,-2},{0,4,3}}
 Pawnfbook = {dynamicTriangle,staticTriangle,staticOrbitSquare,dynamicOrbitSquareMe,dynamicTriangleMe}
 Pawndynamic_fbook = Pawnfbook
 
-ring = circle formation_generator.circleFormation("Y",10,{x=0,y=0,z=7})
+ring = formation_generator.circleFormation("Y",10,{x=0,y=0,z=7})
+
 PawnGeneratedFormBook = {ring}
 dynamicPawnPyramidBook = PawnGeneratedFormBook
 
@@ -232,7 +233,8 @@ while true do
 		flightform.PformUP(targetingChannel,Pawnffbook[5],PawnsChannel)
 		]]
 		flightform.formFF(Pawnffbook[5],dynamicPawnPyramidBook[1],PawnsChannel,false)
-		flightform.PformUP(targetingChannel,Pawnffbook[5],PawnsChannel)
+		--flightform.PformUP(targetingChannel,Pawnffbook[5],PawnsChannel)
+		flightform.POrbit(targetingChannel,Pawnffbook[5],PawnsChannel)
 
 		
 		os.sleep(0.5)	
