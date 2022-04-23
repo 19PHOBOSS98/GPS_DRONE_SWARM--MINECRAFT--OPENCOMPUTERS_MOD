@@ -273,7 +273,7 @@ triangleDirection = {
 function FORMATION_GENERATOR.TriangleFormation(plane_axis,height,base,heigh_spacing,base_spacing,basePoint) --***************************--
     local formationTable = {}
     local slope = height/(base*0.5)
-    table.insert(formationTable,basePoint)
+    table.insert(formationTable,{basePoint.x,basePoint.y,basePoint.z})
     local run = 0
     
     for rise = 1,height,heigh_spacing do
