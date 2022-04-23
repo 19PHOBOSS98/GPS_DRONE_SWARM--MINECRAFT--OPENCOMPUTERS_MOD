@@ -269,7 +269,7 @@ triangleDirection = {
             end,  
 }
 
-
+--[[
 function FORMATION_GENERATOR.TriangleFormation(plane_axis,height,base,scale,basePoint) --***************************--
     local formationTable = {}
     local slope = height/(base*0.5)
@@ -294,9 +294,34 @@ function FORMATION_GENERATOR.TriangleFormation(plane_axis,height,base,scale,base
     end
     return formationTable
 end
+]]
+function FORMATION_GENERATOR.TriangleFormation(plane_axis,height,base,scale,basePoint)
+    local formationTable = {}
+    local slope = height/(base*0.5)
+    table.insert(formationTable,{basePoint.x,basePoint.y,basePoint.z})
+    local run = 0
+    
+    for rise = 1,height do
+        run = rise/slope
+        local pos,neg = triangleDirection[plane_axis](rise,run,basePoint)
+        pos,neg = mul(pos,scale),mul(neg,scale)
+        table.insert(formationTable,{pos.x,pos.y,pos.z})
+        table.insert(formationTable,{neg.x,neg.y,neg.z})
+    end
+    for b = run-1,1,-1 do 
+        local pos,neg = triangleDirection[plane_axis](height,b,basePoint)
+        if not isEqual(pos,neg) then
+            neg = mul(neg,scale)
+            table.insert(formationTable,{neg.x,neg.y,neg.z})
+        end
+        pos = mul(pos,scale)
+        table.insert(formationTable,{pos.x,pos.y,pos.z})
+    end
+    return formationTable
+end
 --[[
 print("\nTriangle:")
-t = TriangleFormation("Y:spanX",2,4,2,1,{x=0,y=0,z=0})
+t = TriangleFormation("Y:spanX",2,4,1,{x=0,y=0,z=0})
 for k,v in pairs(t) do
     print(v.x,v.y,v.z)
 end
