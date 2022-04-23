@@ -264,7 +264,8 @@ while true do
 		--local rotationAngleInterval = -math.pi/8
 		local rotationAngleInterval = -math.pi/4 -- for circles
 		local tiltAngle = -math.pi/4 -- for circles
-		GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"Z",tiltAngle)
+		--GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"Z",tiltAngle)
+		GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"X",tiltAngle)
 		--GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"Z")
 		--GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"X")
 		os.sleep(0.5)	
