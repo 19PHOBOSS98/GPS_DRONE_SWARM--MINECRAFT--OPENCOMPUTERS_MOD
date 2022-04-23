@@ -1,3 +1,5 @@
+local s_utils = require 'swarm_utilities'
+
 local TWPI = math.pi*2
 
 function rotatePointOnXAxis(radians,point)
@@ -34,6 +36,48 @@ rotate = {
 }
 
 local FORMATION_GENERATOR = {}
+
+function FORMATION_GENERATOR.rotateFormation(axis,radians,formationTable)
+    local newFormationTable = {}
+    for k,position in pairs(formationTable) do
+        local newPos = rotate[axis](radians,position)
+        table.insert(newFormationTable,newPos)
+    end
+    return newFormationTable
+end
+
+--[[
+print("\nTriangle:")
+t = TriangleFormation("Y:spanX",2,4,2,1,{x=0,y=0,z=0})
+for k,v in pairs(t) do
+    print(v.x,v.y,v.z)
+end
+
+
+
+print("\nRotated Triangle:")
+new_t = rotateFormation("Y",math.pi/2,t)
+
+for k,v in pairs(new_t) do
+    print(v.x,v.y,v.z)
+end
+
+print("\nHollow Square:")
+hsqr = hollowSquareFormation("Y",5,3,{x=0,y=0,z=0})
+for k,v in pairs(hsqr) do
+    print(v.x,v.y,v.z)
+end
+
+XXXXX
+XOOOX
+XXXXX
+
+print("\nRotated Hollow Square:")
+new_t = rotateFormation("Z",math.pi/2,hsqr)
+for k,v in pairs(new_t) do
+    print(v.x,v.y,v.z)
+end
+]]
 
 function FORMATION_GENERATOR.circleFormation(axis,droneCount,basePoint) --***************************--
     --print("\nA Circle with ",droneCount,"drone(s):")
@@ -161,40 +205,93 @@ X	X       X       X       X
         X               X
             X       X
                 X
-rise/run = slope = height/width
-rise/slope = run
 ]]
-
-planeAxisTriangle = {
-    ["X"] = function(height_rise,b_run,basePoint) return {x=basePoint.x,y=basePoint.y+height_rise,z=basePoint.z+b_run},{x=basePoint.x,y=basePoint.y+height_rise,z=basePoint.z-b_run} end,
-    ["Y"] = function(height_rise,b_run,basePoint) return {x=basePoint.x+b_run,y=basePoint.y,z=basePoint.z+height_rise},{x=basePoint.x-b_run,y=basePoint.y,z=basePoint.z+height_rise} end,
-    ["Z"] = function(height_rise,b_run,basePoint) return {x=basePoint.x+b_run,y=basePoint.y+height_rise,z=basePoint.z},{x=basePoint.x-b_run,y=basePoint.y+height_rise,z=basePoint.z} end
+triangleDirection = {
+    ["Y:spanZ"] = function(height_rise,b_run,basePoint) 
+                return {x=basePoint.x,y=basePoint.y+height_rise,z=basePoint.z+b_run},
+                        {x=basePoint.x,y=basePoint.y+height_rise,z=basePoint.z-b_run} 
+            end,
+    ["-Y:spanZ"] = function(height_rise,b_run,basePoint) 
+                return {x=basePoint.x,y=basePoint.y-height_rise,z=basePoint.z+b_run},
+                        {x=basePoint.x,y=basePoint.y-height_rise,z=basePoint.z-b_run} 
+            end,
+    ["Y:spanX"] = function(height_rise,b_run,basePoint) 
+                return {x=basePoint.x+b_run,y=basePoint.y+height_rise,z=basePoint.z},
+                        {x=basePoint.x-b_run,y=basePoint.y+height_rise,z=basePoint.z} 
+            end,
+    ["-Y:spanX"] = function(height_rise,b_run,basePoint) 
+                return {x=basePoint.x+b_run,y=basePoint.y-height_rise,z=basePoint.z},
+                        {x=basePoint.x-b_run,y=basePoint.y-height_rise,z=basePoint.z} 
+            end,
+    ["X:spanZ"] = function(height_rise,b_run,basePoint) 
+                return {x=basePoint.x+height_rise,y=basePoint.y,z=basePoint.z+b_run},
+                        {x=basePoint.x+height_rise,y=basePoint.y,z=basePoint.z-b_run} 
+            end,
+    ["-X:spanZ"] = function(height_rise,b_run,basePoint) 
+                return {x=basePoint.x-height_rise,y=basePoint.y,z=basePoint.z+b_run},
+                        {x=basePoint.x-height_rise,y=basePoint.y,z=basePoint.z-b_run}
+            end,
+    ["X:spanY"] = function(height_rise,b_run,basePoint) 
+                return {x=basePoint.x+height_rise,y=basePoint.y+b_run,z=basePoint.z},
+                        {x=basePoint.x+height_rise,y=basePoint.y-b_run,z=basePoint.z} 
+            end,
+    ["-X:spanY"] = function(height_rise,b_run,basePoint) 
+                return {x=basePoint.x-height_rise,y=basePoint.y+b_run,z=basePoint.z},
+                        {x=basePoint.x-height_rise,y=basePoint.y-b_run,z=basePoint.z}
+            end,
+    ["Z:spanX"] = function(height_rise,b_run,basePoint) 
+                return {x=basePoint.x+b_run,y=basePoint.y,z=basePoint.z+height_rise},
+                        {x=basePoint.x-b_run,y=basePoint.y,z=basePoint.z+height_rise} 
+            end,
+    ["-Z:spanX"] = function(height_rise,b_run,basePoint) 
+                return {x=basePoint.x+b_run,y=basePoint.y,z=basePoint.z-height_rise},
+                        {x=basePoint.x-b_run,y=basePoint.y,z=basePoint.z-height_rise}
+            end,
+    ["Z:spanY"] = function(height_rise,b_run,basePoint) 
+                return {x=basePoint.x,y=basePoint.y+b_run,z=basePoint.z+height_rise},
+                        {x=basePoint.x,y=basePoint.y-b_run,z=basePoint.z+height_rise}
+            end,
+    ["-Z:spanY"] = function(height_rise,b_run,basePoint) 
+                return {x=basePoint.x,y=basePoint.y+b_run,z=basePoint.z-height_rise},
+                        {x=basePoint.x,y=basePoint.y-b_run,z=basePoint.z-height_rise}
+            end,  
 }
 
-function FORMATION_GENERATOR.TriangleFormation(plane_axis,height,base,spacing,basePoint)
+
+function FORMATION_GENERATOR.TriangleFormation(plane_axis,height,base,heigh_spacing,base_spacing,basePoint)
     local formationTable = {}
     local slope = height/(base*0.5)
     table.insert(formationTable,basePoint)
     local run = 0
     
-    for rise = 1,height,spacing do
+    for rise = 1,height,heigh_spacing do
         run = rise/slope
-        local pos,neg = planeAxisTriangle[plane_axis](rise,run,basePoint)
+        local pos,neg = triangleDirection[plane_axis](rise,run,basePoint)
         table.insert(formationTable,pos)
         table.insert(formationTable,neg)
     end
-    for b = run-spacing,0,-spacing do 
-        local pos,neg = planeAxisTriangle[plane_axis](height,b,basePoint)
+    for b = run-base_spacing,0,-base_spacing do 
+        local pos,neg = triangleDirection[plane_axis](height,b,basePoint)
         table.insert(formationTable,pos)
-        table.insert(formationTable,neg)
+        if not s_utils.isEqual(pos,neg) then
+            table.insert(formationTable,neg)
+        end
     end
     return formationTable
 end
 --[[
 print("\nTriangle:")
-t = TriangleFormation("Z",7,14,2,{x=0,y=0,z=0})
+t = TriangleFormation("Y:spanX",2,4,2,1,{x=0,y=0,z=0})
 for k,v in pairs(t) do
     print(v.x,v.y,v.z)
 end
+
+OUTPUT:
+Triangle:
+0	0	0
+1.0	1	0
+-1.0	1	0
+0.0	2	0
+
 ]]
 return FORMATION_GENERATOR
