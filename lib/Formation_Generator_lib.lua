@@ -270,24 +270,27 @@ triangleDirection = {
 }
 
 
-function FORMATION_GENERATOR.TriangleFormation(plane_axis,height,base,heigh_spacing,base_spacing,basePoint) --***************************--
+function FORMATION_GENERATOR.TriangleFormation(plane_axis,height,base,scale,basePoint) --***************************--
     local formationTable = {}
     local slope = height/(base*0.5)
     table.insert(formationTable,{basePoint.x,basePoint.y,basePoint.z})
     local run = 0
     
-    for rise = 1,height,heigh_spacing do
+    for rise = 1,height do
         run = rise/slope
         local pos,neg = triangleDirection[plane_axis](rise,run,basePoint)
         table.insert(formationTable,{pos.x,pos.y,pos.z})
         table.insert(formationTable,{neg.x,neg.y,neg.z})
     end
-    for b = run-base_spacing,0,-base_spacing do 
+    for b = run,1,-1 do 
         local pos,neg = triangleDirection[plane_axis](height,b,basePoint)
-        table.insert(formationTable,{pos.x,pos.y,pos.z})
+	
         if not s_utils.isEqual(pos,neg) then
-            table.insert(formationTable,{neg.x,neg.y,neg.z})
+		pos = s_utility.mul(pos,scale)
+		table.insert(formationTable,{neg.x,neg.y,neg.z})
         end
+	pos = s_utility.mul(pos,scale)
+	table.insert(formationTable,{pos.x,pos.y,pos.z})
     end
     return formationTable
 end
