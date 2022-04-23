@@ -289,7 +289,7 @@ function FORMATION_GENERATOR.TriangleFormation(plane_axis,height,base,scale,base
 		pos = s_utils.mul(pos,scale)
 		table.insert(formationTable,{neg.x,neg.y,neg.z})
         end
-	pos = s_utility.mul(pos,scale)
+	pos = s_utils.mul(pos,scale)
 	table.insert(formationTable,{pos.x,pos.y,pos.z})
     end
     return formationTable
