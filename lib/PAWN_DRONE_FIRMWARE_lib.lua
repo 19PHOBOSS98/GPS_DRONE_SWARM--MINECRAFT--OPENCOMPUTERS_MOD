@@ -308,6 +308,33 @@ rotate = {
     ["Y"] = function(i,basePoint) return rotatePointOnYAxis(i,basePoint) end,
     ["Z"] = function(i,basePoint) return rotatePointOnZAxis(i,basePoint) end
 }
+
+rotate2 = {
+	["X"] = function(radians,point)
+			local s = math.sin(radians);
+			local c = math.cos(radians);
+
+			local ynew = point.y * c - point.z * s;
+			local znew = point.y * s + point.z * c;
+			return {x=point.x,y=ynew,z=znew}
+	end,
+	["Y"] = function(radians,point)
+			local s = math.sin(radians);
+			local c = math.cos(radians);
+
+			local xnew = point.x * c - point.z * s;
+			local znew = point.x * s + point.z * c;
+			return {x=xnew,y=point.y,z=znew}
+	end,
+	["Z"] = function(radians,point)
+			local s = math.sin(radians);
+			local c = math.cos(radians);
+
+			local xnew = point.x * c - point.y * s;
+			local ynew = point.x * s + point.y * c;
+			return {x=xnew,y=ynew,z=point.z}
+	end
+}
 ]]
 ,
 [[
@@ -353,12 +380,14 @@ function gpsOrbitTRG(offset,trgChannel)
 
 			if trgPos.d and trgPos.d < 50 then
 				trgPos.c = vec_trunc(trgPos.c)
-				--d.setStatusText("rotInt: "..tostring(rotationInterval))
+
 				--local rotatedOffset = rotatePoint(currentAngle%twPI,offset)
+
+				--local rotatedOffset = rotate[rotationAxis](currentAngle%twPI,offset)
+				
+				local rotatedOffset = rotate2[rotationAxis](currentAngle%twPI,offset)
 	
-				--d.setStatusText("rInt: "..tostring(rotationInterval))
-				d.setStatusText("axis: "..tostring(axis))
-				local rotatedOffset = rotate[rotationAxis](currentAngle%twPI,offset)
+				--rotatedOffset = rotate["Z"](math.pi/4,rotatedOffset)-- tilted rotation??
 	
 				currentAngle = currentAngle + rotationInterval
 
