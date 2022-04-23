@@ -195,7 +195,7 @@ while true do
 		printSwarmStatsPawn()
 		os.sleep(0.5)
 	elseif(cmd == "TRG") then -- start entity (Floppa) targeting broadcast
-		GPS_TRG.updateGPSTRGsPRINT(trgPortBook,gpsChannel,0,"Y")
+		GPS_TRG.updateGPSTRGsPRINT(trgPortBook,gpsChannel,0,"Y",0)
     	os.sleep(0.5)
 		
 	elseif(cmd == "SFP") then -- Static Formation PAWNS
@@ -207,7 +207,7 @@ while true do
 		--flightform.POrbit(targetingChannel,Pawnffbook[2],PawnsChannel)
 		os.sleep(0.5)
 	elseif(cmd == "USFP") then -- Update Static Formation PAWNS
-		GPS_TRG.updateStaticGPS(8,gpsChannel,0,"Y")
+		GPS_TRG.updateStaticGPS(8,gpsChannel,0,"Y",0)
 		os.sleep(0.5)
 
 	elseif(cmd == "SRFP") then -- Static Rotating Formation PAWNS
@@ -221,7 +221,7 @@ while true do
 		local targetingChannel = 10
 		local rotationAngleInterval = math.pi/2
 		modem.broadcast(targetingChannel,"color",0x9900FF)
-		GPS_TRG.updateStaticGPS(targetingChannel,gpsChannel,rotationAngleInterval,"Y")
+		GPS_TRG.updateStaticGPS(targetingChannel,gpsChannel,rotationAngleInterval,"Y",0)
 		os.sleep(0.5)	
 		
 	elseif(cmd == "RM") then -- Rotating on Me
@@ -251,7 +251,8 @@ while true do
 		--for addr,c in pairs(Pawnffbook[4]) do modem.send(addr,targetingChannel,"color",0xFF8800) end
 		--local rotationAngleInterval = math.pi/8 -- for squares
 		local rotationAngleInterval = math.pi/4 -- for circles
-		GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"Y")
+		local tiltAngle = math.pi/4 -- for circles
+		GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"Z",tiltAngle)
 		--GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"Z")
 		--GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"X")
 		os.sleep(0.5)
@@ -261,8 +262,9 @@ while true do
 		for addr,c in pairs(Pawnffbook[5]) do modem.send(addr,targetingChannel,"color",0xFF8800) end
 		--for addr,c in pairs(Pawnffbook[4]) do modem.send(addr,targetingChannel,"color",0x8800FF) end
 		--local rotationAngleInterval = -math.pi/8
-		local rotationAngleInterval = math.pi/4 -- for circles
-		GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"Y")
+		local rotationAngleInterval = -math.pi/4 -- for circles
+		local tiltAngle = math.pi/2 -- for circles
+		GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"Z",tiltAngle)
 		--GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"Z")
 		--GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"X")
 		os.sleep(0.5)	
