@@ -104,7 +104,7 @@ planeAxis = {
     ["Y"] = function(l,w,pos) return {x=pos.x+w,y=pos.y,z=pos.z+l} end,
     ["Z"] = function(l,w,pos) return {x=pos.x+w,y=pos.y+l,z=pos.z} end
 }
-
+--[[
 function FORMATION_GENERATOR.SquareFormation(droneCount,basePoint) --***************************--
     --print("\nA Circle with ",droneCount,"drone(s):")
     local rot_div = TWPI/droneCount
@@ -115,7 +115,7 @@ function FORMATION_GENERATOR.SquareFormation(droneCount,basePoint) --***********
     end
     return formationTable
 end
-
+]]
 function FORMATION_GENERATOR.squareFormation(plane_axis,width,length,basePoint) --***************************--
     local formationTable = {}
     for l=0,length-1 do
@@ -133,12 +133,13 @@ for k,v in pairs(s) do
     print(v.x,v.y,v.z)
 end
 ]]
-function FORMATION_GENERATOR.hollowSquareFormation(plane_axis,width,length,basePoint) --***************************--
+function hollowSquareFormation(plane_axis,width,length,scale,basePoint) --****************************--
     local formationTable = {}
     for l=0,length-1 do
         for w=0,width-1 do
             if not (w > 0 and w < width-1 and l > 0 and l<length-1) then
                 local derivedPos = planeAxis[plane_axis](l,w,basePoint)
+                derivedPos = mul(derivedPos,scale)
                 table.insert(formationTable,{derivedPos.x,derivedPos.y,derivedPos.z})
             end
         end
