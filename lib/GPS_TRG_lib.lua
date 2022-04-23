@@ -12,7 +12,7 @@ local vec_trunc,add = s_utils.vec_trunc,s_utils.add
 
 local GPS_TRG = {}
 
-function GPS_TRG.bcGPSTRGPos(tpBook,gpsC,rotAnglInt,axis)
+function GPS_TRG.bcGPSTRGPos(tpBook,gpsC,rotAnglInt,axis,tiltAngle)
 	modem.open(gpsC)
 	modem.setStrength(math.huge)
 	local gpsTable = {}
@@ -39,7 +39,7 @@ function GPS_TRG.bcGPSTRGPos(tpBook,gpsC,rotAnglInt,axis)
 					radPos.c = vec_trunc(radPos.c)
 					local trgPos = add(radPos.c,gpsPos)
 					--print("tport: ",tport,"tname: ",tname,"trgPos: ",trgPos.x,trgPos.y,trgPos.z)
-					modem.broadcast(tport,"trg",trgPos.x,trgPos.y,trgPos.z,axis,rotAnglInt)
+					modem.broadcast(tport,"trg",trgPos.x,trgPos.y,trgPos.z,axis,rotAnglInt,tiltAngle)
 				end
 			end
 		else
@@ -51,7 +51,7 @@ function GPS_TRG.bcGPSTRGPos(tpBook,gpsC,rotAnglInt,axis)
 	
 end
 
-function GPS_TRG.bcGPSTRGPosPRINT(tpBook,gpsC,rotAnglInt,axis)
+function GPS_TRG.bcGPSTRGPosPRINT(tpBook,gpsC,rotAnglInt,axis,tiltAngle)
 	modem.open(gpsC)
 	modem.setStrength(math.huge)
 	local gpsTable = {}
@@ -78,7 +78,7 @@ function GPS_TRG.bcGPSTRGPosPRINT(tpBook,gpsC,rotAnglInt,axis)
 					radPos.c = vec_trunc(radPos.c)
 					local trgPos = add(radPos.c,gpsPos)
 					print("tport: ",tport,"tname: ",tname,"trgPos: ",trgPos.x,trgPos.y,trgPos.z,",rotAnglInt",rotAnglInt)
-					modem.broadcast(tport,"trg",trgPos.x,trgPos.y,trgPos.z,axis,rotAnglInt)
+					modem.broadcast(tport,"trg",trgPos.x,trgPos.y,trgPos.z,axis,rotAnglInt,tiltAngle)
 				else
 					print(tname," is out of radar Range")
 				end
@@ -122,7 +122,7 @@ function GPS_TRG.bcGPSRecall(tpBook,gpsC,PawnsC)
 end
 
 
-function GPS_TRG.bcStaticGPSPos(tport,gpsC,rotAnglInt,axis)
+function GPS_TRG.bcStaticGPSPos(tport,gpsC,rotAnglInt,axis,tiltAngle)
 	modem.open(gpsC)
 	modem.setStrength(math.huge)
 	local gpsTable = {}
@@ -142,7 +142,7 @@ function GPS_TRG.bcStaticGPSPos(tport,gpsC,rotAnglInt,axis)
 			print("GPS Formation Center: ",gpsPos.x,gpsPos.y,gpsPos.z)
 			print("Broadcasting to trgChannel: ",tport)
 			print("rotAnglInt: ",rotAnglInt)
-			modem.broadcast(tport,"trg",gpsPos.x,gpsPos.y,gpsPos.z,axis,rotAnglInt)
+			modem.broadcast(tport,"trg",gpsPos.x,gpsPos.y,gpsPos.z,axis,rotAnglInt,tiltAngle)
 		else
 			print("GPS Out Of Range")
 		end
@@ -161,14 +161,14 @@ end
 
 GPS_TRG.gpstrgThread = nil
 
-function GPS_TRG.updateGPSTRGs(tpBook,gpsC,rotAngInt,axis) --**********************-- --only call this sparingly, don't want to stall other flight formations
+function GPS_TRG.updateGPSTRGs(tpBook,gpsC,rotAngInt,axis,tiltAngle) --**********************-- --only call this sparingly, don't want to stall other flight formations
 	GPS_TRG.killGPSTRGThread(gpsC)
-	GPS_TRG.gpstrgThread = thread.create(function(tpb,gpsC,rotAngInt,axis) print("threading") GPS_TRG.bcGPSTRGPos(tpb,gpsC,rotAngInt,axis) end,tpBook,gpsC,rotAngInt,axis)
+	GPS_TRG.gpstrgThread = thread.create(function(tpb,gpsC,rotAngInt,axis,tiltAngle) print("threading") GPS_TRG.bcGPSTRGPos(tpb,gpsC,rotAngInt,axis,tiltAngle) end,tpBook,gpsC,rotAngInt,axis,tiltAngle)
 end
 
-function GPS_TRG.updateGPSTRGsPRINT(tpBook,gpsC,rotAngInt,axis) --**********************-- --only call this sparingly, don't want to stall other flight formations
+function GPS_TRG.updateGPSTRGsPRINT(tpBook,gpsC,rotAngInt,axis,tiltAngle) --**********************-- --only call this sparingly, don't want to stall other flight formations
 	GPS_TRG.killGPSTRGThread(gpsC)
-	GPS_TRG.gpstrgThread = thread.create(function(tpb,gpsC,rotAngInt,axis) print("threading") GPS_TRG.bcGPSTRGPosPRINT(tpb,gpsC,rotAngInt,axis) end,tpBook,gpsC,rotAngInt,axis)
+	GPS_TRG.gpstrgThread = thread.create(function(tpb,gpsC,rotAngInt,axis,tiltAngle) print("threading") GPS_TRG.bcGPSTRGPosPRINT(tpb,gpsC,rotAngInt,axis,tiltAngle) end,tpBook,gpsC,rotAngInt,axis,tiltAngle)
 end
 
 function GPS_TRG.GPSRecall(tpBook,gpsC,PawnsC) --**********************-- --only call this sparingly, don't want to stall other flight formations
@@ -176,9 +176,9 @@ function GPS_TRG.GPSRecall(tpBook,gpsC,PawnsC) --**********************-- --only
 	GPS_TRG.gpstrgThread = thread.create(function(tpb,gpsC,PawnsC) print("threading") GPS_TRG.bcGPSRecall(tpb,gpsC,PawnsC) end,tpBook,gpsC,PawnsC)
 end
 
-function GPS_TRG.updateStaticGPS(tpBook,gpsC,rotAngInt,axis) --**********************--
+function GPS_TRG.updateStaticGPS(tpBook,gpsC,rotAngInt,axis,tiltAngle) --**********************--
 	GPS_TRG.killGPSTRGThread(gpsC)
-	GPS_TRG.gpstrgThread = thread.create(function(tpb,gpsC,rotAngInt,axis) print("threading") GPS_TRG.bcStaticGPSPos(tpb,gpsC,rotAngInt,axis) end,tpBook,gpsC,rotAngInt,axis)
+	GPS_TRG.gpstrgThread = thread.create(function(tpb,gpsC,rotAngInt,axis,tiltAngle) print("threading") GPS_TRG.bcStaticGPSPos(tpb,gpsC,rotAngInt,axis,tiltAngle) end,tpBook,gpsC,rotAngInt,axis,tiltAngle)
 end
 
 function GPS_TRG.killGPSTRGThread(gpsC) --**********************--
