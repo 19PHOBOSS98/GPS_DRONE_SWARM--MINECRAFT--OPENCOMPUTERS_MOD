@@ -304,17 +304,17 @@ function FORMATION_GENERATOR.TriangleFormation(plane_axis,height,base,scale,base
     for rise = 1,height do
         run = rise/slope
         local pos,neg = triangleDirection[plane_axis](rise,run,basePoint)
-        pos,neg = mul(pos,scale),mul(neg,scale)
+        pos,neg = s_utils.mul(pos,scale),s_utils.mul(neg,scale)
         table.insert(formationTable,{pos.x,pos.y,pos.z})
         table.insert(formationTable,{neg.x,neg.y,neg.z})
     end
     for b = run-1,1,-1 do 
         local pos,neg = triangleDirection[plane_axis](height,b,basePoint)
         if not isEqual(pos,neg) then
-            neg = mul(neg,scale)
+            neg = s_utils.mul(neg,scale)
             table.insert(formationTable,{neg.x,neg.y,neg.z})
         end
-        pos = mul(pos,scale)
+        pos = s_utils.mul(pos,scale)
         table.insert(formationTable,{pos.x,pos.y,pos.z})
     end
     return formationTable
