@@ -139,7 +139,7 @@ function FORMATION_GENERATOR.hollowSquareFormation(plane_axis,width,length,scale
         for w=0,width-1 do
             if not (w > 0 and w < width-1 and l > 0 and l<length-1) then
                 local derivedPos = planeAxis[plane_axis](l,w,basePoint)
-                derivedPos = mul(derivedPos,scale)
+                derivedPos = s_utils.mul(derivedPos,scale)
                 table.insert(formationTable,{derivedPos.x,derivedPos.y,derivedPos.z})
             end
         end
