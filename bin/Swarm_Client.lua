@@ -95,7 +95,9 @@ Pawndynamic_fbook = Pawnfbook
 ring = formation_generator.circleFormation("Y",10,{x=0,y=0,z=7})
 hollow_square = formation_generator.hollowSquareFormation("Y",3,3,7,{x=-1,y=0,z=-1})
 triangle = formation_generator.TriangleFormation("Y:spanX",2,4,2,{x=0,y=2,z=0})
-PawnGeneratedFormBook = {ring,hollow_square,triangle}
+rotated_hsqr = formation_generator.rotateFormation("Z",math.pi/2,hollow_square)
+
+PawnGeneratedFormBook = {ring,hollow_square,triangle,rotated_hsqr}
 dynamicPawnPyramidBook = PawnGeneratedFormBook
 
 
@@ -235,7 +237,8 @@ while true do
 		]]
 		--flightform.formFF(Pawnffbook[5],dynamicPawnPyramidBook[1],PawnsChannel,false)
 		--flightform.formFF(Pawnffbook[5],dynamicPawnPyramidBook[2],PawnsChannel,false)
-		flightform.formFF(Pawnffbook[5],dynamicPawnPyramidBook[3],PawnsChannel,false)
+		--flightform.formFF(Pawnffbook[5],dynamicPawnPyramidBook[3],PawnsChannel,false)
+		flightform.formFF(Pawnffbook[5],dynamicPawnPyramidBook[4],PawnsChannel,false)
 		flightform.PformUP(targetingChannel,Pawnffbook[5],PawnsChannel)
 		--flightform.POrbit(targetingChannel,Pawnffbook[5],PawnsChannel)
 
