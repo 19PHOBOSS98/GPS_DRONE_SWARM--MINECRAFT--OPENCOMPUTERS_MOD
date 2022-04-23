@@ -197,18 +197,20 @@ end
 ]]
 ,
 [[
-function gpsMoveToTarget(offset,trgChannel)
-	d.setLightColor(0xFFFFFF)
+function waitForGPS(gpsCh)
 	gpsSats={}
-	m.open(gpsChannel)
-	m.open(trgChannel)
-	local ctrlTRGPos = nil
+	m.open(gpsCh)
+	local ctrlTRGP = nil
 	repeat
 		if arr_length(gpsSats)>=3 then
-			ctrlTRGPos = getGPSlocation()
+			ctrlTRGP = getGPSlocation()
 		end
 	
-		if ctrlTRGPos then ctrlTRGPos = vec_trunc(ctrlTRGPos) 
+		if ctrlTRGP then 
+			ctrlTRGP = vec_trunc(ctrlTRGP)
+			m.close(gpsChannel)
+			return ctrlTRGP
+		
 		else d.setLightColor(0xFF0000) end --d.setStatusText("No GPS:") end
 	
 		_,_,r_addr,_,dist,msg,x,y,z,trgCh = computer.pullSignal(0.5)
@@ -217,10 +219,23 @@ function gpsMoveToTarget(offset,trgChannel)
 			actsWhileMoving[msg](r_addr,x,y,z,dist)
 		end
 		refreshGPSTable()
-	until msg == "stop" or ctrlTRGPos
+	
+	until msg == "stop"
 
+	m.close(gpsCh)
+	return ctrlTRGP
+end
+]]
+,
+[[
+function gpsMoveToTarget(offset,trgChannel)
+	d.setLightColor(0xFFFFFF)
+	m.open(trgChannel)
+	local ctrlTRGPos = nil
+	
+	ctrlTRGPos = waitForGPS(gpsChannel)
+	
 	if ctrlTRGPos then
-		m.close(gpsChannel)
 		d.setLightColor(0xFFFFFF)
 		local mv = {x=0,y=0,z=0},msg,r_add,dist,x,y,z
 		local trgUpdate = {}
@@ -276,28 +291,12 @@ end
 twPI = 2*math.pi
 function gpsOrbitTRG(offset,trgChannel)
 	d.setLightColor(0xFFFFFF)
-	gpsSats={}
-	m.open(gpsChannel)
 	m.open(trgChannel)
 	local ctrlTRGPos = nil
-	repeat
-		if arr_length(gpsSats)>=3 then
-			ctrlTRGPos = getGPSlocation()
-		end
 	
-		if ctrlTRGPos then ctrlTRGPos = vec_trunc(ctrlTRGPos) 
-		else d.setLightColor(0xFF0000) end --d.setStatusText("No GPS:") end
-	
-		_,_,r_addr,_,dist,msg,x,y,z,trgCh,_ = computer.pullSignal(0.5)
-		
-		if actsWhileMoving[msg] then
-			actsWhileMoving[msg](r_addr,x,y,z,dist)
-		end
-		refreshGPSTable()
-	until msg == "stop" or ctrlTRGPos
+	ctrlTRGPos = waitForGPS(gpsChannel)
 
 	if ctrlTRGPos then
-		m.close(gpsChannel)
 		d.setLightColor(0xFFFFFF)
 		local mv = {x=0,y=0,z=0},msg,r_add,dist,x,y,z
 		local trgUpdate = {}
