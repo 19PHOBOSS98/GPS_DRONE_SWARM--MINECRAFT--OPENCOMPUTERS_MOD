@@ -43,7 +43,7 @@ function FORMATION_GENERATOR.rotateFormation(axis,radians,formationTable) --****
     local newFormationTable = {}
     for k,position in pairs(formationTable) do
         local newPos = rotate[axis](radians,position)
-        table.insert(newFormationTable,newPos)
+        table.insert(newFormationTable,{newPos.x,newPos.y,newPos.z})
     end
     return newFormationTable
 end
@@ -87,7 +87,7 @@ function FORMATION_GENERATOR.circleFormation(axis,droneCount,basePoint) --******
     local formationTable = {}
     for i = 0,TWPI-rot_div, rot_div do
         local c = rotate[axis](i,basePoint)
-        table.insert(formationTable,c)
+        table.insert(formationTable,{c.x,c.y,c.z})
     end
     return formationTable
 end
@@ -111,7 +111,7 @@ function FORMATION_GENERATOR.SquareFormation(droneCount,basePoint) --***********
     local formationTable = {}
     for i = 0,TWPI-rot_div, rot_div do
         local c = rotate[axis](i,basePoint)
-        table.insert(formationTable,c)
+        table.insert(formationTable,{c.x,c.y,c.z})
     end
     return formationTable
 end
@@ -121,7 +121,7 @@ function FORMATION_GENERATOR.squareFormation(plane_axis,width,length,basePoint) 
     for l=0,length-1 do
         for w=0,width-1 do
             local derivedPos = planeAxis[plane_axis](l,w,basePoint)
-            table.insert(formationTable,derivedPos)
+            table.insert(formationTable,{derivedPos.x,derivedPos.y,derivedPos.z})
         end
     end
     return formationTable
@@ -139,7 +139,7 @@ function FORMATION_GENERATOR.hollowSquareFormation(plane_axis,width,length,baseP
         for w=0,width-1 do
             if not (w > 0 and w < width-1 and l > 0 and l<length-1) then
                 local derivativePos = planeAxis[plane_axis](l,w,basePoint)
-                table.insert(formationTable,derivativePos)
+                table.insert(formationTable,{derivedPos.x,derivedPos.y,derivedPos.z})
             end
         end
     end
@@ -278,14 +278,14 @@ function FORMATION_GENERATOR.TriangleFormation(plane_axis,height,base,heigh_spac
     for rise = 1,height,heigh_spacing do
         run = rise/slope
         local pos,neg = triangleDirection[plane_axis](rise,run,basePoint)
-        table.insert(formationTable,pos)
-        table.insert(formationTable,neg)
+        table.insert(formationTable,{pos.x,pos.y,pos.z})
+        table.insert(formationTable,{neg.x,neg.y,neg.z})
     end
     for b = run-base_spacing,0,-base_spacing do 
         local pos,neg = triangleDirection[plane_axis](height,b,basePoint)
-        table.insert(formationTable,pos)
+        table.insert(formationTable,{pos.x,pos.y,pos.z})
         if not s_utils.isEqual(pos,neg) then
-            table.insert(formationTable,neg)
+            table.insert(formationTable,{neg.x,neg.y,neg.z})
         end
     end
     return formationTable
