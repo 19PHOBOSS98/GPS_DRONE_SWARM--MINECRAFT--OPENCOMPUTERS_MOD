@@ -154,18 +154,22 @@ for k,v in pairs(hs) do
     print(v.x,v.y,v.z)
 end
 
+P == {x=0,y=0,z=0}
+
 XXXXX
-XXXXX
+PXXXX
 
 print("5X3:")
-hs = hollowSquareFormation("Y",5,3,{x=0,y=0,z=0})
+hsqr = hollowSquareFormation("Y",5,3,{x=-2,y=0,z=-1})
 for k,v in pairs(hs) do
     print(v.x,v.y,v.z)
 end
 
+P == {x=-2,y=0,z=-1}
+
 XXXXX
 XOOOX
-XXXXX
+PXXXX
 
 
 print("5X5:")
@@ -174,11 +178,13 @@ for k,v in pairs(hs) do
     print(v.x,v.y,v.z)
 end
 
+P == {x=0,y=0,z=0}
+
 XXXXX
 XOOOX
 XOOOX
 XOOOX
-XXXXX
+PXXXX
 
 print("2X2:")
 hs = hollowSquareFormation("Y",2,2,{x=0,y=0,z=0})
@@ -186,8 +192,10 @@ for k,v in pairs(hs) do
     print(v.x,v.y,v.z)
 end
 
+P == {x=0,y=0,z=0}
+
 XX
-XX
+PX
 
 print("3X2:")
 hs = hollowSquareFormation("Y",3,2,{x=0,y=0,z=0})
@@ -195,8 +203,9 @@ for k,v in pairs(hs) do
     print(v.x,v.y,v.z)
 end
 
+P == {x=0,y=0,z=0}
 XXX
-XXX
+PXX
 
 
 ]]
