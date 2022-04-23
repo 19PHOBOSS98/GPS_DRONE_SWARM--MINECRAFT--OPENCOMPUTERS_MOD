@@ -133,7 +133,7 @@ for k,v in pairs(s) do
     print(v.x,v.y,v.z)
 end
 ]]
-function hollowSquareFormation(plane_axis,width,length,scale,basePoint) --****************************--
+function FORMATION_GENERATOR.hollowSquareFormation(plane_axis,width,length,scale,basePoint) --****************************--
     local formationTable = {}
     for l=0,length-1 do
         for w=0,width-1 do
