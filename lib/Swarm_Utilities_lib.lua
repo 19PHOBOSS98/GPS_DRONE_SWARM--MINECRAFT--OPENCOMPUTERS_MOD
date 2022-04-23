@@ -22,4 +22,7 @@ function swarm_utilities.arr_length(a)
 	for k,_ in pairs(a) do c=c+1 end
 	return c
 	end
+function swarm_utilities.isEqual(a,b)
+    return  (a.x==b.x and a.y==b.y and a.z==b.z)
+end
 return swarm_utilities
