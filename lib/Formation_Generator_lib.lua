@@ -1,5 +1,7 @@
 local s_utils = require 'swarm_utilities'
 
+local FORMATION_GENERATOR = {}
+
 local TWPI = math.pi*2
 
 function rotatePointOnXAxis(radians,point)
@@ -35,9 +37,9 @@ rotate = {
     ["Z"] = function(i,basePoint) return rotatePointOnZAxis(i,basePoint) end
 }
 
-local FORMATION_GENERATOR = {}
 
-function FORMATION_GENERATOR.rotateFormation(axis,radians,formationTable)
+
+function FORMATION_GENERATOR.rotateFormation(axis,radians,formationTable) --***************************--
     local newFormationTable = {}
     for k,position in pairs(formationTable) do
         local newPos = rotate[axis](radians,position)
@@ -114,7 +116,7 @@ function FORMATION_GENERATOR.SquareFormation(droneCount,basePoint) --***********
     return formationTable
 end
 
-function FORMATION_GENERATOR.squareFormation(plane_axis,width,length,basePoint)
+function FORMATION_GENERATOR.squareFormation(plane_axis,width,length,basePoint) --***************************--
     local formationTable = {}
     for l=0,length-1 do
         for w=0,width-1 do
@@ -131,7 +133,7 @@ for k,v in pairs(s) do
     print(v.x,v.y,v.z)
 end
 ]]
-function FORMATION_GENERATOR.hollowSquareFormation(plane_axis,width,length,basePoint)
+function FORMATION_GENERATOR.hollowSquareFormation(plane_axis,width,length,basePoint) --***************************--
     local formationTable = {}
     for l=0,length-1 do
         for w=0,width-1 do
@@ -258,7 +260,7 @@ triangleDirection = {
 }
 
 
-function FORMATION_GENERATOR.TriangleFormation(plane_axis,height,base,heigh_spacing,base_spacing,basePoint)
+function FORMATION_GENERATOR.TriangleFormation(plane_axis,height,base,heigh_spacing,base_spacing,basePoint) --***************************--
     local formationTable = {}
     local slope = height/(base*0.5)
     table.insert(formationTable,basePoint)
