@@ -273,6 +273,44 @@ end
 ]]
 ,
 [[
+function rotatePointOnXAxis(radians,point)
+	--d.setStatusText("pointx: "..tostring(point.x))
+	local s = math.sin(radians);
+	local c = math.cos(radians);
+	
+	local ynew = point.y * c - point.z * s;
+	local znew = point.y * s + point.z * c;
+	return {x=point.x,y=ynew,z=znew}
+end
+
+function rotatePointOnYAxis(radians,point)
+	--d.setStatusText("pointx: "..tostring(point.x))
+	local s = math.sin(radians);
+	local c = math.cos(radians);
+	
+	local xnew = point.x * c - point.z * s;
+	local znew = point.x * s + point.z * c;
+	return {x=xnew,y=point.y,z=znew}
+end
+
+function rotatePointOnZAxis(radians,point)
+	--d.setStatusText("pointx: "..tostring(point.x))
+	local s = math.sin(radians);
+	local c = math.cos(radians);
+	
+	local xnew = point.x * c - point.y * s;
+	local ynew = point.x * s + point.y * c;
+	return {x=xnew,y=ynew,z=point.z}
+end
+
+rotate = {
+    ["X"] = function(i,basePoint) return rotatePointOnXAxis(i,basePoint) end,
+    ["Y"] = function(i,basePoint) return rotatePointOnYAxis(i,basePoint) end,
+    ["Z"] = function(i,basePoint) return rotatePointOnZAxis(i,basePoint) end
+}
+]]
+,
+[[
 function rotatePoint(rad,point)
 	--d.setStatusText("pointx: "..tostring(point.x))
 	local s = math.sin(rad);
@@ -289,7 +327,7 @@ end
 --rotationInterval = math.pi/8
 --rotationInterval = math.pi/2
 twPI = 2*math.pi
-function gpsOrbitTRG(offset,trgChannel)
+function gpsOrbitTRG(axis,offset,trgChannel)
 	d.setLightColor(0xFFFFFF)
 	m.open(trgChannel)
 	local ctrlTRGPos = nil
@@ -302,20 +340,24 @@ function gpsOrbitTRG(offset,trgChannel)
 		local trgUpdate = {}
 		local currentAngle = 0 -- in radians
 		local rotationInterval = 0
+		local rotationAxis = "Y"
 		repeat
-			_,_,r_addr,_,dist,msg,x,y,z,trgCh,rotInt = computer.pullSignal(0.5)
+			_,_,r_addr,_,dist,msg,x,y,z,trgCh,rotInt,axis = computer.pullSignal(0.5)
 
 			if msg == "trg" then
 				trgUpdate = {c={x=x,y=y,z=z},d=dist}
 				rotationInterval = rotInt
+				rotationAxis = axis
 			end
 			local trgPos = trgUpdate
 
 			if trgPos.d and trgPos.d < 50 then
 				trgPos.c = vec_trunc(trgPos.c)
 				--d.setStatusText("rotInt: "..tostring(rotationInterval))
-				local rotatedOffset = rotatePoint(currentAngle%twPI,offset)
-
+				--local rotatedOffset = rotatePoint(currentAngle%twPI,offset)
+	
+				local rotatedOffset = rotate[rotationAxis](currentAngle%twPI,offset)
+	
 				currentAngle = currentAngle + rotationInterval
 
 				local trgPosOffset = add(trgPos.c, rotatedOffset)
