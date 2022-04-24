@@ -93,16 +93,17 @@ Pawnfbook = {dynamicTriangle,staticTriangle,staticOrbitSquare,dynamicOrbitSquare
 Pawndynamic_fbook = Pawnfbook
 
 ring = formation_generator.circleFormation("Y",10,{x=0,y=0,z=7})
+ring2 = formation_generator.circleFormation("Y",10,{x=0,y=0,z=7})
 hollow_square = formation_generator.hollowSquareFormation("Y",3,3,7,{x=-1,y=0,z=-1})
 triangle = formation_generator.TriangleFormation("Y:spanX",2,4,2,{x=0,y=2,z=0})
 rotated_hsqr = formation_generator.rotateFormation("Z",math.pi/4,hollow_square)
 
-PawnGeneratedFormBook = {ring,hollow_square,triangle,rotated_hsqr}
+PawnGeneratedFormBook = {ring,ring2,hollow_square,triangle,rotated_hsqr}
 dynamicPawnPyramidBook = PawnGeneratedFormBook
 
 
 StaticFormationtrgPortBook = {[8]="team1",[10]="team2"}
-trgPortBookME = {[11]="ph0"}
+trgPortBookME = {[11]="ph0",[12]="ph0"}
 
 function printSwarmStatsPawn()
 	term.clear()
@@ -189,13 +190,15 @@ while true do
 
 
 	elseif(cmd == "A") then -- form triangle on Floppa with PAWNS
+		local targetingChannel = 4
 		flightform.refreshFFT(Pawnffbook,Pawndynamic_fbook,PawnsChannel,false)
 		flightform.formFF(Pawnffbook[1],Pawndynamic_fbook[1],PawnsChannel,false)
-		flightform.PformUP(4,Pawnffbook[1],PawnsChannel)
+		flightform.PformUP(targetingChannel,Pawnffbook[1],PawnsChannel)
 		printSwarmStatsPawn()
 		os.sleep(0.5)
 	elseif(cmd == "TRG") then -- start entity (Floppa) targeting broadcast
-		GPS_TRG.updateGPSTRGsPRINT(trgPortBook,gpsChannel,0,"Y",0)
+		local targetingChannel = 4
+		GPS_TRG.updateGPSTRGsPRINT(trgPortBook,gpsChannel,{[targetingChannel]=0},{[targetingChannel]="Y"},{[targetingChannel]=0})
     	os.sleep(0.5)
 		
 	elseif(cmd == "SFP") then -- Static Formation PAWNS
@@ -207,7 +210,8 @@ while true do
 		--flightform.POrbit(targetingChannel,Pawnffbook[2],PawnsChannel)
 		os.sleep(0.5)
 	elseif(cmd == "USFP") then -- Update Static Formation PAWNS
-		GPS_TRG.updateStaticGPS(8,gpsChannel,0,"Y",0)
+		local targetingChannel = 8
+		GPS_TRG.updateStaticGPS(targetingChannel,gpsChannel,{[targetingChannel]=0},{[targetingChannel]="Y"},{[targetingChannel]=0})
 		os.sleep(0.5)
 
 	elseif(cmd == "SRFP") then -- Static Rotating Formation PAWNS
@@ -221,12 +225,14 @@ while true do
 		local targetingChannel = 10
 		local rotationAngleInterval = math.pi/2
 		modem.broadcast(targetingChannel,"color",0x9900FF)
-		GPS_TRG.updateStaticGPS(targetingChannel,gpsChannel,rotationAngleInterval,"Y",0)
+		GPS_TRG.updateStaticGPS(targetingChannel,gpsChannel,{[targetingChannel]=rotationAngleInterval},{[targetingChannel]="Y"},{[targetingChannel]=0})
 		os.sleep(0.5)	
 		
 	elseif(cmd == "RM") then -- Rotating on Me
-		local targetingChannel = 11
-		modem.broadcast(targetingChannel,"stop")		
+		local targetingChannel1 = 11
+		local targetingChannel2 = 12
+		modem.broadcast(targetingChannel1,"stop")
+		modem.broadcast(targetingChannel2,"stop")
 		flightform.refreshFFT(Pawnffbook,Pawndynamic_fbook,PawnsChannel,false)
 		--[[
 		flightform.formFF(Pawnffbook[4],Pawndynamic_fbook[4],PawnsChannel,false)
@@ -235,39 +241,59 @@ while true do
 		flightform.formFF(Pawnffbook[5],Pawndynamic_fbook[5],PawnsChannel,false)
 		flightform.PformUP(targetingChannel,Pawnffbook[5],PawnsChannel)
 		]]
+		flightform.formFF(Pawnffbook[4],dynamicPawnPyramidBook[2],PawnsChannel,false)
 		flightform.formFF(Pawnffbook[5],dynamicPawnPyramidBook[1],PawnsChannel,false)
 		--flightform.formFF(Pawnffbook[5],dynamicPawnPyramidBook[2],PawnsChannel,false)
 		--flightform.formFF(Pawnffbook[5],dynamicPawnPyramidBook[3],PawnsChannel,false)
 		--flightform.formFF(Pawnffbook[5],dynamicPawnPyramidBook[4],PawnsChannel,false)
 		--flightform.PformUP(targetingChannel,Pawnffbook[5],PawnsChannel)
-		flightform.POrbit(targetingChannel,Pawnffbook[5],PawnsChannel)
+		flightform.POrbit(targetingChannel1,Pawnffbook[4],PawnsChannel)
+		flightform.POrbit(targetingChannel1,Pawnffbook[5],PawnsChannel)
 
 		
 		os.sleep(0.5)	
 	elseif(cmd == "URM") then -- Update Static Formation PAWNS
-		local targetingChannel = 11
+		local targetingChannel1 = 11
+		local targetingChannel2 = 12
 		--modem.broadcast(targetingChannel,"color",tonumber(0xFF8800))
-		for addr,c in pairs(Pawnffbook[5]) do modem.send(addr,targetingChannel,"color",0x8800FF) end
-		--for addr,c in pairs(Pawnffbook[4]) do modem.send(addr,targetingChannel,"color",0xFF8800) end
+		--for addr,c in pairs(Pawnffbook[5]) do modem.send(addr,targetingChannel1,"color",0x8800FF) end
+		--for addr,c in pairs(Pawnffbook[4]) do modem.send(addr,targetingChannel2,"color",0xFF8800) end
 		--local rotationAngleInterval = math.pi/8 -- for squares
-		local rotationAngleInterval = math.pi/4 -- for circles
-		local tiltAngle = math.pi/4 -- for circles
-		GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"Z",tiltAngle)
+		modem.broadcast(targetingChannel1,"color",0x8800FF)
+		modem.broadcast(targetingChannel2,"color",0xFF8800)
+		local rotationAngleInterval1 = math.pi/4
+		local tiltAngle1 = math.pi/4
+		local rotationAngleInterval2 = -math.pi/4
+		local tiltAngle2 = -math.pi/4
+		local axisTable = {[targetingChannel1] = "Z",[targetingChannel2] = "Z"}
+		local tiltAngleTable = {[targetingChannel1] = tiltAngle1,[targetingChannel2] = tiltAngle2}
+		local rotAngIntTable = {[targetingChannel1] = rotationAngleInterval1,[targetingChannel2] = rotationAngleInterval2}
+		GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotAngIntTable,axisTable,tiltAngleTable)
 		--GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"Z")
 		--GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"X")
 		os.sleep(0.5)
 	elseif(cmd == "URMREV") then -- Update Static Formation PAWNS Reverse
-		local targetingChannel = 11
+		--[[local targetingChannel = 11
 		--modem.broadcast(targetingChannel,"color",tonumber(0x8800FF))
 		for addr,c in pairs(Pawnffbook[5]) do modem.send(addr,targetingChannel,"color",0xFF8800) end
 		--for addr,c in pairs(Pawnffbook[4]) do modem.send(addr,targetingChannel,"color",0x8800FF) end
 		--local rotationAngleInterval = -math.pi/8
 		local rotationAngleInterval = -math.pi/4 -- for circles
 		local tiltAngle = -math.pi/4 -- for circles
-		--GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"Z",tiltAngle)
-		GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"X",tiltAngle)
+		GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"Z",tiltAngle)
+		--GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"X",tiltAngle)
 		--GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"Z")
-		--GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"X")
+		--GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"X")]]
+		modem.broadcast(targetingChannel1,"color",0xFF8800)
+		modem.broadcast(targetingChannel2,"color",0x8800FF)
+		local rotationAngleInterval1 = -math.pi/4
+		local tiltAngle1 = -math.pi/4
+		local rotationAngleInterval2 = math.pi/4
+		local tiltAngle2 = math.pi/4
+		local axisTable = {[targetingChannel1] = "Z",[targetingChannel2] = "Z"}
+		local tiltAngleTable = {[targetingChannel1] = tiltAngle1,[targetingChannel2] = tiltAngle2}
+		local rotAngIntTable = {[targetingChannel1] = rotationAngleInterval1,[targetingChannel2] = rotationAngleInterval2}
+		GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotAngIntTable,axisTable,tiltAngleTable)
 		os.sleep(0.5)	
 		
 	elseif(cmd == "GP") then -- recall PAWNS
