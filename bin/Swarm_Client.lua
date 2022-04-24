@@ -284,6 +284,8 @@ while true do
 		--GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"X",tiltAngle)
 		--GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"Z")
 		--GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"X")]]
+		local targetingChannel1 = 11
+		local targetingChannel2 = 12
 		modem.broadcast(targetingChannel1,"color",0xFF8800)
 		modem.broadcast(targetingChannel2,"color",0x8800FF)
 		local rotationAngleInterval1 = -math.pi/4
