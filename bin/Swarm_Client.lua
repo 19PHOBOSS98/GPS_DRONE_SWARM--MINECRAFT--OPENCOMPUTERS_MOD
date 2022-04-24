@@ -248,7 +248,7 @@ while true do
 		--flightform.formFF(Pawnffbook[5],dynamicPawnPyramidBook[4],PawnsChannel,false)
 		--flightform.PformUP(targetingChannel,Pawnffbook[5],PawnsChannel)
 		flightform.POrbit(targetingChannel1,Pawnffbook[4],PawnsChannel)
-		flightform.POrbit(targetingChannel1,Pawnffbook[5],PawnsChannel)
+		flightform.POrbit(targetingChannel2,Pawnffbook[5],PawnsChannel)
 
 		
 		os.sleep(0.5)	
