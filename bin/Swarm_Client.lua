@@ -289,9 +289,9 @@ while true do
 		modem.broadcast(targetingChannel1,"color",0xFF8800)
 		modem.broadcast(targetingChannel2,"color",0x8800FF)
 		local rotationAngleInterval1 = -math.pi/4
-		local tiltAngle1 = -math.pi/4
+		local tiltAngle1 = -math.pi/2
 		local rotationAngleInterval2 = math.pi/4
-		local tiltAngle2 = math.pi/4
+		local tiltAngle2 = math.pi
 		local axisTable = {[targetingChannel1] = "Z",[targetingChannel2] = "Z"}
 		local tiltAngleTable = {[targetingChannel1] = tiltAngle1,[targetingChannel2] = tiltAngle2}
 		local rotAngIntTable = {[targetingChannel1] = rotationAngleInterval1,[targetingChannel2] = rotationAngleInterval2}
