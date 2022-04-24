@@ -78,7 +78,7 @@ function GPS_TRG.bcGPSTRGPosPRINT(tpBook,gpsC,rotAnglIntTable,axisTable,tiltAngl
 				if radPos then
 					radPos.c = vec_trunc(radPos.c)
 					local trgPos = add(radPos.c,gpsPos)
-					print("tport: ",tport,"tname: ",tname,"trgPos: ",trgPos.x,trgPos.y,trgPos.z,",rotAnglInt",rotAnglInt)
+					print("tport: ",tport,"tname: ",tname,"trgPos: ",trgPos.x,trgPos.y,trgPos.z,",rotAnglInt",rotAnglIntTable[tport])
 					--modem.broadcast(tport,"trg",trgPos.x,trgPos.y,trgPos.z,axis,rotAnglInt,tiltAngle)
 					modem.broadcast(tport,"trg",trgPos.x,trgPos.y,trgPos.z,axisTable[tport],rotAnglIntTable[tport],tiltAngleTable[tport])
 				else
