@@ -1,6 +1,7 @@
 local args = {...}
 local component = require("component")
 local event = require("event")
+local term = require("term")
 local inventory_controller = component.inventory_controller
 local robot = component.robot
 local modem = component.modem
@@ -22,13 +23,22 @@ for i=0,tonumber(args[1]) do
 
 
 	robot.select(7)
-	inventory_controller.dropIntoSlot(3,7,1)
-	robot.select(8)
 	inventory_controller.dropIntoSlot(3,5,1)
-	repeat
-		modem.broadcast(craftChannel,"craft")
-		local msg = {event.pull("modem_message")}
-	until msg[6]=="idle"
-	robot.select(10)
-	suckFromSlot(3,1)
+	robot.select(8)
+	inventory_controller.dropIntoSlot(3,7,1)
+	--repeat
+		--modem.broadcast(craftChannel,"craft")
+		--local msg = {event.pull("modem_message")}
+	--until msg[6]=="idle"
+	while true do
+		if inventory_controller.getInventorySize(3)==1 then
+			robot.select(13)
+			suckFromSlot(3,1)
+			return
+		end
+		print("still not assembled!: ", inventory_controller.getInventorySize(3))
+		os.sleep(0.5)
+		term.clear()
+	end
+	
 end
