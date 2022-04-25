@@ -8,7 +8,7 @@ local robot = require("robot")
 local modem = component.modem
 local craftChannel = 10000
 modem.open(craftChannel)
-for i=0,tonumber(args[1]) do
+for i=1,tonumber(args[1]) do
 	robot.select(1)
 	inventory_controller.dropIntoSlot(3,1,1)
 	robot.select(2)
@@ -31,17 +31,13 @@ for i=0,tonumber(args[1]) do
 		--modem.broadcast(craftChannel,"craft")
 		--local msg = {event.pull("modem_message")}
 	--until msg[6]=="idle"
-	while true do
-		if  not inventory_controller.getStackInSlot(3,14) then
-			robot.select(13)
-			os.sleep(1)
-			inventory_controller.suckFromSlot(3,1)
-			robot.dropDown()
-			return
-		end
+	robot.select(13)
+	while inventory_controller.getStackInSlot(3,14) do
 		print("still not assembled!")
 		os.sleep(0.5)
 		term.clear()
 	end
-	
+	os.sleep(0.5)
+	inventory_controller.suckFromSlot(3,1)
+	robot.dropDown()	
 end
