@@ -31,12 +31,13 @@ for i=0,tonumber(args[1]) do
 		--local msg = {event.pull("modem_message")}
 	--until msg[6]=="idle"
 	while true do
-		if inventory_controller.getInventorySize(3)==1 then
+		if  not inventory_controller.getStackInSlot(3,14) then
 			robot.select(13)
-			suckFromSlot(3,1)
+			inventory_controller.suckFromSlot(3,1)
+			robot.dropDown()
 			return
 		end
-		print("still not assembled!: ", inventory_controller.getInventorySize(3))
+		print("still not assembled!")
 		os.sleep(0.5)
 		term.clear()
 	end
