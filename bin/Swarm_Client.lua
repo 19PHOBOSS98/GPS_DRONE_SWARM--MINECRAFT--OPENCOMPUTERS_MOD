@@ -286,12 +286,12 @@ while true do
 		--GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"X")]]
 		local targetingChannel1 = 11
 		local targetingChannel2 = 12
-		modem.broadcast(targetingChannel1,"color",0xFF8800)
-		modem.broadcast(targetingChannel2,"color",0x8800FF)
+		modem.broadcast(targetingChannel1,"color",0x0E63EC)
+		modem.broadcast(targetingChannel2,"color",0xFFC000)
 		local rotationAngleInterval1 = -math.pi/4
-		local tiltAngle1 = -math.pi/2
+		local tiltAngle1 = -math.pi/4
 		local rotationAngleInterval2 = math.pi/4
-		local tiltAngle2 = math.pi
+		local tiltAngle2 = math.pi/4
 		local axisTable = {[targetingChannel1] = "Z",[targetingChannel2] = "Z"}
 		local tiltAngleTable = {[targetingChannel1] = tiltAngle1,[targetingChannel2] = tiltAngle2}
 		local rotAngIntTable = {[targetingChannel1] = rotationAngleInterval1,[targetingChannel2] = rotationAngleInterval2}
