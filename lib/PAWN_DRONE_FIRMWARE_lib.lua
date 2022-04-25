@@ -444,11 +444,11 @@ d.setAcceleration(100)
 d.setLightColor(0x007B62)
 while true do
 	_,_,r_addr,_,dist,msg,x,y,z,trgCh,_ = computer.pullSignal(0.5)
-	if d.name():match("^S%d+$") then
+	--if d.name():match("^S%d+$") then
 		if acts[msg] then
 			acts[msg](r_addr,x,y,z,dist,trgCh)
 		end
-	end
+	--end
 	--d.setLightColor(0xFFAF00)
 	--d.setLightColor(0x77FF77)
 end
