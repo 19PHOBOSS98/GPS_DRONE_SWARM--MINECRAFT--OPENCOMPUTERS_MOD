@@ -3,7 +3,8 @@ local component = require("component")
 local event = require("event")
 local term = require("term")
 local inventory_controller = component.inventory_controller
-local robot = component.robot
+--local robot = component.robot
+local robot = require("robot")
 local modem = component.modem
 local craftChannel = 10000
 modem.open(craftChannel)
@@ -33,6 +34,7 @@ for i=0,tonumber(args[1]) do
 	while true do
 		if  not inventory_controller.getStackInSlot(3,14) then
 			robot.select(13)
+			os.sleep(1)
 			inventory_controller.suckFromSlot(3,1)
 			robot.dropDown()
 			return
