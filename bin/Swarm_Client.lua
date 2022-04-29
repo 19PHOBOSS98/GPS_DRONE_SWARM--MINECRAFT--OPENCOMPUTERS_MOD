@@ -115,6 +115,8 @@ end
 while true do
 	local cmd=io.read()
 	if not cmd then return end
+	
+	-- QUEEN Commands
 	if(cmd == "F") then
 		q_firmware.broadcastFirmWare(QueensChannel)
     	os.sleep(0.5)
@@ -173,8 +175,6 @@ while true do
 		modem.broadcast(QueensChannel,"HUSH")
     	os.sleep(0.5)
 		
-		
-		
 	elseif(cmd == "GPS") then -- activate QUEEN satellite GPS broadcasting
 		for addr,c in pairs(ffbook[1]) do
 			print(addr,c)
@@ -183,11 +183,13 @@ while true do
 		modem.broadcast(QueensChannel,"startgps")
     	os.sleep(0.5)
 
+		
+	--PAWN Commands
+		
+		
 	elseif(cmd == "K") then -- terminate GPS targeting thread
 		GPS_TRG.killGPSTRGThread(gpsChannel)
     	os.sleep(0.5)
-
-
 
 	elseif(cmd == "A") then -- form triangle on Floppa with PAWNS
 		local targetingChannel = 4
@@ -196,6 +198,7 @@ while true do
 		flightform.PformUP(targetingChannel,Pawnffbook[1],PawnsChannel)
 		printSwarmStatsPawn()
 		os.sleep(0.5)
+		
 	elseif(cmd == "TRG") then -- start entity (Floppa) targeting broadcast
 		local targetingChannel = 4
 		GPS_TRG.updateGPSTRGsPRINT(trgPortBook,gpsChannel,{[targetingChannel]=0},{[targetingChannel]="Y"},{[targetingChannel]=0})
@@ -209,6 +212,7 @@ while true do
 		flightform.PformUP(targetingChannel,Pawnffbook[2],PawnsChannel)
 		--flightform.POrbit(targetingChannel,Pawnffbook[2],PawnsChannel)
 		os.sleep(0.5)
+		
 	elseif(cmd == "USFP") then -- Update Static Formation PAWNS
 		local targetingChannel = 8
 		GPS_TRG.updateStaticGPS(targetingChannel,gpsChannel,{[targetingChannel]=0},{[targetingChannel]="Y"},{[targetingChannel]=0})
@@ -221,6 +225,7 @@ while true do
 		flightform.formFF(Pawnffbook[3],Pawndynamic_fbook[3],PawnsChannel,false)
 		flightform.POrbit(targetingChannel,Pawnffbook[3],PawnsChannel)
 		os.sleep(0.5)	
+		
 	elseif(cmd == "USRFP") then -- Update Static Rotating Formation PAWNS
 		local targetingChannel = 10
 		local rotationAngleInterval = math.pi/2
