@@ -270,7 +270,8 @@ while true do
 		local tiltAngle1 = math.pi/4
 		local rotationAngleInterval2 = -math.pi/4
 		local tiltAngle2 = -math.pi/4
-		local axisTable = {[targetingChannel1] = "Z",[targetingChannel2] = "Z"}
+		--local axisTable = {[targetingChannel1] = "Z",[targetingChannel2] = "Z"}
+		local axisTable = {[targetingChannel1] = "X",[targetingChannel2] = "X"}
 		local tiltAngleTable = {[targetingChannel1] = tiltAngle1,[targetingChannel2] = tiltAngle2}
 		local rotAngIntTable = {[targetingChannel1] = rotationAngleInterval1,[targetingChannel2] = rotationAngleInterval2}
 		GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotAngIntTable,axisTable,tiltAngleTable)
