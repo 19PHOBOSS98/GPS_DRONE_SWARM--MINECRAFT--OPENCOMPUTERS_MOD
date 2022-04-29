@@ -264,8 +264,10 @@ while true do
 		--for addr,c in pairs(Pawnffbook[5]) do modem.send(addr,targetingChannel1,"color",0x8800FF) end
 		--for addr,c in pairs(Pawnffbook[4]) do modem.send(addr,targetingChannel2,"color",0xFF8800) end
 		--local rotationAngleInterval = math.pi/8 -- for squares
-		modem.broadcast(targetingChannel1,"color",0x8800FF)
-		modem.broadcast(targetingChannel2,"color",0xFF8800)
+		--modem.broadcast(targetingChannel1,"color",0x8800FF)
+		--modem.broadcast(targetingChannel2,"color",0xFF8800)
+		modem.broadcast(targetingChannel1,"color",0xBC18FB)
+		modem.broadcast(targetingChannel2,"color",0x28DDEF)
 		local rotationAngleInterval1 = math.pi/4
 		local tiltAngle1 = math.pi/4
 		local rotationAngleInterval2 = -math.pi/4
@@ -292,13 +294,13 @@ while true do
 		--GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotationAngleInterval,"X")]]
 		local targetingChannel1 = 11
 		local targetingChannel2 = 12
-		modem.broadcast(targetingChannel1,"color",0x0E63EC)
-		modem.broadcast(targetingChannel2,"color",0xFFC000)
+		modem.broadcast(targetingChannel1,"color",0xFF9945)
+		modem.broadcast(targetingChannel2,"color",0x1CF6C5)
 		local rotationAngleInterval1 = -math.pi/4
 		local tiltAngle1 = -math.pi/4
 		local rotationAngleInterval2 = math.pi/4
 		local tiltAngle2 = math.pi/4
-		local axisTable = {[targetingChannel1] = "Z",[targetingChannel2] = "Z"}
+		local axisTable = {[targetingChannel1] = "X",[targetingChannel2] = "X"}
 		local tiltAngleTable = {[targetingChannel1] = tiltAngle1,[targetingChannel2] = tiltAngle2}
 		local rotAngIntTable = {[targetingChannel1] = rotationAngleInterval1,[targetingChannel2] = rotationAngleInterval2}
 		GPS_TRG.updateGPSTRGsPRINT(trgPortBookME,gpsChannel,rotAngIntTable,axisTable,tiltAngleTable)
