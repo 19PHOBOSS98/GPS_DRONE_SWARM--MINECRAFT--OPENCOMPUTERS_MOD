@@ -85,7 +85,7 @@ Pawnffbook[5] = {}
 Pawnffbook[6] = {}
 dynamicTriangle = {{3,2,-2},{-3,2,-2},{0,2,3}}
 --staticTriangle = {{3,2,-2},{-3,2,-2},{0,2,3}}
-staticTriangle = formation_generator.TriangleFormation("Y:spanX",3,5,2,{x=0,y=2,z=0})
+staticTriangle = formation_generator.TriangleFormation("Y:spanX",4,8,2,{x=0,y=2,z=0})
 staticTriangle = formation_generator.rotateFormation("X",-math.pi/4,staticTriangle)
 --staticOrbitTriangle = {{3,2,-2},{-3,2,-2},{0,2,3}}
 --staticOrbitSquare = {{1,1,0},{-1,1,0},{0,1,1},{0,1,-1}}
