@@ -145,7 +145,7 @@ function GPS_TRG.bcStaticGPSPos(tport,gpsC,rotAnglIntTable,axisTable,tiltAngleTa
 			print("Broadcasting to trgChannel: ",tport)
 			print("rotAnglInt: ",rotAnglIntTable[tport])
 			--modem.broadcast(tport,"trg",gpsPos.x,gpsPos.y,gpsPos.z,axis,rotAnglInt,tiltAngle)
-			modem.broadcast(tport,"trg",trgPos.x,trgPos.y,trgPos.z,axisTable[tport],rotAnglIntTable[tport],tiltAngleTable[tport])
+			modem.broadcast(tport,"trg",gpsPos.x,gpsPos.y,gpsPos.z,axisTable[tport],rotAnglIntTable[tport],tiltAngleTable[tport])
 		else
 			print("GPS Out Of Range")
 		end
