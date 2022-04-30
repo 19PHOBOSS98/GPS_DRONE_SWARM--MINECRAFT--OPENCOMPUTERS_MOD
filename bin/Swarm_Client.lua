@@ -85,11 +85,12 @@ Pawnffbook[5] = {}
 Pawnffbook[6] = {}
 dynamicTriangle = {{3,2,-2},{-3,2,-2},{0,2,3}}
 --staticTriangle = {{3,2,-2},{-3,2,-2},{0,2,3}}
-staticTriangle = formation_generator.TriangleFormation("Y:spanX",4,8,2,{x=0,y=2,z=0})
+--staticTriangle = formation_generator.TriangleFormation("Y:spanX",4,8,2,{x=0,y=2,z=0})
+staticTriangle = formation_generator.TriangleFormation("Y:spanX",8,10,2,{x=0,y=2,z=0})
 staticTriangle = formation_generator.rotateFormation("X",-math.pi/4,staticTriangle)
 --staticOrbitTriangle = {{3,2,-2},{-3,2,-2},{0,2,3}}
 --staticOrbitSquare = {{1,1,0},{-1,1,0},{0,1,1},{0,1,-1}}
-staticOrbitSquare = formation_generator.hollowSquareFormation("Y",4,4,7,{x=-1,y=0,z=-1})
+staticOrbitSquare = formation_generator.hollowSquareFormation("Z",5,5,7,{x=-2,y=0,z=-2})
 dynamicOrbitSquareMe = {{1,3,0},{-1,3,0},{0,3,1},{0,3,-1}}
 dynamicTriangleMe = {{3,4,-2},{-3,4,-2},{0,4,3}}
 --Pawnform1 = {{0,2,0}}
@@ -220,6 +221,7 @@ while true do
 		
 	elseif(cmd == "USFP") then -- Update Static Formation PAWNS
 		local targetingChannel = 8
+		modem.broadcast(targetingChannel,"color",0x9900FF)
 		GPS_TRG.updateStaticGPS(targetingChannel,gpsChannel,{[targetingChannel]=0},{[targetingChannel]="Y"},{[targetingChannel]=0})
 		os.sleep(0.5)
 
@@ -234,8 +236,9 @@ while true do
 	elseif(cmd == "USRFP") then -- Update Static Rotating Formation PAWNS
 		local targetingChannel = 10
 		local rotationAngleInterval = math.pi/8
+		local tiltAngle = -math.pi/4
 		modem.broadcast(targetingChannel,"color",0x9900FF)
-		GPS_TRG.updateStaticGPS(targetingChannel,gpsChannel,{[targetingChannel]=rotationAngleInterval},{[targetingChannel]="Y"},{[targetingChannel]=0})
+		GPS_TRG.updateStaticGPS(targetingChannel,gpsChannel,{[targetingChannel]=rotationAngleInterval},{[targetingChannel]="X"},{[targetingChannel]=tiltAngle})
 		os.sleep(0.5)	
 		
 	elseif(cmd == "RM") then -- Rotating on Me
