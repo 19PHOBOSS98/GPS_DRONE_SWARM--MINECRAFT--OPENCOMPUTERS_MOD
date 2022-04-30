@@ -257,7 +257,7 @@ while true do
 	elseif(cmd == "RM") then -- Rotating on Me
 		local targetingChannel1 = 11
 		local targetingChannel2 = 12
-		--local targetingChannel3 = 13
+		local targetingChannel3 = 13
 		--modem.broadcast(targetingChannel1,"stop")
 		--modem.broadcast(targetingChannel2,"stop")
 		--modem.broadcast(targetingChannel3,"stop")
@@ -273,14 +273,15 @@ while true do
 		]]
 		----flightform.formFF(Pawnffbook[4],dynamicPawnPyramidBook[2],PawnsChannel,false)
 		flightform.formFF(Pawnffbook[4],dynamicPawnPyramidBook[4],PawnsChannel,false)
-		----flightform.formFF(Pawnffbook[6],dynamicPawnPyramidBook[6],PawnsChannel,false)
+		flightform.formFF(Pawnffbook[5],dynamicPawnPyramidBook[5],PawnsChannel,false)
+		flightform.formFF(Pawnffbook[6],dynamicPawnPyramidBook[6],PawnsChannel,false)
 		--flightform.formFF(Pawnffbook[5],dynamicPawnPyramidBook[2],PawnsChannel,false)
 		--flightform.formFF(Pawnffbook[5],dynamicPawnPyramidBook[3],PawnsChannel,false)
 		--flightform.formFF(Pawnffbook[5],dynamicPawnPyramidBook[4],PawnsChannel,false)
-		flightform.PformUP(targetingChannel2,Pawnffbook[4],PawnsChannel)
-		----flightform.POrbit(targetingChannel1,Pawnffbook[4],PawnsChannel)
-		----flightform.POrbit(targetingChannel2,Pawnffbook[5],PawnsChannel)
-		----flightform.POrbit(targetingChannel3,Pawnffbook[6],PawnsChannel)
+		--flightform.PformUP(targetingChannel2,Pawnffbook[4],PawnsChannel)
+		flightform.POrbit(targetingChannel1,Pawnffbook[4],PawnsChannel)
+		flightform.POrbit(targetingChannel2,Pawnffbook[5],PawnsChannel)
+		flightform.POrbit(targetingChannel3,Pawnffbook[6],PawnsChannel)
 
 		
 		os.sleep(0.5)	
