@@ -241,7 +241,9 @@ function gpsMoveToTarget(offset,trgChannel)
 		local trgUpdate = {}
 		repeat
 			_,_,r_addr,_,dist,msg,x,y,z,_,_ = computer.pullSignal(0.5)
-
+			if actsWhileMoving[msg] then
+				actsWhileMoving[msg](r_addr,x,y,z,dist)
+			end
 			if msg == "trg" then
 				trgUpdate = {c={x=x,y=y,z=z},d=dist}
 			end
@@ -261,9 +263,6 @@ function gpsMoveToTarget(offset,trgChannel)
 				d.setLightColor(0xFF0000)
 				--d.setStatusText("No TRG:\n"..tostring(trgChannel))
 				d.move(-mv.x,-mv.y,-mv.z)
-			end
-			if actsWhileMoving[msg] then
-				actsWhileMoving[msg](r_addr,x,y,z,dist)
 			end
 		until msg == "stop"
 	end
@@ -371,7 +370,9 @@ function gpsOrbitTRG(offset,trgChannel)
 		local tiltAngle = 0
 		repeat
 			_,_,r_addr,_,dist,msg,x,y,z,axis,rotInt,tilt = computer.pullSignal(0.5)
-
+			if actsWhileMoving[msg] then
+				actsWhileMoving[msg](r_addr,x,y,z,dist)
+			end
 			if msg == "trg" then
 				trgUpdate = {c={x=x,y=y,z=z},d=dist}
 				rotationInterval = rotInt
@@ -405,9 +406,7 @@ function gpsOrbitTRG(offset,trgChannel)
 				--d.setStatusText("No TRG:\n"..tostring(trgChannel))
 				d.move(-mv.x,-mv.y,-mv.z)
 			end
-			if actsWhileMoving[msg] then
-				actsWhileMoving[msg](r_addr,x,y,z,dist)
-			end
+
 		until msg == "stop"
 	end
 	m.close(trgChannel)
