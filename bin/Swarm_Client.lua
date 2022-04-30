@@ -104,8 +104,21 @@ triangle = formation_generator.TriangleFormation("Y:spanX",2,4,2,{x=0,y=2,z=0})
 rotated_hsqr = formation_generator.rotateFormation("Z",math.pi/4,hollow_square)
 dynamicTriangle = formation_generator.TriangleFormation("Z:spanX",1,2,2,{x=0,y=2,z=0})
 
-PawnGeneratedFormBook = {ring,ring2,hollow_square,triangle,rotated_hsqr,dynamicTriangle}
+--numbering must be the same with ffbook, can't regen otherwise:
+PawnGeneratedFormBook = {{},{},{},ring,ring2,dynamicTriangle,hollow_square,triangle,rotated_hsqr}
 dynamicPawnPyramidBook = PawnGeneratedFormBook
+
+--[[
+For Floppa:
+Pawnffbook[1] = Pawndynamic_fbook[1] = dynamicTriangle
+Static:
+Pawnffbook[2] = Pawndynamic_fbook[2] = staticTriangle
+Pawnffbook[3] = Pawndynamic_fbook[3] = staticOrbitSquare
+Follow Me:
+Pawnffbook[4] = PawnGeneratedFormBook[4] = ring
+Pawnffbook[5] = PawnGeneratedFormBook[5] = ring2
+Pawnffbook[6] = PawnGeneratedFormBook[6] = dynamicTriangle
+]]
 
 
 StaticFormationtrgPortBook = {[8]="team1",[10]="team2"}
@@ -259,12 +272,12 @@ while true do
 		flightform.PformUP(targetingChannel,Pawnffbook[5],PawnsChannel)
 		]]
 		----flightform.formFF(Pawnffbook[4],dynamicPawnPyramidBook[2],PawnsChannel,false)
-		flightform.formFF(Pawnffbook[5],dynamicPawnPyramidBook[3],PawnsChannel,false)
+		flightform.formFF(Pawnffbook[4],dynamicPawnPyramidBook[4],PawnsChannel,false)
 		----flightform.formFF(Pawnffbook[6],dynamicPawnPyramidBook[6],PawnsChannel,false)
 		--flightform.formFF(Pawnffbook[5],dynamicPawnPyramidBook[2],PawnsChannel,false)
 		--flightform.formFF(Pawnffbook[5],dynamicPawnPyramidBook[3],PawnsChannel,false)
 		--flightform.formFF(Pawnffbook[5],dynamicPawnPyramidBook[4],PawnsChannel,false)
-		flightform.PformUP(targetingChannel2,Pawnffbook[5],PawnsChannel)
+		flightform.PformUP(targetingChannel2,Pawnffbook[4],PawnsChannel)
 		----flightform.POrbit(targetingChannel1,Pawnffbook[4],PawnsChannel)
 		----flightform.POrbit(targetingChannel2,Pawnffbook[5],PawnsChannel)
 		----flightform.POrbit(targetingChannel3,Pawnffbook[6],PawnsChannel)
