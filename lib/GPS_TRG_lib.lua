@@ -143,7 +143,7 @@ function GPS_TRG.bcStaticGPSPos(tport,gpsC,rotAnglIntTable,axisTable,tiltAngleTa
 			gpsPos = vec_trunc(gpsPos)
 			print("GPS Formation Center: ",gpsPos.x,gpsPos.y,gpsPos.z)
 			print("Broadcasting to trgChannel: ",tport)
-			print("rotAnglInt: ",rotAnglInt)
+			print("rotAnglInt: ",rotAnglIntTable[tport])
 			--modem.broadcast(tport,"trg",gpsPos.x,gpsPos.y,gpsPos.z,axis,rotAnglInt,tiltAngle)
 			modem.broadcast(tport,"trg",trgPos.x,trgPos.y,trgPos.z,axisTable[tport],rotAnglIntTable[tport],tiltAngleTable[tport])
 		else
