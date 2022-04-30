@@ -197,9 +197,9 @@ while true do
 		GPS_TRG.killGPSTRGThread(gpsChannel)
     	os.sleep(0.5)
 
-	elseif(cmd == "A") then -- form triangle on Floppa with PAWNS
+	elseif(cmd == "A") then -- form triangle on Floppa with PAWNS 
 		local targetingChannel = 4
-		flightform.refreshFFT(Pawnffbook,Pawndynamic_fbook,PawnsChannel,false)
+		--flightform.refreshFFT(Pawnffbook,Pawndynamic_fbook,PawnsChannel,false)-- use RPE
 		flightform.formFF(Pawnffbook[1],Pawndynamic_fbook[1],PawnsChannel,false)
 		flightform.PformUP(targetingChannel,Pawnffbook[1],PawnsChannel)
 		printSwarmStatsPawn()
@@ -213,7 +213,7 @@ while true do
 	elseif(cmd == "SFP") then -- Static Formation PAWNS
 		local targetingChannel = 8
 		--modem.broadcast(targetingChannel,"stop")
-		flightform.refreshFFT(Pawnffbook,Pawndynamic_fbook,PawnsChannel,false)
+		--flightform.refreshFFT(Pawnffbook,Pawndynamic_fbook,PawnsChannel,false)-- use RPE
 		flightform.formFF(Pawnffbook[2],Pawndynamic_fbook[2],PawnsChannel,false)
 		flightform.PformUP(targetingChannel,Pawnffbook[2],PawnsChannel)
 		--flightform.POrbit(targetingChannel,Pawnffbook[2],PawnsChannel)
@@ -228,7 +228,7 @@ while true do
 	elseif(cmd == "SRFP") then -- Static Rotating Formation PAWNS
 		local targetingChannel = 10
 		--modem.broadcast(targetingChannel,"stop")
-		flightform.refreshFFT(Pawnffbook,Pawndynamic_fbook,PawnsChannel,false)
+		--flightform.refreshFFT(Pawnffbook,Pawndynamic_fbook,PawnsChannel,false)-- use RPE
 		flightform.formFF(Pawnffbook[3],Pawndynamic_fbook[3],PawnsChannel,false)
 		flightform.POrbit(targetingChannel,Pawnffbook[3],PawnsChannel)
 		os.sleep(0.5)	
@@ -248,7 +248,9 @@ while true do
 		--modem.broadcast(targetingChannel1,"stop")
 		--modem.broadcast(targetingChannel2,"stop")
 		--modem.broadcast(targetingChannel3,"stop")
-		flightform.refreshFFT(Pawnffbook,Pawndynamic_fbook,PawnsChannel,false)
+		
+		--flightform.refreshFFT(Pawnffbook,dynamicPawnPyramidBook,PawnsChannel,false) -- use RPM
+		
 		--[[
 		flightform.formFF(Pawnffbook[4],Pawndynamic_fbook[4],PawnsChannel,false)
 		flightform.POrbit(targetingChannel,Pawnffbook[4],PawnsChannel)
@@ -339,8 +341,12 @@ while true do
 		end
 		printSwarmStatsPawn()
 		os.sleep(0.5)
-	elseif(cmd == "RP") then	--refreshFormation
+	elseif(cmd == "RPE") then	--refresh PAWN Entity Formation
 		flightform.refreshFFT(Pawnffbook,Pawndynamic_fbook,PawnsChannel,false)
+		printSwarmStatsPawn()
+		os.sleep(0.5)	
+	elseif(cmd == "RPM") then	--refresh PAWN ME Formation
+		flightform.refreshFFT(Pawnffbook,dynamicPawnPyramidBook,PawnsChannel,false)
 		printSwarmStatsPawn()
 		os.sleep(0.5)	
 	elseif(cmd == "PRINTP") then
