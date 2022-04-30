@@ -102,7 +102,12 @@ ring2 = formation_generator.circleFormation("Y",10,{x=0,y=0,z=7})
 hollow_square = formation_generator.hollowSquareFormation("Y",3,3,7,{x=-1,y=0,z=-1})
 triangle = formation_generator.TriangleFormation("Y:spanX",2,4,2,{x=0,y=2,z=0})
 rotated_hsqr = formation_generator.rotateFormation("Z",math.pi/4,hollow_square)
-dynamicTriangle = formation_generator.TriangleFormation("X:spanZ",1,2,3,{x=-1,y=2,z=0})
+
+dynamicTriangle = formation_generator.TriangleFormation("X:spanZ",1,2,3,{x=-1,y=1,z=0})
+dynamicTriangle2 = formation_generator.TriangleFormation("X:spanZ",1,2,3,{x=-1,y=-1,z=0})
+for k,v in ipairs(dynamicTriangle2) do
+      table.insert(dynamicTriangle,v)
+    end
 
 --numbering must be the same with ffbook, can't regen otherwise:
 PawnGeneratedFormBook = {{},{},{},ring,ring2,dynamicTriangle,hollow_square,triangle,rotated_hsqr}
