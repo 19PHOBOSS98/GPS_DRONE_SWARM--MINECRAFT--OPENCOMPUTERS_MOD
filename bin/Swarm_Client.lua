@@ -119,10 +119,8 @@ Pawnffbook[4] = PawnGeneratedFormBook[4] = ring
 Pawnffbook[5] = PawnGeneratedFormBook[5] = ring2
 Pawnffbook[6] = PawnGeneratedFormBook[6] = dynamicTriangle
 ]]
-
-
+trgPortBookME = {[11]="ph0",[12]="ph0",[13]="ph0"}
 StaticFormationtrgPortBook = {[8]="team1",[10]="team2"}
-trgPortBookME = {[11]="ph0",[12]="ph0"}
 
 function printSwarmStatsPawn()
 	term.clear()
