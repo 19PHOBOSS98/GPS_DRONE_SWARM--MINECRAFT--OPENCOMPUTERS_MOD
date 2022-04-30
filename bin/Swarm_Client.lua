@@ -87,7 +87,7 @@ dynamicTriangle = {{3,2,-2},{-3,2,-2},{0,2,3}}
 --staticTriangle = {{3,2,-2},{-3,2,-2},{0,2,3}}
 --staticTriangle = formation_generator.TriangleFormation("Y:spanX",4,8,2,{x=0,y=2,z=0})
 staticTriangle = formation_generator.TriangleFormation("Y:spanX",8,10,2,{x=0,y=2,z=0})
-staticTriangle = formation_generator.rotateFormation("X",-math.pi/4,staticTriangle)
+staticTriangle = formation_generator.rotateFormation("X",math.pi/4,staticTriangle)
 --staticOrbitTriangle = {{3,2,-2},{-3,2,-2},{0,2,3}}
 --staticOrbitSquare = {{1,1,0},{-1,1,0},{0,1,1},{0,1,-1}}
 staticOrbitSquare = formation_generator.hollowSquareFormation("Z",5,5,7,{x=-2,y=0,z=0})
@@ -252,7 +252,7 @@ while true do
 	elseif(cmd == "USRFP") then -- Update Static Rotating Formation PAWNS
 		local targetingChannel = 10
 		local rotationAngleInterval = math.pi/8
-		local tiltAngle = -math.pi/4
+		local tiltAngle = math.pi/4
 		modem.broadcast(targetingChannel,"color",0xD902EE)
 		GPS_TRG.updateStaticGPS(targetingChannel,gpsChannel,{[targetingChannel]=rotationAngleInterval},{[targetingChannel]="X"},{[targetingChannel]=tiltAngle})
 		os.sleep(0.5)	
