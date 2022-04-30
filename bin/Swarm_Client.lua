@@ -91,6 +91,7 @@ staticTriangle = formation_generator.rotateFormation("X",math.pi/4,staticTriangl
 --staticOrbitTriangle = {{3,2,-2},{-3,2,-2},{0,2,3}}
 --staticOrbitSquare = {{1,1,0},{-1,1,0},{0,1,1},{0,1,-1}}
 staticOrbitSquare = formation_generator.hollowSquareFormation("Z",5,5,7,{x=-2,y=0,z=0})
+staticOrbitSquare = formation_generator.rotateFormation("Z",math.pi/4,staticOrbitSquare)
 dynamicOrbitSquareMe = {{1,3,0},{-1,3,0},{0,3,1},{0,3,-1}}
 dynamicTriangleMe = {{3,4,-2},{-3,4,-2},{0,4,3}}
 --Pawnform1 = {{0,2,0}}
