@@ -236,7 +236,7 @@ while true do
 	elseif(cmd == "USRFP") then -- Update Static Rotating Formation PAWNS
 		local targetingChannel = 10
 		local rotationAngleInterval = math.pi/8
-		local tiltAngle = 0---math.pi/4
+		local tiltAngle = -math.pi/4
 		modem.broadcast(targetingChannel,"color",0x9900FF)
 		GPS_TRG.updateStaticGPS(targetingChannel,gpsChannel,{[targetingChannel]=rotationAngleInterval},{[targetingChannel]="X"},{[targetingChannel]=tiltAngle})
 		os.sleep(0.5)	
