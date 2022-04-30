@@ -239,11 +239,13 @@ function gpsMoveToTarget(offset,trgChannel)
 		d.setLightColor(0xFFFFFF)
 		local mv = {x=0,y=0,z=0},msg,r_add,dist,x,y,z
 		local trgUpdate = {}
-		local check = 0
+		--local check = 0
 		repeat
 			_,_,r_addr,_,dist,msg,x,y,z,_,_ = computer.pullSignal(0.5)
+			if actsWhileMoving[msg] then
+				actsWhileMoving[msg](r_addr,x,y,z,dist)
+			end
 			if msg == "trg" then
-				d.setStatusText("x:\n"..tostring(x))
 				trgUpdate = {c={x=x,y=y,z=z},d=dist}
 			end
 			local trgPos = trgUpdate
@@ -260,14 +262,11 @@ function gpsMoveToTarget(offset,trgChannel)
 				--d.setStatusText(tostring(lightColor))
 			else
 				d.setLightColor(0xFF0000)
-				--d.setStatusText("No TRG:\n"..tostring(trgChannel))
-				d.setStatusText("No TRG:\n"..tostring(check))
+				d.setStatusText("No TRG:\n"..tostring(trgChannel))
+				--d.setStatusText("No TRG:\n"..tostring(check))
 				d.move(-mv.x,-mv.y,-mv.z)
 			end
-			if actsWhileMoving[msg] then
-				actsWhileMoving[msg](r_addr,x,y,z,dist)
-			end
-			check = check+1
+			--check = check+1
 		until msg == "stop"
 	end
 	m.close(trgChannel)
