@@ -1,6 +1,13 @@
 # GPS_DRONE_SWARM--MINECRAFT--OPENCOMPUTERS_MOD
 survival friendly drone swarm using GPS location and Radar targeting (Computronics Addon)
+<img width="636" alt="Screen Shot 2022-05-01 at 12 00 48 AM" src="https://user-images.githubusercontent.com/37253663/166113208-693b97e6-ef2d-44d1-9145-fdb640775d44.png">
 
+<img width="645" alt="Screen Shot 2022-05-01 at 12 02 20 AM" src="https://user-images.githubusercontent.com/37253663/166113262-c07ea32c-0eaa-4f4b-9e02-5e0c6f5fd5b5.png">
+
+
+<img width="572" alt="Screen Shot 2022-05-01 at 12 00 03 AM" src="https://user-images.githubusercontent.com/37253663/166113226-7533368e-9615-4fb7-a6ba-3725be894ae6.png">
+
+<img width="913" alt="Screen Shot 2022-05-01 at 12 03 25 AM" src="https://user-images.githubusercontent.com/37253663/166113228-5acfcf76-4497-4758-bcb7-87f79e6a8644.png">
 
 This actually started around 2018-2019, but I kinda left it alone for a hot minute:
 
@@ -67,7 +74,7 @@ The best part is that this frees up upgrade slots that you can use to make them 
 The only downside I see is their target intercepting speed because of the delay in broadcasting their targets location from the command tablet.
 
 
-### SWARM MANAGEMENT
+### SWARM MANAGEMENT:
 
 #### MULTIPLE FLIGHT FORMATIONS
 The drone manager maintains a pool of available drones. A player can request some drones from the pool to fill a flight formation. Depending on the size of the swarm a player can have multiple independent flight formations active all at the same time.
@@ -83,7 +90,7 @@ Each drone has a base firmware in their BIOS chip enough to receive and load com
 A swarm can be controlled through more than one command tablet. Depending on the number of available drones, more than one client can request for a formation from ~~the pool~~ THE SWARM.
 
 
-### DYNAMIC GPS SYSTEM
+### DYNAMIC GPS SYSTEM:
 
 For the GPS system I would like to thank these guys:
 credomane and DOOBW: https://github.com/DOOBW/OC-GPS
