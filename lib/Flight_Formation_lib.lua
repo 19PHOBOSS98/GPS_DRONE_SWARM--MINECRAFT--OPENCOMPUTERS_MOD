@@ -67,6 +67,7 @@ end
  
  
 function populateFFT(ff,f,port,is_Queen)
+	print("f length: ",#f)
 	if is_Queen then
 		for addr,is_free in pairs(flight_formation.pool_Q) do
 			if not next(f) then return end
