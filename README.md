@@ -31,7 +31,7 @@ See, I have two kinds of drones in my swarm. I call them the QUEENS and the PAWN
 The Queens are a bit more expensive than Pawns. They each use a [Navigation Upgrade](https://ocdoc.cil.li/item:navigation_upgrade) and a [Radar Upgrage](https://wiki.vexatos.com/wiki:computronics:radar) (from the Computronics Addon) to intercept a target and fly in formation. They're expensive cause drones can only ever hold three upgrade slots at max:
 <img width="354" alt="Screen Shot 2022-04-17 at 11 47 12 AM" src="https://user-images.githubusercontent.com/37253663/163699591-344cb3fa-c74d-42cd-8148-07c39084b1ac.png">
 
-The Radar Upgrage tells them where players are and the Navigation Upgrade tells them where they are on a map. Now at first, I thought i could get away with only using the Radar Upgrade but the drones kept over shooting and getting stuck in a loop when they gets too far from their target.
+The Navigation Upgrade tells the drone where it is on a map and the Radar Upgrage tells them where players are. Now at first, I thought i could get away with only using the Radar Upgrade but the drones kept over shooting and getting stuck in a loop when they get too far from their target.
 
 <img width="78" alt="Screen Shot 2022-04-17 at 3 27 37 PM" src="https://user-images.githubusercontent.com/37253663/163705055-0d4a3473-0e40-4b5f-b62e-c8589422796a.png">
 
