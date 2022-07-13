@@ -82,7 +82,7 @@ The drone manager maintains a pool of available drones. A player can request som
 <img width="692" alt="Screen Shot 2022-04-17 at 1 35 03 PM" src="https://user-images.githubusercontent.com/37253663/163704219-0b43ea8d-11ba-4cda-8a08-b89fcb7dfcbb.png">
 
 #### IMMORTAL FORMS
-Each flight formation is regenerative. That means in case a drone falls out of formation, a player can simply hit refresh and request for a replacement from the pool without disturbing the rest of the flight formation. As long as you have enough spare drones the flight formation will stay immortal.
+Each flight formation is regenerative. That means in case a drone falls out of formation, a player can simply hit refresh and request for a replacement from the pool without disturbing the rest of the flight formation. As long as you have enough spare drones the flight formation can regenerate.
 
 #### DYNAMIC FIRMWARE
 Each drone has a base firmware in their BIOS chip enough to receive and load commands in memory through a wireless receiver. The rest of the Firmware is broadcasted to the drones as they get activated. This way I wouldn't need to replace each drone's BIOS chip each time I need to tweak their firmware.
