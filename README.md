@@ -195,4 +195,9 @@ wget -f "https://raw.githubusercontent.com/19PHOBOSS98/GPS_DRONE_SWARM--MINECRAF
 wget -f "https://raw.githubusercontent.com/19PHOBOSS98/GPS_DRONE_SWARM--MINECRAFT--OPENCOMPUTERS_MOD/main/bin/Swarm_Client.lua" /home/Swarm7.lua
 ```
 
+### MOD DOWNLOAD LINKS
+OpenComputers for 1.12.2: https://www.curseforge.com/minecraft/mc-mods/opencomputers
+
+Computronics addon: https://wiki.vexatos.com/wiki:computronics
+
 have fun!
