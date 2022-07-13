@@ -78,6 +78,7 @@ The only downside I see is their target intercepting speed because of the delay 
 
 #### MULTIPLE FLIGHT FORMATIONS
 The drone manager maintains a pool of available drones. A player can request some drones from the pool to fill a flight formation. Depending on the size of the swarm a player can have multiple independent flight formations active all at the same time.
+
 <img width="692" alt="Screen Shot 2022-04-17 at 1 35 03 PM" src="https://user-images.githubusercontent.com/37253663/163704219-0b43ea8d-11ba-4cda-8a08-b89fcb7dfcbb.png">
 
 #### IMMORTAL FORMS
