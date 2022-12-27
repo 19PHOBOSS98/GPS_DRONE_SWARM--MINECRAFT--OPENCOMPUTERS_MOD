@@ -9,6 +9,8 @@ survival friendly drone swarm using GPS location and Radar targeting (Computroni
 
 <img width="913" alt="Screen Shot 2022-05-01 at 12 03 25 AM" src="https://user-images.githubusercontent.com/37253663/166113228-5acfcf76-4497-4758-bcb7-87f79e6a8644.png">
 
+YT Video: https://youtu.be/t3tRzGwhaD0
+
 This actually started around 2018-2019, but I kinda left it alone for a hot minute:
 
 https://oc.cil.li/topic/1687-delux-drone-swarmarmyfor-free/
